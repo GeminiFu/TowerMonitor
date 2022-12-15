@@ -3,13 +3,18 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.IO.Ports;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TowerMonitor.IMU;
+using TowerMonitor.util;
 using static HikvisionDemo.CHCNetSDK;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
@@ -17,6 +22,7 @@ namespace TowerMonitor
 {
     public partial class Form1 : Form
     {
+        // 海康威視
         public uint PTZ_MOVING = 0;         // 雲台移動
         public uint PTZ_STOP = 1;           // 雲台停止
         public uint PTZ_SPEED = 3;          // 雲台移動速度 (預設 3)
@@ -34,9 +40,22 @@ namespace TowerMonitor
         CHCNetSDK.REALDATACALLBACK RealData = null;
         public delegate void UpdateTextStatusCallback(string strLogStatus, IntPtr lpDeviceInfo);
 
+        // 陀螺儀
+        private IMUData device_data;
+        private SerialPort serialPort = new SerialPort();
+        private Connection m_connection = new Connection();
+        private KbootPacketDecoder KbootDecoder = new KbootPacketDecoder();
+
         public Form1()
         {
             InitializeComponent();
+            InitCHCNet();
+            InitIMU();
+        }
+
+
+        // init Hikvision
+        private void InitCHCNet() {
             m_bInitSDK = CHCNetSDK.NET_DVR_Init();
             if (m_bInitSDK == false)
             {
@@ -50,7 +69,24 @@ namespace TowerMonitor
             }
         }
 
-        private void onLoginClick(object sender, EventArgs e)
+        // init IMU
+        private void InitIMU() {
+            m_connection.OnSendData += new Connection.SendDataEventHandler(SendSerialPort);
+            KbootDecoder.OnPacketRecieved += new KbootPacketDecoder.KBootDecoderDataReceivedEventHandler(OnKbootDecoderDataReceived);
+            serialPort.WriteTimeout = 1000;
+        }
+
+        private void OnLoad(object sender, EventArgs e)
+        {
+            System.Windows.Forms.TextBox.CheckForIllegalCrossThreadCalls = false;
+        }
+
+        private void OnFormClosing(object sender, FormClosingEventArgs e)
+        {
+            CloseSerialPort();
+        }
+
+        private void OnLoginClick(object sender, EventArgs e)
         {
             if (ipTextBox.Text == "" || portTextBox.Text == "" ||
                 usernameTextBox.Text == "" || passwordTextBox.Text == "")
@@ -61,78 +97,90 @@ namespace TowerMonitor
 
             if (m_lUserID < 0)
             {
-
-                struLogInfo = new CHCNetSDK.NET_DVR_USER_LOGIN_INFO();
-
-                //Device IP or web url
-                byte[] byIP = System.Text.Encoding.Default.GetBytes(ipTextBox.Text);
-                struLogInfo.sDeviceAddress = new byte[129];
-                byIP.CopyTo(struLogInfo.sDeviceAddress, 0);
-
-                // Device Service Port
-                struLogInfo.wPort = ushort.Parse(portTextBox.Text);
-
-                //Username
-                byte[] byUserName = System.Text.Encoding.Default.GetBytes(usernameTextBox.Text);
-                struLogInfo.sUserName = new byte[64];
-                byUserName.CopyTo(struLogInfo.sUserName, 0);
-
-                //Password
-                byte[] byPassword = System.Text.Encoding.Default.GetBytes(passwordTextBox.Text);
-                struLogInfo.sPassword = new byte[64];
-                byPassword.CopyTo(struLogInfo.sPassword, 0);
-
-
-                if (loginCallBack == null)
-                {
-                    loginCallBack = new CHCNetSDK.LOGINRESULTCALLBACK(cbLoginCallBack);     //注册回调函数                    
-                }
-                struLogInfo.cbLoginResult = loginCallBack;
-                struLogInfo.bUseAsynLogin = false; //是否异步登录：0- 否，1- 是 
-
-                DeviceInfo = new CHCNetSDK.NET_DVR_DEVICEINFO_V40();
-
-                // Login the device
-                m_lUserID = CHCNetSDK.NET_DVR_Login_V40(ref struLogInfo, ref DeviceInfo);
-                if (m_lUserID < 0)
-                {
-                    iLastErr = CHCNetSDK.NET_DVR_GetLastError();
-                    str = "NET_DVR_Login_V40 failed, error code= " + iLastErr; //登录失败，输出错误号
-                    MessageBox.Show(str);
-                    return;
-                }
-                else
-                {
-                    //登录成功
-                    MessageBox.Show("登入成功!");
-                    loginButton.Text = "登出";
-                    StartPreview();
-                }
-
+                DoLogin();
             }
             else
             {
-                //注销登录 Logout the device
-                //if (m_lRealHandle >= 0)
-                //{
-                //    MessageBox.Show("請先停止畫面預覽");
-                //    return;
-                //}
-
-                StopPreview();
-
-                if (!CHCNetSDK.NET_DVR_Logout(m_lUserID))
-                {
-                    iLastErr = CHCNetSDK.NET_DVR_GetLastError();
-                    str = "NET_DVR_Logout failed, error code= " + iLastErr;
-                    MessageBox.Show(str);
-                    return;
-                }
-                m_lUserID = -1;
-                MessageBox.Show("登出成功!");
-                loginButton.Text = "登入";
+                DoLogout();
             }
             return;
+        }
+
+        private void DoLogin() {
+            struLogInfo = new CHCNetSDK.NET_DVR_USER_LOGIN_INFO();
+
+            //Device IP or web url
+            byte[] byIP = System.Text.Encoding.Default.GetBytes(ipTextBox.Text);
+            struLogInfo.sDeviceAddress = new byte[129];
+            byIP.CopyTo(struLogInfo.sDeviceAddress, 0);
+
+            // Device Service Port
+            struLogInfo.wPort = ushort.Parse(portTextBox.Text);
+
+            //Username
+            byte[] byUserName = System.Text.Encoding.Default.GetBytes(usernameTextBox.Text);
+            struLogInfo.sUserName = new byte[64];
+            byUserName.CopyTo(struLogInfo.sUserName, 0);
+
+            //Password
+            byte[] byPassword = System.Text.Encoding.Default.GetBytes(passwordTextBox.Text);
+            struLogInfo.sPassword = new byte[64];
+            byPassword.CopyTo(struLogInfo.sPassword, 0);
+
+
+            if (loginCallBack == null)
+            {
+                loginCallBack = new CHCNetSDK.LOGINRESULTCALLBACK(cbLoginCallBack);     //注册回调函数                    
+            }
+            struLogInfo.cbLoginResult = loginCallBack;
+            struLogInfo.bUseAsynLogin = false; //是否异步登录：0- 否，1- 是 
+
+            DeviceInfo = new CHCNetSDK.NET_DVR_DEVICEINFO_V40();
+
+            // Login the device
+            m_lUserID = CHCNetSDK.NET_DVR_Login_V40(ref struLogInfo, ref DeviceInfo);
+            if (m_lUserID < 0)
+            {
+                iLastErr = CHCNetSDK.NET_DVR_GetLastError();
+                str = "NET_DVR_Login_V40 failed, error code= " + iLastErr; //登录失败，输出错误号
+                MessageBox.Show(str);
+                return;
+            }
+            else
+            {
+                //登录成功
+                MessageBox.Show("登入成功!");
+                loginButton.Text = "登出";
+                StartPreview();
+                ConnectIMU();
+            }
+
+        }
+
+        private void DoLogout() {
+            //注销登录 Logout the device
+            //if (m_lRealHandle >= 0)
+            //{
+            //    MessageBox.Show("請先停止畫面預覽");
+            //    return;
+            //}
+
+            StopPreview();
+
+            if (!CHCNetSDK.NET_DVR_Logout(m_lUserID))
+            {
+                iLastErr = CHCNetSDK.NET_DVR_GetLastError();
+                str = "NET_DVR_Logout failed, error code= " + iLastErr;
+                MessageBox.Show(str);
+                return;
+            }
+            m_lUserID = -1;
+
+            CloseSerialPort();
+
+            MessageBox.Show("登出成功!");
+            loginButton.Text = "登入";
+
         }
 
         public void cbLoginCallBack(int lUserID, int dwResult, IntPtr lpDeviceInfo, IntPtr pUser)
@@ -151,7 +199,7 @@ namespace TowerMonitor
                 object[] paras = new object[2];
                 paras[0] = strLoginCallBack;
                 paras[1] = lpDeviceInfo;
-                statusLabel.BeginInvoke(new UpdateTextStatusCallback(UpdateClientList), paras);
+                //statusLabel.BeginInvoke(new UpdateTextStatusCallback(UpdateClientList), paras);
             }
             else
             {
@@ -240,5 +288,138 @@ namespace TowerMonitor
             }
 
         }
+
+
+        /* ##################
+         * ##### 陀螺儀 #####
+         * ##################
+         */
+
+        private void ConnectIMU() {
+            string port = "COM3";
+            int baudRate = 115200;
+            OpenSerialPort(port, baudRate);
+        }
+
+        private bool OpenSerialPort(string port, int baudRate)
+        {
+            // Open serial port
+            CloseSerialPort();
+            try
+            {
+
+                serialPort = new SerialPort(port, baudRate, Parity.None, 8, StopBits.One);
+                serialPort.DataReceived += new SerialDataReceivedEventHandler(IMUDataReceived);
+                serialPort.Open();
+
+                string projectName = Assembly.GetExecutingAssembly().GetName().Name;
+                string projectVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+                string showString = projectName + " (" + port.Replace("\0", "") + ", " + baudRate.ToString() + ")" + " V" + projectVersion;
+
+                Debug.WriteLine("Info: " + showString);
+
+                //MessageBox.Show(showString, "Error");
+                //this.Text = Assembly.GetExecutingAssembly().GetName().Name + " (" + Name.Replace("\0", "") + ", " + Baudrate.ToString() + ")" + " V" + Assembly.GetExecutingAssembly().GetName().Version;
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                return false;
+            }
+        }
+
+        /// serialPort DataReceived event to print characters to terminal and process bytes through serialDecoder.
+        private void IMUDataReceived(object sender, SerialDataReceivedEventArgs e)
+        {
+            // Get bytes from serial port
+            if (serialPort.IsOpen)
+            {
+
+                int bytesToRead = serialPort.BytesToRead;
+                byte[] readBuffer = new byte[bytesToRead];
+                //Debug.WriteLine("bytesToRead=" + bytesToRead.ToString());
+                //Debug.WriteLine("#####################");
+                //Debug.WriteLine("readBuffer=" + readBuffer.ToString());
+
+                if (serialPort.IsOpen)
+                {
+                    serialPort.Read(readBuffer, 0, bytesToRead);
+                }
+
+                m_connection.Input(readBuffer);
+                KbootDecoder.Input(readBuffer);
+
+
+            }
+        }
+
+        // 陀螺儀-送訊息
+        public bool SendSerialPort(byte[] buffer, int offset, int count)
+        {
+            bool ret = true;
+            try
+            {
+                Debug.WriteLine("send");
+                serialPort.Write(buffer, offset, count);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                ret = false;
+                return ret;
+            }
+            return ret;
+        }
+
+
+        //  陀螺儀-回傳訊息
+        private void OnKbootDecoderDataReceived(object sender, byte[] buf, int len)
+        {
+            device_data = IMUData.Decode(buf, len);
+            //Debug.WriteLine("device_data=" + device_data.ToString());
+
+            // Eul(RPY) 陀螺儀
+            string eul = "旋轉 Y 軸 eul[0]: " + device_data.SingleNode.Eul[0] + Environment.NewLine;
+            eul += "旋轉 X 軸 eul[1]: " + device_data.SingleNode.Eul[1] + "\r\n";
+            eul += "旋轉 Z 軸 eul[2]: " + device_data.SingleNode.Eul[2];
+
+            //Debug.WriteLine(eul);
+            //Debug.WriteLine("================");
+
+
+            if (serialPort.IsOpen)
+            {
+                yTextBox.Text = device_data.SingleNode.Eul[0].ToString();
+                xTextBox.Text = device_data.SingleNode.Eul[1].ToString();
+                zTextBox.Text = device_data.SingleNode.Eul[2].ToString();
+                //this.showDataTextBox.Text = eul;
+            }
+            
+
+        }
+
+        // 斷線
+        private void CloseSerialPort()
+        {
+
+            try
+            {
+                serialPort.Close();
+                xTextBox.Text = "";
+                yTextBox.Text = "";
+                zTextBox.Text = "";
+                Debug.WriteLine("== SerialPort Close ==");
+
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception=" + e.ToString());
+                // do nothing
+            }
+
+        }
+
     }
 }
