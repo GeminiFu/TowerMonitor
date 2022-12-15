@@ -289,6 +289,174 @@ namespace TowerMonitor
 
         }
 
+        /* #################
+         * ##### 左鍵 ######
+         * #################
+         */
+        private void OnLeftMouseDown(object sender, MouseEventArgs e)
+        {
+            if (m_lRealHandle >= 0)
+            {
+                CHCNetSDK.NET_DVR_PTZControlWithSpeed(m_lRealHandle, CHCNetSDK.PAN_LEFT, PTZ_MOVING, PTZ_SPEED);
+            }
+            else
+            {
+                CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.PAN_LEFT, PTZ_MOVING, PTZ_SPEED);
+            }
+        }
+
+        private void OnLeftMouseUp(object sender, MouseEventArgs e)
+        {
+            if (m_lRealHandle >= 0)
+            {
+                CHCNetSDK.NET_DVR_PTZControlWithSpeed(m_lRealHandle, CHCNetSDK.PAN_LEFT, PTZ_STOP, PTZ_SPEED);
+            }
+            else
+            {
+                CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.PAN_LEFT, PTZ_STOP, PTZ_SPEED);
+            }
+        }
+
+        /* #################
+         * ##### 右鍵 ######
+         * #################
+         */
+        private void OnRightMouseDown(object sender, MouseEventArgs e)
+        {
+            if (m_lRealHandle >= 0) // 有取得預覽接口
+            {
+                CHCNetSDK.NET_DVR_PTZControlWithSpeed(m_lRealHandle, CHCNetSDK.PAN_RIGHT, PTZ_MOVING, PTZ_SPEED);
+            }
+            else
+            {
+                CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.PAN_RIGHT, PTZ_MOVING, PTZ_SPEED);
+            }
+
+        }
+
+        private void OnRightMouseUp(object sender, MouseEventArgs e)
+        {
+            if (m_lRealHandle >= 0) // 有取得預覽接口
+            {
+                CHCNetSDK.NET_DVR_PTZControlWithSpeed(m_lRealHandle, CHCNetSDK.PAN_RIGHT, PTZ_STOP, PTZ_SPEED);
+            }
+            else
+            {
+                CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.PAN_RIGHT, PTZ_STOP, PTZ_SPEED);
+            }
+        }
+
+        /* #################
+         * ##### 前鍵 ######
+         * #################
+         */
+        private void OnFrontouseDown(object sender, MouseEventArgs e)
+        {
+            if (m_lRealHandle >= 0) // 有取得預覽接口
+            {
+                CHCNetSDK.NET_DVR_PTZControlWithSpeed(m_lRealHandle, CHCNetSDK.TILT_UP, PTZ_MOVING, PTZ_SPEED);
+            }
+            else
+            {
+                CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.TILT_UP, PTZ_MOVING, PTZ_SPEED);
+            }
+        }
+
+        private void OnFrontMouseUp(object sender, MouseEventArgs e)
+        {
+            if (m_lRealHandle >= 0) // 有取得預覽接口
+            {
+                CHCNetSDK.NET_DVR_PTZControlWithSpeed(m_lRealHandle, CHCNetSDK.TILT_UP, PTZ_STOP, PTZ_SPEED);
+            }
+            else
+            {
+                CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.TILT_UP, PTZ_STOP, PTZ_SPEED);
+            }
+        }
+
+        /* #################
+         * ##### 後鍵 ######
+         * #################
+         */
+        private void OnBackMouseDown(object sender, MouseEventArgs e)
+        {
+            if (m_lRealHandle >= 0) // 有取得預覽接口
+            {
+                CHCNetSDK.NET_DVR_PTZControlWithSpeed(m_lRealHandle, CHCNetSDK.TILT_DOWN, PTZ_MOVING, PTZ_SPEED);
+            }
+            else
+            {
+                CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.TILT_DOWN, PTZ_MOVING, PTZ_SPEED);
+            }
+        }
+
+        private void OnBackMouseUp(object sender, MouseEventArgs e)
+        {
+            if (m_lRealHandle >= 0) // 有取得預覽接口
+            {
+                CHCNetSDK.NET_DVR_PTZControlWithSpeed(m_lRealHandle, CHCNetSDK.TILT_DOWN, PTZ_STOP, PTZ_SPEED);
+            }
+            else
+            {
+                CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.TILT_DOWN, PTZ_STOP, PTZ_SPEED);
+            }
+        }
+
+        /* #################
+         * ##### 放大 ######
+         * #################
+         */
+        private void OnZoomInMouseDown(object sender, MouseEventArgs e)
+        {
+            if (m_lRealHandle >= 0) // 有取得預覽接口
+            {
+                CHCNetSDK.NET_DVR_PTZControlWithSpeed(m_lRealHandle, CHCNetSDK.ZOOM_IN, PTZ_MOVING, PTZ_SPEED);
+            }
+            else
+            {
+                CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.ZOOM_IN, PTZ_MOVING, PTZ_SPEED);
+            }
+        }
+
+        private void OnZoomInMouseUp(object sender, MouseEventArgs e)
+        {
+            if (m_lRealHandle >= 0) // 有取得預覽接口
+            {
+                CHCNetSDK.NET_DVR_PTZControlWithSpeed(m_lRealHandle, CHCNetSDK.ZOOM_IN, PTZ_STOP, PTZ_SPEED);
+            }
+            else
+            {
+                CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.ZOOM_IN, PTZ_STOP, PTZ_SPEED);
+            }
+        }
+
+        /* #################
+         * ##### 縮小 ######
+         * #################
+         */
+        private void OnZoomOutMouseDown(object sender, MouseEventArgs e)
+        {
+            if (m_lRealHandle >= 0) // 有取得預覽接口
+            {
+                CHCNetSDK.NET_DVR_PTZControlWithSpeed(m_lRealHandle, CHCNetSDK.ZOOM_OUT, PTZ_MOVING, PTZ_SPEED);
+            }
+            else
+            {
+                CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.ZOOM_OUT, PTZ_MOVING, PTZ_SPEED);
+            }
+        }
+
+        private void OnZoomOutMouseUp(object sender, MouseEventArgs e)
+        {
+            if (m_lRealHandle >= 0) // 有取得預覽接口
+            {
+                CHCNetSDK.NET_DVR_PTZControlWithSpeed(m_lRealHandle, CHCNetSDK.ZOOM_OUT, PTZ_STOP, PTZ_SPEED);
+            }
+            else
+            {
+                CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.ZOOM_OUT, PTZ_STOP, PTZ_SPEED);
+            }
+        }
 
         /* ##################
          * ##### 陀螺儀 #####
@@ -420,6 +588,8 @@ namespace TowerMonitor
             }
 
         }
+
+
 
     }
 }
