@@ -11,6 +11,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TowerMonitor.IMU;
@@ -22,6 +23,7 @@ namespace TowerMonitor
 {
     public partial class Form1 : Form
     {
+
         // 海康威視
         public uint PTZ_MOVING = 0;         // 雲台移動
         public uint PTZ_STOP = 1;           // 雲台停止
@@ -34,6 +36,8 @@ namespace TowerMonitor
         private string str;
         private bool isAuto = false;        // 雲台自動移動
 
+        private int AUTO_MOVE_TIME = 500;   // 自動移動時間(ms)
+
         CHCNetSDK.LOGINRESULTCALLBACK loginCallBack = null;
         CHCNetSDK.NET_DVR_USER_LOGIN_INFO struLogInfo;
         CHCNetSDK.NET_DVR_DEVICEINFO_V40 DeviceInfo;
@@ -45,6 +49,11 @@ namespace TowerMonitor
         private SerialPort serialPort = new SerialPort();
         private Connection m_connection = new Connection();
         private KbootPacketDecoder KbootDecoder = new KbootPacketDecoder();
+
+        private int xBefore = 0;    // 舊x旋轉角度
+        private int xNow = 0;       // 目前取得x旋轉角度
+        private int dx = 5;         // x旋轉變化角度
+
 
         public Form1()
         {
@@ -83,6 +92,8 @@ namespace TowerMonitor
 
         private void OnFormClosing(object sender, FormClosingEventArgs e)
         {
+            StopPreview();
+            DoDVRLogout();
             CloseSerialPort();
         }
 
@@ -166,17 +177,12 @@ namespace TowerMonitor
             //}
 
             StopPreview();
-
-            if (!CHCNetSDK.NET_DVR_Logout(m_lUserID))
-            {
-                iLastErr = CHCNetSDK.NET_DVR_GetLastError();
-                str = "NET_DVR_Logout failed, error code= " + iLastErr;
-                MessageBox.Show(str);
-                return;
-            }
-            m_lUserID = -1;
-
+            DoDVRLogout();
             CloseSerialPort();
+            if (m_bInitSDK == true)
+            {
+                CHCNetSDK.NET_DVR_Cleanup();
+            }
 
             MessageBox.Show("登出成功!");
             loginButton.Text = "登入";
@@ -289,6 +295,21 @@ namespace TowerMonitor
 
         }
 
+        private void DoDVRLogout() {
+            if (m_lUserID==-1) {
+                return;
+            }
+            
+            if (!CHCNetSDK.NET_DVR_Logout(m_lUserID))
+            {
+                iLastErr = CHCNetSDK.NET_DVR_GetLastError();
+                str = "NET_DVR_Logout failed, error code= " + iLastErr;
+                MessageBox.Show(str);
+                return;
+            }
+            m_lUserID = -1;
+        }
+        
         /* #################
          * ##### 左鍵 ######
          * #################
@@ -458,6 +479,41 @@ namespace TowerMonitor
             }
         }
 
+        
+
+        private void AutoMoveFront() {
+            if (m_lRealHandle >= 0) // 有取得預覽接口
+            {
+                CHCNetSDK.NET_DVR_PTZControlWithSpeed(m_lRealHandle, CHCNetSDK.TILT_UP, PTZ_MOVING, PTZ_SPEED);
+                Thread.Sleep(AUTO_MOVE_TIME);
+                CHCNetSDK.NET_DVR_PTZControlWithSpeed(m_lRealHandle, CHCNetSDK.TILT_UP, PTZ_STOP, PTZ_SPEED);
+
+            }
+            else
+            {
+                CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.TILT_UP, PTZ_MOVING, PTZ_SPEED);
+                Thread.Sleep(AUTO_MOVE_TIME);
+                CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.TILT_UP, PTZ_STOP, PTZ_SPEED);
+            }
+        }
+
+        private void AutoMoveBack()
+        {
+            if (m_lRealHandle >= 0) // 有取得預覽接口
+            {
+                CHCNetSDK.NET_DVR_PTZControlWithSpeed(m_lRealHandle, CHCNetSDK.TILT_DOWN, PTZ_MOVING, PTZ_SPEED);
+                Thread.Sleep(AUTO_MOVE_TIME);
+                CHCNetSDK.NET_DVR_PTZControlWithSpeed(m_lRealHandle, CHCNetSDK.TILT_DOWN, PTZ_STOP, PTZ_SPEED);
+
+            }
+            else
+            {
+                CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.TILT_DOWN, PTZ_MOVING, PTZ_SPEED);
+                Thread.Sleep(AUTO_MOVE_TIME);
+                CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.TILT_DOWN, PTZ_STOP, PTZ_SPEED);
+            }
+        }
+
         /* ##################
          * ##### 陀螺儀 #####
          * ##################
@@ -549,19 +605,57 @@ namespace TowerMonitor
             //Debug.WriteLine("device_data=" + device_data.ToString());
 
             // Eul(RPY) 陀螺儀
-            string eul = "旋轉 Y 軸 eul[0]: " + device_data.SingleNode.Eul[0] + Environment.NewLine;
-            eul += "旋轉 X 軸 eul[1]: " + device_data.SingleNode.Eul[1] + "\r\n";
-            eul += "旋轉 Z 軸 eul[2]: " + device_data.SingleNode.Eul[2];
-
+            //string eul = "旋轉 Y 軸 eul[0]: " + device_data.SingleNode.Eul[0] + Environment.NewLine;
+            //eul += "旋轉 X 軸 eul[1]: " + device_data.SingleNode.Eul[1] + "\r\n";
+            //eul += "旋轉 Z 軸 eul[2]: " + device_data.SingleNode.Eul[2];
             //Debug.WriteLine(eul);
             //Debug.WriteLine("================");
 
 
             if (serialPort.IsOpen)
             {
-                yTextBox.Text = device_data.SingleNode.Eul[0].ToString();
-                xTextBox.Text = device_data.SingleNode.Eul[1].ToString();
-                zTextBox.Text = device_data.SingleNode.Eul[2].ToString();
+                xNow = Convert.ToInt32(device_data.SingleNode.Eul[1]);
+
+                //Console.WriteLine("xNow=" + xNow);
+                //Console.WriteLine("xBefore=" + xBefore);
+
+                if (xBefore!=xNow) {
+                    if (xNow > 0)   // 高於平面
+                    {
+                        if (xNow - dx > xBefore)
+                        {
+                            AutoMoveBack();
+                            xBefore = xNow;
+                        }
+                        else if (xBefore - dx > xNow)
+                        {
+                            AutoMoveFront();
+                            xBefore = xNow;
+                        }
+                    }
+                    else    // 低於平面
+                    {
+
+                        if (xNow + dx < xBefore)
+                        {
+                            AutoMoveFront();
+                            xBefore = xNow;
+                        }
+                        else if (xBefore + dx > xNow)
+                        {
+                            AutoMoveBack();
+                            xBefore = xNow;
+                        }
+                    }
+
+                }// End if
+               
+
+               
+
+                yTextBox.Text = Convert.ToInt32(device_data.SingleNode.Eul[0]).ToString();
+                xTextBox.Text = xNow.ToString();
+                zTextBox.Text = Convert.ToInt32(device_data.SingleNode.Eul[2]).ToString();
                 //this.showDataTextBox.Text = eul;
             }
             
@@ -578,12 +672,12 @@ namespace TowerMonitor
                 xTextBox.Text = "";
                 yTextBox.Text = "";
                 zTextBox.Text = "";
-                Debug.WriteLine("== SerialPort Close ==");
+                //Debug.WriteLine("== SerialPort Close ==");
 
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Exception=" + e.ToString());
+                //Debug.WriteLine("Exception=" + e.ToString());
                 // do nothing
             }
 
