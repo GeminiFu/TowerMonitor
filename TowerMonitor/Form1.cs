@@ -92,9 +92,14 @@ namespace TowerMonitor
 
         private void OnFormClosing(object sender, FormClosingEventArgs e)
         {
-            StopPreview();
-            DoDVRLogout();
+
+            // 關閉監視器
+            CloseHikvision();
+           
+
+            // 關閉IMU
             CloseSerialPort();
+
         }
 
         private void OnLoginClick(object sender, EventArgs e)
@@ -115,6 +120,21 @@ namespace TowerMonitor
                 DoLogout();
             }
             return;
+        }
+
+        private void CloseHikvision() {
+            if (m_lRealHandle >= 0)
+            {
+                CHCNetSDK.NET_DVR_StopRealPlay(m_lRealHandle);
+            }
+            if (m_lUserID >= 0)
+            {
+                CHCNetSDK.NET_DVR_Logout(m_lUserID);
+            }
+            if (m_bInitSDK == true)
+            {
+                CHCNetSDK.NET_DVR_Cleanup();
+            }
         }
 
         private void DoLogin() {
@@ -479,7 +499,11 @@ namespace TowerMonitor
             }
         }
 
-        
+
+        /* ##########################
+         * ##### 往前移動/停止 ######
+         * ##########################
+         */
 
         private void AutoMoveFront() {
             if (m_lRealHandle >= 0) // 有取得預覽接口
@@ -497,6 +521,10 @@ namespace TowerMonitor
             }
         }
 
+        /* ##########################
+         * ##### 往後移動/停止 ######
+         * ##########################
+         */
         private void AutoMoveBack()
         {
             if (m_lRealHandle >= 0) // 有取得預覽接口
@@ -531,7 +559,6 @@ namespace TowerMonitor
             CloseSerialPort();
             try
             {
-
                 serialPort = new SerialPort(port, baudRate, Parity.None, 8, StopBits.One);
                 serialPort.DataReceived += new SerialDataReceivedEventHandler(IMUDataReceived);
                 serialPort.Open();
@@ -585,7 +612,7 @@ namespace TowerMonitor
             bool ret = true;
             try
             {
-                Debug.WriteLine("send");
+                //Debug.WriteLine("send");
                 serialPort.Write(buffer, offset, count);
             }
             catch (Exception e)
@@ -596,8 +623,7 @@ namespace TowerMonitor
             }
             return ret;
         }
-
-
+        
         //  陀螺儀-回傳訊息
         private void OnKbootDecoderDataReceived(object sender, byte[] buf, int len)
         {
@@ -614,45 +640,27 @@ namespace TowerMonitor
 
             if (serialPort.IsOpen)
             {
+
                 xNow = Convert.ToInt32(device_data.SingleNode.Eul[1]);
 
-                //Console.WriteLine("xNow=" + xNow);
-                //Console.WriteLine("xBefore=" + xBefore);
+                if (Math.Abs(xNow - xBefore) >= dx) {
+                    //Console.WriteLine("xNow=" + xNow);
+                    //Console.WriteLine("xBefore=" + xBefore);
 
-                if (xBefore!=xNow) {
-                    if (xNow > 0)   // 高於平面
-                    {
-                        if (xNow - dx > xBefore)
-                        {
-                            AutoMoveBack();
-                            xBefore = xNow;
-                        }
-                        else if (xBefore - dx > xNow)
-                        {
-                            AutoMoveFront();
-                            xBefore = xNow;
-                        }
+                    if (xNow > xBefore)  // 往上升
+                    {  
+                        //Console.WriteLine("往上升");
+                        AutoMoveBack();
                     }
-                    else    // 低於平面
-                    {
-
-                        if (xNow + dx < xBefore)
-                        {
-                            AutoMoveFront();
-                            xBefore = xNow;
-                        }
-                        else if (xBefore + dx > xNow)
-                        {
-                            AutoMoveBack();
-                            xBefore = xNow;
-                        }
+                    else   // 往下降
+                    {    
+                        //Console.WriteLine("往下降");
+                        AutoMoveFront();                       
                     }
 
-                }// End if
-               
-
-               
-
+                    xBefore = xNow;
+                }
+                
                 yTextBox.Text = Convert.ToInt32(device_data.SingleNode.Eul[0]).ToString();
                 xTextBox.Text = xNow.ToString();
                 zTextBox.Text = Convert.ToInt32(device_data.SingleNode.Eul[2]).ToString();
