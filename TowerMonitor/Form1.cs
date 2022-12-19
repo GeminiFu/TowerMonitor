@@ -23,6 +23,7 @@ namespace TowerMonitor
 {
     public partial class Form1 : Form
     {
+        private int hasInit = 0; // 是否完成初始化鏡頭 1: 完成 0:未完成
 
         // 海康威視
         public uint PTZ_MOVING = 0;         // 雲台移動
@@ -35,6 +36,11 @@ namespace TowerMonitor
         private Int32 m_lUserID = -1;       // User ID
         private string str;
         private bool isAuto = false;        // 雲台自動移動
+        private ushort SET_P_T_Z_PARAM = 1;
+        private ushort SET_P_PARAM = 2;
+        private ushort SET_T_PARAM = 3;
+        private ushort SET_Z_PARAM = 4;
+        private ushort SET_P_T_PARAM = 5;
 
         private int AUTO_MOVE_TIME = 500;   // 自動移動時間(ms)
 
@@ -54,6 +60,7 @@ namespace TowerMonitor
         private int xNow = 0;       // 目前取得x旋轉角度
         private int dx = 5;         // x旋轉變化角度
 
+        public CHCNetSDK.NET_DVR_PTZPOS m_struPtzCfg;
 
         public Form1()
         {
@@ -184,6 +191,7 @@ namespace TowerMonitor
                 loginButton.Text = "登出";
                 StartPreview();
                 ConnectIMU();
+                hasInit = 0;
             }
 
         }
@@ -199,10 +207,6 @@ namespace TowerMonitor
             StopPreview();
             DoDVRLogout();
             CloseSerialPort();
-            if (m_bInitSDK == true)
-            {
-                CHCNetSDK.NET_DVR_Cleanup();
-            }
 
             MessageBox.Show("登出成功!");
             loginButton.Text = "登入";
@@ -356,6 +360,8 @@ namespace TowerMonitor
             {
                 CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.PAN_LEFT, PTZ_STOP, PTZ_SPEED);
             }
+
+            ShowPTZParam();
         }
 
         /* #################
@@ -385,13 +391,15 @@ namespace TowerMonitor
             {
                 CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.PAN_RIGHT, PTZ_STOP, PTZ_SPEED);
             }
+
+            ShowPTZParam();
         }
 
         /* #################
-         * ##### 前鍵 ######
+         * ##### 上鍵 ######
          * #################
          */
-        private void OnFrontouseDown(object sender, MouseEventArgs e)
+        private void OnUpMouseDown(object sender, MouseEventArgs e)
         {
             if (m_lRealHandle >= 0) // 有取得預覽接口
             {
@@ -403,7 +411,7 @@ namespace TowerMonitor
             }
         }
 
-        private void OnFrontMouseUp(object sender, MouseEventArgs e)
+        private void OnUpMouseUp(object sender, MouseEventArgs e)
         {
             if (m_lRealHandle >= 0) // 有取得預覽接口
             {
@@ -413,13 +421,16 @@ namespace TowerMonitor
             {
                 CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.TILT_UP, PTZ_STOP, PTZ_SPEED);
             }
+
+            ShowPTZParam();
+
         }
 
         /* #################
-         * ##### 後鍵 ######
+         * ##### 下鍵 ######
          * #################
          */
-        private void OnBackMouseDown(object sender, MouseEventArgs e)
+        private void OnDownMouseDown(object sender, MouseEventArgs e)
         {
             if (m_lRealHandle >= 0) // 有取得預覽接口
             {
@@ -431,7 +442,7 @@ namespace TowerMonitor
             }
         }
 
-        private void OnBackMouseUp(object sender, MouseEventArgs e)
+        private void OnDownMouseUp(object sender, MouseEventArgs e)
         {
             if (m_lRealHandle >= 0) // 有取得預覽接口
             {
@@ -441,6 +452,9 @@ namespace TowerMonitor
             {
                 CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.TILT_DOWN, PTZ_STOP, PTZ_SPEED);
             }
+
+            ShowPTZParam();
+
         }
 
         /* #################
@@ -469,6 +483,9 @@ namespace TowerMonitor
             {
                 CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.ZOOM_IN, PTZ_STOP, PTZ_SPEED);
             }
+
+            ShowPTZParam();
+
         }
 
         /* #################
@@ -497,48 +514,279 @@ namespace TowerMonitor
             {
                 CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.ZOOM_OUT, PTZ_STOP, PTZ_SPEED);
             }
+
+            ShowPTZParam();
+
         }
 
 
-        /* ##########################
-         * ##### 往前移動/停止 ######
-         * ##########################
-         */
-
-        private void AutoMoveFront() {
-            if (m_lRealHandle >= 0) // 有取得預覽接口
+        private void ShowPTZParam() {
+            UInt32 dwReturn = 0;
+            Int32 nSize = Marshal.SizeOf(m_struPtzCfg);
+            IntPtr ptrPtzCfg = Marshal.AllocHGlobal(nSize);
+            Marshal.StructureToPtr(m_struPtzCfg, ptrPtzCfg, false);
+            //获取参数失败
+            if (!CHCNetSDK.NET_DVR_GetDVRConfig(m_lUserID, CHCNetSDK.NET_DVR_GET_PTZPOS, -1, ptrPtzCfg, (UInt32)nSize, ref dwReturn))
             {
-                CHCNetSDK.NET_DVR_PTZControlWithSpeed(m_lRealHandle, CHCNetSDK.TILT_UP, PTZ_MOVING, PTZ_SPEED);
-                Thread.Sleep(AUTO_MOVE_TIME);
-                CHCNetSDK.NET_DVR_PTZControlWithSpeed(m_lRealHandle, CHCNetSDK.TILT_UP, PTZ_STOP, PTZ_SPEED);
-
+                iLastErr = CHCNetSDK.NET_DVR_GetLastError();
+                str = "NET_DVR_GetDVRConfig failed, error code= " + iLastErr;
+                MessageBox.Show(str);
+                return;
             }
             else
             {
-                CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.TILT_UP, PTZ_MOVING, PTZ_SPEED);
-                Thread.Sleep(AUTO_MOVE_TIME);
-                CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.TILT_UP, PTZ_STOP, PTZ_SPEED);
+                m_struPtzCfg = (CHCNetSDK.NET_DVR_PTZPOS)Marshal.PtrToStructure(ptrPtzCfg, typeof(CHCNetSDK.NET_DVR_PTZPOS));
+                //成功获取显示ptz参数
+
+                // 左右角度
+                ushort wPanPos = Convert.ToUInt16(Convert.ToString(m_struPtzCfg.wPanPos, 16));
+                float WPanPos = wPanPos * 0.1f;
+                panPosTextBox.Text = Convert.ToString(WPanPos);
+
+                // 上下角度
+                ushort wTiltPos = Convert.ToUInt16(Convert.ToString(m_struPtzCfg.wTiltPos, 16));
+                float WTiltPos = wTiltPos * 0.1f;
+                tiltPosTextBox.Text = Convert.ToString(WTiltPos);
+
+                // 焦距倍數
+                ushort wZoomPos = Convert.ToUInt16(Convert.ToString(m_struPtzCfg.wZoomPos, 16));
+                float WZoomPos = wZoomPos * 0.1f;
+                zoomPosTextBox.Text = Convert.ToString(WZoomPos);
+             
             }
         }
 
-        /* ##########################
-         * ##### 往後移動/停止 ######
-         * ##########################
-         */
-        private void AutoMoveBack()
+        /* ##### 設定 P, T, Z #####*/
+        private void SetPTZParam(string pParam, string tParam, string zParam) {
+            
+            String str1, str2, str3;
+
+            if (pParam == "" || tParam == "" || zParam == "")
+            {
+                MessageBox.Show("請輸入 P, T, Z 值 ");
+                return;
+            }
+            else
+            {
+               
+                m_struPtzCfg.wAction = SET_P_T_Z_PARAM;               
+
+                // 設定左右角度
+                str1 = Convert.ToString(float.Parse(pParam) * 10);
+                m_struPtzCfg.wPanPos = (ushort)(Convert.ToUInt16(str1, 16));
+
+
+                // 設定上下角度
+                str2 = Convert.ToString(float.Parse(tParam) * 10);
+                m_struPtzCfg.wTiltPos = (ushort)(Convert.ToUInt16(str2, 16));
+
+                // 設定焦距倍數
+                str3 = Convert.ToString(float.Parse(zParam) * 10);
+                m_struPtzCfg.wZoomPos = (ushort)(Convert.ToUInt16(str3, 16));
+              
+
+                // 設定
+                Int32 nSize = Marshal.SizeOf(m_struPtzCfg);
+                IntPtr ptrPtzCfg = Marshal.AllocHGlobal(nSize);
+                Marshal.StructureToPtr(m_struPtzCfg, ptrPtzCfg, false);
+
+                if (!CHCNetSDK.NET_DVR_SetDVRConfig(m_lUserID, CHCNetSDK.NET_DVR_SET_PTZPOS, 1, ptrPtzCfg, (UInt32)nSize))
+                {
+                    iLastErr = CHCNetSDK.NET_DVR_GetLastError();
+                    str = "NET_DVR_SetDVRConfig failed, error code= " + iLastErr;
+                    //设置POS参数失败
+                    MessageBox.Show(str);
+                    return;
+                }
+                else
+                {
+                    // MessageBox.Show("设置成功!");
+                }
+
+                Marshal.FreeHGlobal(ptrPtzCfg);
+
+            }
+        }
+
+        /* ##### 設定 P #####*/
+        private void SetPParam(string pParam)
         {
-            if (m_lRealHandle >= 0) // 有取得預覽接口
-            {
-                CHCNetSDK.NET_DVR_PTZControlWithSpeed(m_lRealHandle, CHCNetSDK.TILT_DOWN, PTZ_MOVING, PTZ_SPEED);
-                Thread.Sleep(AUTO_MOVE_TIME);
-                CHCNetSDK.NET_DVR_PTZControlWithSpeed(m_lRealHandle, CHCNetSDK.TILT_DOWN, PTZ_STOP, PTZ_SPEED);
 
+            String str1;
+
+            if (pParam == "" )
+            {
+                MessageBox.Show("請輸入 P 值 ");
+                return;
             }
             else
             {
-                CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.TILT_DOWN, PTZ_MOVING, PTZ_SPEED);
-                Thread.Sleep(AUTO_MOVE_TIME);
-                CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.TILT_DOWN, PTZ_STOP, PTZ_SPEED);
+
+                m_struPtzCfg.wAction = SET_P_PARAM;
+
+                // 設定左右角度
+                str1 = Convert.ToString(float.Parse(pParam) * 10);
+                m_struPtzCfg.wPanPos = (ushort)(Convert.ToUInt16(str1, 16));
+
+
+                // 設定
+                Int32 nSize = Marshal.SizeOf(m_struPtzCfg);
+                IntPtr ptrPtzCfg = Marshal.AllocHGlobal(nSize);
+                Marshal.StructureToPtr(m_struPtzCfg, ptrPtzCfg, false);
+
+                if (!CHCNetSDK.NET_DVR_SetDVRConfig(m_lUserID, CHCNetSDK.NET_DVR_SET_PTZPOS, 1, ptrPtzCfg, (UInt32)nSize))
+                {
+                    iLastErr = CHCNetSDK.NET_DVR_GetLastError();
+                    str = "NET_DVR_SetDVRConfig failed, error code= " + iLastErr;
+                    //设置POS参数失败
+                    MessageBox.Show(str);
+                    return;
+                }
+                else
+                {
+                    //MessageBox.Show("设置成功!");
+                }
+
+                Marshal.FreeHGlobal(ptrPtzCfg);
+
+            }
+        }
+
+        /* ##### 設定 T #####*/
+        private void SetTParam(string tParam)
+        {
+
+            String str2;
+
+            if (tParam == "")
+            {
+                MessageBox.Show("請輸入 T 值 ");
+                return;
+            }
+            else
+            {
+
+               m_struPtzCfg.wAction = SET_T_PARAM;
+
+
+                // 設定上下角度
+                str2 = Convert.ToString(float.Parse(tParam) * 10);
+                m_struPtzCfg.wTiltPos = (ushort)(Convert.ToUInt16(str2, 16));
+
+
+                // 設定
+                Int32 nSize = Marshal.SizeOf(m_struPtzCfg);
+                IntPtr ptrPtzCfg = Marshal.AllocHGlobal(nSize);
+                Marshal.StructureToPtr(m_struPtzCfg, ptrPtzCfg, false);
+
+                if (!CHCNetSDK.NET_DVR_SetDVRConfig(m_lUserID, CHCNetSDK.NET_DVR_SET_PTZPOS, 1, ptrPtzCfg, (UInt32)nSize))
+                {
+                    iLastErr = CHCNetSDK.NET_DVR_GetLastError();
+                    str = "NET_DVR_SetDVRConfig failed, error code= " + iLastErr;
+                    //设置POS参数失败
+                    MessageBox.Show(str);
+                    return;
+                }
+                else
+                {
+                    // MessageBox.Show("设置成功!");                   
+                }
+
+                Marshal.FreeHGlobal(ptrPtzCfg);
+
+            }
+        }
+
+        /* ##### 設定 Z #####*/
+        private void SetZParam(string zParam)
+        {
+
+            String str3;
+
+            if (zParam == "")
+            {
+                MessageBox.Show("請輸入 Z 值 ");
+                return;
+            }
+            else
+            {
+              
+                m_struPtzCfg.wAction = SET_Z_PARAM;               
+
+                // 設定焦距倍數
+                str3 = Convert.ToString(float.Parse(zParam) * 10);
+                m_struPtzCfg.wZoomPos = (ushort)(Convert.ToUInt16(str3, 16));
+
+
+                // 設定
+                Int32 nSize = Marshal.SizeOf(m_struPtzCfg);
+                IntPtr ptrPtzCfg = Marshal.AllocHGlobal(nSize);
+                Marshal.StructureToPtr(m_struPtzCfg, ptrPtzCfg, false);
+
+                if (!CHCNetSDK.NET_DVR_SetDVRConfig(m_lUserID, CHCNetSDK.NET_DVR_SET_PTZPOS, 1, ptrPtzCfg, (UInt32)nSize))
+                {
+                    iLastErr = CHCNetSDK.NET_DVR_GetLastError();
+                    str = "NET_DVR_SetDVRConfig failed, error code= " + iLastErr;
+                    //设置POS参数失败
+                    MessageBox.Show(str);
+                    return;
+                }
+                else
+                {
+                    // MessageBox.Show("设置成功!");
+                }
+
+                Marshal.FreeHGlobal(ptrPtzCfg);
+
+            }
+        }
+
+        /* ##### 設定 P, T #####*/
+        private void SetPTParam(string pParam, string tParam)
+        {
+
+            String str1, str2;
+
+            if (pParam == "" || tParam == "")
+            {
+                MessageBox.Show("請輸入 P, T 值 ");
+                return;
+            }
+            else
+            {
+
+                m_struPtzCfg.wAction = SET_P_T_PARAM;
+
+                // 設定左右角度
+                str1 = Convert.ToString(float.Parse(pParam) * 10);
+                m_struPtzCfg.wPanPos = (ushort)(Convert.ToUInt16(str1, 16));
+
+
+                // 設定上下角度
+                str2 = Convert.ToString(float.Parse(tParam) * 10);
+                m_struPtzCfg.wTiltPos = (ushort)(Convert.ToUInt16(str2, 16));
+                
+
+                // 設定
+                Int32 nSize = Marshal.SizeOf(m_struPtzCfg);
+                IntPtr ptrPtzCfg = Marshal.AllocHGlobal(nSize);
+                Marshal.StructureToPtr(m_struPtzCfg, ptrPtzCfg, false);
+
+                if (!CHCNetSDK.NET_DVR_SetDVRConfig(m_lUserID, CHCNetSDK.NET_DVR_SET_PTZPOS, 1, ptrPtzCfg, (UInt32)nSize))
+                {
+                    iLastErr = CHCNetSDK.NET_DVR_GetLastError();
+                    str = "NET_DVR_SetDVRConfig failed, error code= " + iLastErr;
+                    //设置POS参数失败
+                    MessageBox.Show(str);
+                    return;
+                }
+                else
+                {
+                    // MessageBox.Show("设置成功!");
+                }
+
+                Marshal.FreeHGlobal(ptrPtzCfg);
+
             }
         }
 
@@ -640,31 +888,79 @@ namespace TowerMonitor
 
             if (serialPort.IsOpen)
             {
+                xNow = Convert.ToInt16(device_data.SingleNode.Eul[1]);
+                string tValue = (90 - Math.Abs(xNow)).ToString();  // 角度不可為負數
+                string pValue = "0";
 
-                xNow = Convert.ToInt32(device_data.SingleNode.Eul[1]);
+                if (hasInit == 1)
+                { // 已完成鏡頭位置初始化
 
-                if (Math.Abs(xNow - xBefore) >= dx) {
-                    //Console.WriteLine("xNow=" + xNow);
-                    //Console.WriteLine("xBefore=" + xBefore);
+                    if (Math.Abs(xNow - xBefore) >= dx)
+                    {
+                        
+                        if (xNow >= 0)
+                        {
+                            pValue = "0";                            
+                        }
+                        else
+                        {
+                            pValue = "180";
+                           
+                        }
+                        SetPTParam(pValue, tValue);
+                        ShowPTZParam();
+                        xBefore = xNow;
 
-                    if (xNow > xBefore)  // 往上升
-                    {  
-                        //Console.WriteLine("往上升");
-                        AutoMoveBack();
                     }
-                    else   // 往下降
-                    {    
-                        //Console.WriteLine("往下降");
-                        AutoMoveFront();                       
-                    }
 
-                    xBefore = xNow;
                 }
-                
+                else {  // 鏡頭初始化，登入時把鏡頭轉動到目前正確的位置
+
+                    if (xNow >= 0) {
+                        pValue = "0";
+                    }
+                    else {
+                        pValue = "180";
+                    }
+
+                    SetPTParam(pValue, tValue);
+                    hasInit = 1;
+
+                }
+
+ 
+
+                //xNow = decimal.Round(Convert.ToDecimal(device_data.SingleNode.Eul[1]), 1) ;
+
+                //if (xNow >= 0 && xBefore!=xNow) {
+                //    string tValue = xNow.ToString();
+                //    SetTParam(tValue);
+                //    ShowPTZParam();
+                //    xBefore = xNow;
+                //}
+
+                //if (Math.Abs(xNow - xBefore) >= dx) {
+                //    //Console.WriteLine("xNow=" + xNow);
+                //    //Console.WriteLine("xBefore=" + xBefore);
+
+                //    if (xNow > xBefore)  // 往上升
+                //    {  
+                //        //Console.WriteLine("往上升");
+                //        AutoMoveBack();
+                //    }
+                //    else   // 往下降
+                //    {    
+                //        //Console.WriteLine("往下降");
+                //        AutoMoveFront();                       
+                //    }
+
+                //    xBefore = xNow;
+                //}
+
                 yTextBox.Text = Convert.ToInt32(device_data.SingleNode.Eul[0]).ToString();
                 xTextBox.Text = xNow.ToString();
                 zTextBox.Text = Convert.ToInt32(device_data.SingleNode.Eul[2]).ToString();
-                //this.showDataTextBox.Text = eul;
+               
             }
             
 
@@ -690,8 +986,6 @@ namespace TowerMonitor
             }
 
         }
-
-
-
+      
     }
 }
