@@ -62,6 +62,7 @@
             this.portLabel = new System.Windows.Forms.Label();
             this.ipTextBox = new System.Windows.Forms.TextBox();
             this.ipLabel = new System.Windows.Forms.Label();
+            this.getPTZButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -81,6 +82,7 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.getPTZButton);
             this.splitContainer1.Panel2.Controls.Add(this.zoomPosTextBox);
             this.splitContainer1.Panel2.Controls.Add(this.label8);
             this.splitContainer1.Panel2.Controls.Add(this.tiltPosTextBox);
@@ -132,7 +134,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.zoomPosTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.zoomPosTextBox.Location = new System.Drawing.Point(232, 458);
+            this.zoomPosTextBox.Location = new System.Drawing.Point(190, 458);
             this.zoomPosTextBox.Name = "zoomPosTextBox";
             this.zoomPosTextBox.Size = new System.Drawing.Size(45, 27);
             this.zoomPosTextBox.TabIndex = 32;
@@ -143,7 +145,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label8.Location = new System.Drawing.Point(201, 464);
+            this.label8.Location = new System.Drawing.Point(159, 464);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(24, 16);
             this.label8.TabIndex = 31;
@@ -155,7 +157,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tiltPosTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tiltPosTextBox.Location = new System.Drawing.Point(151, 458);
+            this.tiltPosTextBox.Location = new System.Drawing.Point(109, 458);
             this.tiltPosTextBox.Name = "tiltPosTextBox";
             this.tiltPosTextBox.Size = new System.Drawing.Size(45, 27);
             this.tiltPosTextBox.TabIndex = 30;
@@ -166,7 +168,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label9.Location = new System.Drawing.Point(121, 464);
+            this.label9.Location = new System.Drawing.Point(79, 464);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(24, 16);
             this.label9.TabIndex = 29;
@@ -178,7 +180,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panPosTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.panPosTextBox.Location = new System.Drawing.Point(70, 458);
+            this.panPosTextBox.Location = new System.Drawing.Point(28, 458);
             this.panPosTextBox.Name = "panPosTextBox";
             this.panPosTextBox.Size = new System.Drawing.Size(45, 27);
             this.panPosTextBox.TabIndex = 28;
@@ -189,7 +191,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label10.Location = new System.Drawing.Point(49, 464);
+            this.label10.Location = new System.Drawing.Point(7, 464);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(23, 16);
             this.label10.TabIndex = 27;
@@ -225,10 +227,11 @@
             // 
             // rightButton
             // 
-            this.rightButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.rightButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.rightButton.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.rightButton.Location = new System.Drawing.Point(201, 341);
+            this.rightButton.Location = new System.Drawing.Point(210, 341);
             this.rightButton.Name = "rightButton";
             this.rightButton.Size = new System.Drawing.Size(61, 27);
             this.rightButton.TabIndex = 24;
@@ -239,7 +242,8 @@
             // 
             // leftButton
             // 
-            this.leftButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.leftButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.leftButton.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.leftButton.Location = new System.Drawing.Point(66, 341);
@@ -267,7 +271,8 @@
             // 
             // upButton
             // 
-            this.upButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.upButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.upButton.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.upButton.Location = new System.Drawing.Point(131, 309);
@@ -281,6 +286,8 @@
             // 
             // autonCheckBox
             // 
+            this.autonCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.autonCheckBox.AutoSize = true;
             this.autonCheckBox.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.autonCheckBox.Location = new System.Drawing.Point(28, 235);
@@ -403,10 +410,11 @@
             // 
             // loginButton
             // 
-            this.loginButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.loginButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.loginButton.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.loginButton.Location = new System.Drawing.Point(28, 266);
+            this.loginButton.Location = new System.Drawing.Point(28, 275);
             this.loginButton.Name = "loginButton";
             this.loginButton.Size = new System.Drawing.Size(264, 28);
             this.loginButton.TabIndex = 8;
@@ -509,6 +517,19 @@
             this.ipLabel.TabIndex = 0;
             this.ipLabel.Text = "IP:";
             // 
+            // getPTZButton
+            // 
+            this.getPTZButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.getPTZButton.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.getPTZButton.Location = new System.Drawing.Point(244, 459);
+            this.getPTZButton.Name = "getPTZButton";
+            this.getPTZButton.Size = new System.Drawing.Size(61, 27);
+            this.getPTZButton.TabIndex = 33;
+            this.getPTZButton.Text = "取得";
+            this.getPTZButton.UseVisualStyleBackColor = true;
+            this.getPTZButton.Click += new System.EventHandler(this.OnGetPTZButtonClick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -565,6 +586,7 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox panPosTextBox;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Button getPTZButton;
     }
 }
 

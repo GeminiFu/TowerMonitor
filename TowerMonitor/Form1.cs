@@ -23,7 +23,7 @@ namespace TowerMonitor
 {
     public partial class Form1 : Form
     {
-        private int hasInit = 0; // 是否完成初始化鏡頭 1: 完成 0:未完成
+        private int hasInitCamera = 0;      // 是否完成初始化鏡頭 1: 完成 0:未完成
 
         // 海康威視
         public uint PTZ_MOVING = 0;         // 雲台移動
@@ -191,7 +191,7 @@ namespace TowerMonitor
                 loginButton.Text = "登出";
                 StartPreview();
                 ConnectIMU();
-                hasInit = 0;
+                hasInitCamera = 0;
             }
 
         }
@@ -244,6 +244,12 @@ namespace TowerMonitor
             //列表新增报警信息
             //statusLabel.Text = "登入狀態: " + strLogStatus;
         }
+
+        private void OnGetPTZButtonClick(object sender, EventArgs e)
+        {
+            ShowPTZParam();
+        }
+
 
         private void StartPreview() {
             if (m_lRealHandle < 0)
@@ -361,7 +367,6 @@ namespace TowerMonitor
                 CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.PAN_LEFT, PTZ_STOP, PTZ_SPEED);
             }
 
-            ShowPTZParam();
         }
 
         /* #################
@@ -392,7 +397,6 @@ namespace TowerMonitor
                 CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.PAN_RIGHT, PTZ_STOP, PTZ_SPEED);
             }
 
-            ShowPTZParam();
         }
 
         /* #################
@@ -421,8 +425,6 @@ namespace TowerMonitor
             {
                 CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.TILT_UP, PTZ_STOP, PTZ_SPEED);
             }
-
-            ShowPTZParam();
 
         }
 
@@ -453,8 +455,6 @@ namespace TowerMonitor
                 CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.TILT_DOWN, PTZ_STOP, PTZ_SPEED);
             }
 
-            ShowPTZParam();
-
         }
 
         /* #################
@@ -484,8 +484,6 @@ namespace TowerMonitor
                 CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.ZOOM_IN, PTZ_STOP, PTZ_SPEED);
             }
 
-            ShowPTZParam();
-
         }
 
         /* #################
@@ -514,8 +512,6 @@ namespace TowerMonitor
             {
                 CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.ZOOM_OUT, PTZ_STOP, PTZ_SPEED);
             }
-
-            ShowPTZParam();
 
         }
 
@@ -552,7 +548,7 @@ namespace TowerMonitor
                 ushort wZoomPos = Convert.ToUInt16(Convert.ToString(m_struPtzCfg.wZoomPos, 16));
                 float WZoomPos = wZoomPos * 0.1f;
                 zoomPosTextBox.Text = Convert.ToString(WZoomPos);
-             
+
             }
         }
 
@@ -892,7 +888,7 @@ namespace TowerMonitor
                 string tValue = (90 - Math.Abs(xNow)).ToString();  // 角度不可為負數
                 string pValue = "0";
 
-                if (hasInit == 1)
+                if (hasInitCamera == 1)
                 { // 已完成鏡頭位置初始化
 
                     if (Math.Abs(xNow - xBefore) >= dx)
@@ -908,9 +904,8 @@ namespace TowerMonitor
                            
                         }
                         SetPTParam(pValue, tValue);
-                        ShowPTZParam();
-                        xBefore = xNow;
-
+                        
+                        xBefore = xNow;                       
                     }
 
                 }
@@ -924,11 +919,9 @@ namespace TowerMonitor
                     }
 
                     SetPTParam(pValue, tValue);
-                    hasInit = 1;
+                    hasInitCamera = 1;
 
                 }
-
- 
 
                 //xNow = decimal.Round(Convert.ToDecimal(device_data.SingleNode.Eul[1]), 1) ;
 
@@ -986,6 +979,5 @@ namespace TowerMonitor
             }
 
         }
-      
     }
 }
