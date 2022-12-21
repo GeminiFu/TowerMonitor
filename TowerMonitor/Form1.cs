@@ -147,7 +147,7 @@ namespace TowerMonitor
         }
 
         private void StopSettingPTZ() { 
-            isSettingPTZRunning = false;
+            isSettingPTZRunning = false;          
         }
 
         private void SettingPTZTask()
@@ -171,11 +171,7 @@ namespace TowerMonitor
                         tValue = (tInitValue + dx).ToString("0.0");
                     }
 
-                    if (Convert.ToSingle(tValue) > 90)
-                    {
-                        tValue = "90";
-                    }
-                    else if (Convert.ToSingle(tValue) <0)
+                    if (Convert.ToSingle(tValue) <0)
                     {
                         tValue = "0";
                     }
@@ -186,7 +182,8 @@ namespace TowerMonitor
                     xTextBox.Text = xNow.ToString();
                     zTextBox.Text = zNow.ToString();
 
-                    ShowPTZParam();               
+                    ShowPTZParam();
+                              
 
                 }// End if
 
@@ -292,11 +289,10 @@ namespace TowerMonitor
             //    MessageBox.Show("請先停止畫面預覽");
             //    return;
             //}
-
+            StopSettingPTZ();
             StopPreview();
             DoDVRLogout();
             CloseSerialPort();
-            StopSettingPTZ();
             MessageBox.Show("登出成功!");
             loginButton.Text = "登入";
 
@@ -422,6 +418,10 @@ namespace TowerMonitor
                 return;
             }
             m_lUserID = -1;
+
+            panPosTextBox.Text = "";
+            tiltPosTextBox.Text = "";
+            zoomPosTextBox.Text = "";
         }
         
         // ##### 左 (Start) ######  
@@ -660,102 +660,7 @@ namespace TowerMonitor
             }
         }
 
-        /* ##### 設定 P, T, Z #####*/
-        private void SetPTZParam(string pParam, string tParam, string zParam) {
-            
-            String str1, str2, str3;
-
-            if (pParam == "" || tParam == "" || zParam == "")
-            {
-                MessageBox.Show("請輸入 P, T, Z 值 ");
-                return;
-            }
-            else
-            {
-               
-                m_struPtzCfg.wAction = SET_P_T_Z_PARAM;               
-
-                // 設定左右角度
-                str1 = Convert.ToString(float.Parse(pParam) * 10);
-                m_struPtzCfg.wPanPos = (ushort)(Convert.ToUInt16(str1, 16));
-
-
-                // 設定上下角度
-                str2 = Convert.ToString(float.Parse(tParam) * 10);
-                m_struPtzCfg.wTiltPos = (ushort)(Convert.ToUInt16(str2, 16));
-
-                // 設定焦距倍數
-                str3 = Convert.ToString(float.Parse(zParam) * 10);
-                m_struPtzCfg.wZoomPos = (ushort)(Convert.ToUInt16(str3, 16));
-              
-
-                // 設定
-                Int32 nSize = Marshal.SizeOf(m_struPtzCfg);
-                IntPtr ptrPtzCfg = Marshal.AllocHGlobal(nSize);
-                Marshal.StructureToPtr(m_struPtzCfg, ptrPtzCfg, false);
-
-                if (!CHCNetSDK.NET_DVR_SetDVRConfig(m_lUserID, CHCNetSDK.NET_DVR_SET_PTZPOS, 1, ptrPtzCfg, (UInt32)nSize))
-                {
-                    iLastErr = CHCNetSDK.NET_DVR_GetLastError();
-                    str = "NET_DVR_SetDVRConfig failed, error code= " + iLastErr;
-                    //设置POS参数失败
-                    MessageBox.Show(str);
-                    return;
-                }
-                else
-                {
-                    // MessageBox.Show("设置成功!");
-                }
-
-                Marshal.FreeHGlobal(ptrPtzCfg);
-
-            }
-        }
-
-        /* ##### 設定 P #####*/
-        private void SetPParam(string pParam)
-        {
-
-            String str1;
-
-            if (pParam == "" )
-            {
-                MessageBox.Show("請輸入 P 值 ");
-                return;
-            }
-            else
-            {
-
-                m_struPtzCfg.wAction = SET_P_PARAM;
-
-                // 設定左右角度
-                str1 = Convert.ToString(float.Parse(pParam) * 10);
-                m_struPtzCfg.wPanPos = (ushort)(Convert.ToUInt16(str1, 16));
-
-
-                // 設定
-                Int32 nSize = Marshal.SizeOf(m_struPtzCfg);
-                IntPtr ptrPtzCfg = Marshal.AllocHGlobal(nSize);
-                Marshal.StructureToPtr(m_struPtzCfg, ptrPtzCfg, false);
-
-                if (!CHCNetSDK.NET_DVR_SetDVRConfig(m_lUserID, CHCNetSDK.NET_DVR_SET_PTZPOS, 1, ptrPtzCfg, (UInt32)nSize))
-                {
-                    iLastErr = CHCNetSDK.NET_DVR_GetLastError();
-                    str = "NET_DVR_SetDVRConfig failed, error code= " + iLastErr;
-                    //设置POS参数失败
-                    MessageBox.Show(str);
-                    return;
-                }
-                else
-                {
-                    //MessageBox.Show("设置成功!");
-                }
-
-                Marshal.FreeHGlobal(ptrPtzCfg);
-
-            }
-        }
-
+      
         /* ##### 設定 T #####*/
         private void SetTParam(string tParam)
         {
@@ -788,7 +693,7 @@ namespace TowerMonitor
                     iLastErr = CHCNetSDK.NET_DVR_GetLastError();
                     str = "NET_DVR_SetDVRConfig failed, error code= " + iLastErr;
                     //设置POS参数失败
-                    MessageBox.Show(str);
+                    //MessageBox.Show(str);
                     return;
                 }
                 else
@@ -801,98 +706,7 @@ namespace TowerMonitor
             }
         }
 
-        /* ##### 設定 Z #####*/
-        private void SetZParam(string zParam)
-        {
-
-            String str3;
-
-            if (zParam == "")
-            {
-                MessageBox.Show("請輸入 Z 值 ");
-                return;
-            }
-            else
-            {
-              
-                m_struPtzCfg.wAction = SET_Z_PARAM;               
-
-                // 設定焦距倍數
-                str3 = Convert.ToString(float.Parse(zParam) * 10);
-                m_struPtzCfg.wZoomPos = (ushort)(Convert.ToUInt16(str3, 16));
-
-
-                // 設定
-                Int32 nSize = Marshal.SizeOf(m_struPtzCfg);
-                IntPtr ptrPtzCfg = Marshal.AllocHGlobal(nSize);
-                Marshal.StructureToPtr(m_struPtzCfg, ptrPtzCfg, false);
-
-                if (!CHCNetSDK.NET_DVR_SetDVRConfig(m_lUserID, CHCNetSDK.NET_DVR_SET_PTZPOS, 1, ptrPtzCfg, (UInt32)nSize))
-                {
-                    iLastErr = CHCNetSDK.NET_DVR_GetLastError();
-                    str = "NET_DVR_SetDVRConfig failed, error code= " + iLastErr;
-                    //设置POS参数失败
-                    MessageBox.Show(str);
-                    return;
-                }
-                else
-                {
-                    // MessageBox.Show("设置成功!");
-                }
-
-                Marshal.FreeHGlobal(ptrPtzCfg);
-
-            }
-        }
-
-        /* ##### 設定 P, T #####*/
-        private void SetPTParam(string pParam, string tParam)
-        {
-
-            String str1, str2;
-
-            if (pParam == "" || tParam == "")
-            {
-                MessageBox.Show("請輸入 P, T 值 ");
-                return;
-            }
-            else
-            {
-
-                m_struPtzCfg.wAction = SET_P_T_PARAM;
-
-                // 設定左右角度
-                str1 = Convert.ToString(float.Parse(pParam) * 10);
-                m_struPtzCfg.wPanPos = (ushort)(Convert.ToUInt16(str1, 16));
-
-
-                // 設定上下角度
-                str2 = Convert.ToString(float.Parse(tParam) * 10);
-                m_struPtzCfg.wTiltPos = (ushort)(Convert.ToUInt16(str2, 16));
-                
-
-                // 設定
-                Int32 nSize = Marshal.SizeOf(m_struPtzCfg);
-                IntPtr ptrPtzCfg = Marshal.AllocHGlobal(nSize);
-                Marshal.StructureToPtr(m_struPtzCfg, ptrPtzCfg, false);
-
-                if (!CHCNetSDK.NET_DVR_SetDVRConfig(m_lUserID, CHCNetSDK.NET_DVR_SET_PTZPOS, 1, ptrPtzCfg, (UInt32)nSize))
-                {
-                    iLastErr = CHCNetSDK.NET_DVR_GetLastError();
-                    str = "NET_DVR_SetDVRConfig failed, error code= " + iLastErr;
-                    //设置POS参数失败
-                    MessageBox.Show(str);
-                    return;
-                }
-                else
-                {
-                    // MessageBox.Show("设置成功!");
-                }
-
-                Marshal.FreeHGlobal(ptrPtzCfg);
-
-            }
-        }
+      
 
         /* ##########################
          * ##### 陀螺儀 (Start) #####
