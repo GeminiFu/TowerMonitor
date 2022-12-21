@@ -25,7 +25,7 @@ namespace TowerMonitor
     public partial class Form1 : Form
     {
         //private int hasInitCamera = 0;      // 是否完成初始化鏡頭 1: 完成 0:未完成
-        private bool isThreadStarted = false;        
+        private bool isSettingPTZRunning = false;        
 
         // 海康威視
         public uint PTZ_MOVING = 0;         // 雲台移動
@@ -92,7 +92,7 @@ namespace TowerMonitor
             // 關閉IMU
             CloseSerialPort();
 
-            isThreadStarted = false;
+            isSettingPTZRunning = false;
         }
 
         // init Hikvision
@@ -140,23 +140,23 @@ namespace TowerMonitor
         // 因為陀螺儀丟出的訊息非常快，攝影機無法在短時間設定PTZ，
         // 所以寫個Thread 控制PTZ寫入速度
         private void StartSettingPTZ() {
-            isThreadStarted = true;
+            isSettingPTZRunning = true;
             Thread myThread = new Thread(new ThreadStart(SettingPTZTask));
             //oGetArgThread.IsBackground = true;
             myThread.Start();
         }
 
         private void StopSettingPTZ() { 
-            isThreadStarted = false;
+            isSettingPTZRunning = false;
         }
 
         private void SettingPTZTask()
         {
-            while (isThreadStarted)
+            while (isSettingPTZRunning)
             {
                 // Console.WriteLine("xNow=" + xNow + " yNow="+ yNow + " zNow="+ zNow);
 
-                if (serialPort.IsOpen)
+                if (m_lRealHandle >= 0 && serialPort.IsOpen)
                 {
 
                     string tValue = tInitValue.ToString("0.0");
@@ -166,9 +166,18 @@ namespace TowerMonitor
                     {   // 陀螺儀往上轉動 (xNow等於0表示陀螺儀沒有在轉動)                        
                         tValue = (tInitValue - dx).ToString("0.0");
                     } 
-                    else if (Math.Abs(xNow) > (xInitValue))
+                    else if (xNow < xInitValue)
                     {    // 陀螺儀往下轉動 
                         tValue = (tInitValue + dx).ToString("0.0");
+                    }
+
+                    if (Convert.ToSingle(tValue) > 90)
+                    {
+                        tValue = "90";
+                    }
+                    else if (Convert.ToSingle(tValue) <0)
+                    {
+                        tValue = "0";
                     }
 
                     SetTParam(tValue);
@@ -269,8 +278,7 @@ namespace TowerMonitor
                 MessageBox.Show("登入成功!");
                 loginButton.Text = "登出";
                 StartPreview();
-                ConnectIMU();
-                //hasInitCamera = 0;
+                ConnectIMU();                
                 StartSettingPTZ();
                 initValue();
             }
