@@ -278,6 +278,7 @@ namespace TowerMonitor
                 ConnectIMU();                
                 StartSettingPTZ();
                 initValue();
+                controlPanel.Visible = true;
             }
 
         }
@@ -296,6 +297,7 @@ namespace TowerMonitor
             MessageBox.Show("登出成功!");
             loginButton.Text = "登入";
 
+            controlPanel.Visible = false;
         }
 
         public void cbLoginCallBack(int lUserID, int dwResult, IntPtr lpDeviceInfo, IntPtr pUser)

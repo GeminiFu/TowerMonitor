@@ -63,11 +63,13 @@
             this.portLabel = new System.Windows.Forms.Label();
             this.ipTextBox = new System.Windows.Forms.TextBox();
             this.ipLabel = new System.Windows.Forms.Label();
+            this.controlPanel = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.realtimePictureBox)).BeginInit();
+            this.controlPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -82,26 +84,7 @@
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.label11);
-            this.splitContainer1.Panel2.Controls.Add(this.zoomPosTextBox);
-            this.splitContainer1.Panel2.Controls.Add(this.label8);
-            this.splitContainer1.Panel2.Controls.Add(this.tiltPosTextBox);
-            this.splitContainer1.Panel2.Controls.Add(this.label9);
-            this.splitContainer1.Panel2.Controls.Add(this.panPosTextBox);
-            this.splitContainer1.Panel2.Controls.Add(this.label10);
-            this.splitContainer1.Panel2.Controls.Add(this.zoomInButton);
-            this.splitContainer1.Panel2.Controls.Add(this.zoomOutButton);
-            this.splitContainer1.Panel2.Controls.Add(this.rightButton);
-            this.splitContainer1.Panel2.Controls.Add(this.leftButton);
-            this.splitContainer1.Panel2.Controls.Add(this.downButton);
-            this.splitContainer1.Panel2.Controls.Add(this.upButton);
-            this.splitContainer1.Panel2.Controls.Add(this.zTextBox);
-            this.splitContainer1.Panel2.Controls.Add(this.label7);
-            this.splitContainer1.Panel2.Controls.Add(this.yTextBox);
-            this.splitContainer1.Panel2.Controls.Add(this.label6);
-            this.splitContainer1.Panel2.Controls.Add(this.xTextBox);
-            this.splitContainer1.Panel2.Controls.Add(this.label5);
-            this.splitContainer1.Panel2.Controls.Add(this.label4);
+            this.splitContainer1.Panel2.Controls.Add(this.controlPanel);
             this.splitContainer1.Panel2.Controls.Add(this.label3);
             this.splitContainer1.Panel2.Controls.Add(this.channelTextBox);
             this.splitContainer1.Panel2.Controls.Add(this.label2);
@@ -131,7 +114,7 @@
             // 
             this.label11.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label11.Font = new System.Drawing.Font("新細明體", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label11.Location = new System.Drawing.Point(115, 437);
+            this.label11.Location = new System.Drawing.Point(116, 231);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(187, 25);
             this.label11.TabIndex = 34;
@@ -141,7 +124,7 @@
             // 
             this.zoomPosTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.zoomPosTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.zoomPosTextBox.Location = new System.Drawing.Point(368, 480);
+            this.zoomPosTextBox.Location = new System.Drawing.Point(365, 276);
             this.zoomPosTextBox.Name = "zoomPosTextBox";
             this.zoomPosTextBox.Size = new System.Drawing.Size(45, 27);
             this.zoomPosTextBox.TabIndex = 32;
@@ -151,7 +134,7 @@
             this.label8.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label8.Location = new System.Drawing.Point(260, 483);
+            this.label8.Location = new System.Drawing.Point(257, 279);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(102, 16);
             this.label8.TabIndex = 31;
@@ -161,7 +144,7 @@
             // 
             this.tiltPosTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.tiltPosTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tiltPosTextBox.Location = new System.Drawing.Point(209, 480);
+            this.tiltPosTextBox.Location = new System.Drawing.Point(206, 276);
             this.tiltPosTextBox.Name = "tiltPosTextBox";
             this.tiltPosTextBox.Size = new System.Drawing.Size(45, 27);
             this.tiltPosTextBox.TabIndex = 30;
@@ -171,7 +154,7 @@
             this.label9.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label9.Location = new System.Drawing.Point(133, 483);
+            this.label9.Location = new System.Drawing.Point(130, 279);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(70, 16);
             this.label9.TabIndex = 29;
@@ -181,7 +164,7 @@
             // 
             this.panPosTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.panPosTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.panPosTextBox.Location = new System.Drawing.Point(82, 480);
+            this.panPosTextBox.Location = new System.Drawing.Point(79, 276);
             this.panPosTextBox.Name = "panPosTextBox";
             this.panPosTextBox.Size = new System.Drawing.Size(45, 27);
             this.panPosTextBox.TabIndex = 28;
@@ -191,7 +174,7 @@
             this.label10.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label10.Location = new System.Drawing.Point(11, 483);
+            this.label10.Location = new System.Drawing.Point(8, 279);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(69, 16);
             this.label10.TabIndex = 27;
@@ -202,7 +185,7 @@
             this.zoomInButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.zoomInButton.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.zoomInButton.Image = ((System.Drawing.Image)(resources.GetObject("zoomInButton.Image")));
-            this.zoomInButton.Location = new System.Drawing.Point(333, 219);
+            this.zoomInButton.Location = new System.Drawing.Point(346, 44);
             this.zoomInButton.Name = "zoomInButton";
             this.zoomInButton.Size = new System.Drawing.Size(60, 60);
             this.zoomInButton.TabIndex = 26;
@@ -215,7 +198,7 @@
             this.zoomOutButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.zoomOutButton.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.zoomOutButton.Image = ((System.Drawing.Image)(resources.GetObject("zoomOutButton.Image")));
-            this.zoomOutButton.Location = new System.Drawing.Point(333, 346);
+            this.zoomOutButton.Location = new System.Drawing.Point(346, 130);
             this.zoomOutButton.Name = "zoomOutButton";
             this.zoomOutButton.Size = new System.Drawing.Size(60, 60);
             this.zoomOutButton.TabIndex = 25;
@@ -227,7 +210,7 @@
             // 
             this.rightButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.rightButton.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.rightButton.Location = new System.Drawing.Point(240, 282);
+            this.rightButton.Location = new System.Drawing.Point(243, 66);
             this.rightButton.Name = "rightButton";
             this.rightButton.Size = new System.Drawing.Size(60, 60);
             this.rightButton.TabIndex = 24;
@@ -240,7 +223,7 @@
             // 
             this.leftButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.leftButton.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.leftButton.Location = new System.Drawing.Point(103, 282);
+            this.leftButton.Location = new System.Drawing.Point(113, 66);
             this.leftButton.Name = "leftButton";
             this.leftButton.Size = new System.Drawing.Size(60, 60);
             this.leftButton.TabIndex = 23;
@@ -253,7 +236,7 @@
             // 
             this.downButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.downButton.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.downButton.Location = new System.Drawing.Point(171, 346);
+            this.downButton.Location = new System.Drawing.Point(177, 130);
             this.downButton.Name = "downButton";
             this.downButton.Size = new System.Drawing.Size(60, 60);
             this.downButton.TabIndex = 22;
@@ -266,7 +249,7 @@
             // 
             this.upButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.upButton.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.upButton.Location = new System.Drawing.Point(171, 219);
+            this.upButton.Location = new System.Drawing.Point(177, 0);
             this.upButton.Name = "upButton";
             this.upButton.Size = new System.Drawing.Size(60, 60);
             this.upButton.TabIndex = 21;
@@ -279,7 +262,7 @@
             // 
             this.zTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.zTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.zTextBox.Location = new System.Drawing.Point(336, 562);
+            this.zTextBox.Location = new System.Drawing.Point(331, 368);
             this.zTextBox.Name = "zTextBox";
             this.zTextBox.Size = new System.Drawing.Size(40, 27);
             this.zTextBox.TabIndex = 19;
@@ -289,7 +272,7 @@
             this.label7.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label7.Location = new System.Drawing.Point(274, 568);
+            this.label7.Location = new System.Drawing.Point(269, 374);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(56, 16);
             this.label7.TabIndex = 18;
@@ -299,7 +282,7 @@
             // 
             this.yTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.yTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.yTextBox.Location = new System.Drawing.Point(228, 562);
+            this.yTextBox.Location = new System.Drawing.Point(223, 368);
             this.yTextBox.Name = "yTextBox";
             this.yTextBox.Size = new System.Drawing.Size(40, 27);
             this.yTextBox.TabIndex = 17;
@@ -309,7 +292,7 @@
             this.label6.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label6.Location = new System.Drawing.Point(164, 568);
+            this.label6.Location = new System.Drawing.Point(159, 374);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(58, 16);
             this.label6.TabIndex = 16;
@@ -319,7 +302,7 @@
             // 
             this.xTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.xTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.xTextBox.Location = new System.Drawing.Point(118, 562);
+            this.xTextBox.Location = new System.Drawing.Point(113, 368);
             this.xTextBox.Name = "xTextBox";
             this.xTextBox.Size = new System.Drawing.Size(40, 27);
             this.xTextBox.TabIndex = 15;
@@ -329,7 +312,7 @@
             this.label5.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label5.Location = new System.Drawing.Point(54, 568);
+            this.label5.Location = new System.Drawing.Point(49, 374);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(58, 16);
             this.label5.TabIndex = 14;
@@ -339,7 +322,7 @@
             // 
             this.label4.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label4.Font = new System.Drawing.Font("新細明體", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label4.Location = new System.Drawing.Point(138, 521);
+            this.label4.Location = new System.Drawing.Point(133, 327);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(139, 25);
             this.label4.TabIndex = 13;
@@ -474,6 +457,35 @@
             this.ipLabel.TabIndex = 0;
             this.ipLabel.Text = "IP:";
             // 
+            // controlPanel
+            // 
+            this.controlPanel.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.controlPanel.Controls.Add(this.label11);
+            this.controlPanel.Controls.Add(this.zTextBox);
+            this.controlPanel.Controls.Add(this.zoomPosTextBox);
+            this.controlPanel.Controls.Add(this.label7);
+            this.controlPanel.Controls.Add(this.rightButton);
+            this.controlPanel.Controls.Add(this.yTextBox);
+            this.controlPanel.Controls.Add(this.label8);
+            this.controlPanel.Controls.Add(this.label6);
+            this.controlPanel.Controls.Add(this.downButton);
+            this.controlPanel.Controls.Add(this.xTextBox);
+            this.controlPanel.Controls.Add(this.tiltPosTextBox);
+            this.controlPanel.Controls.Add(this.label5);
+            this.controlPanel.Controls.Add(this.zoomOutButton);
+            this.controlPanel.Controls.Add(this.label4);
+            this.controlPanel.Controls.Add(this.label9);
+            this.controlPanel.Controls.Add(this.panPosTextBox);
+            this.controlPanel.Controls.Add(this.zoomInButton);
+            this.controlPanel.Controls.Add(this.label10);
+            this.controlPanel.Controls.Add(this.leftButton);
+            this.controlPanel.Controls.Add(this.upButton);
+            this.controlPanel.Location = new System.Drawing.Point(3, 231);
+            this.controlPanel.Name = "controlPanel";
+            this.controlPanel.Size = new System.Drawing.Size(415, 417);
+            this.controlPanel.TabIndex = 35;
+            this.controlPanel.Visible = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -490,6 +502,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.realtimePictureBox)).EndInit();
+            this.controlPanel.ResumeLayout(false);
+            this.controlPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -530,6 +544,7 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TextBox channelTextBox;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Panel controlPanel;
     }
 }
 
