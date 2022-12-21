@@ -77,8 +77,27 @@ namespace TowerMonitor
         }
 
 
+
+        private void OnLoad(object sender, EventArgs e)
+        {
+            System.Windows.Forms.TextBox.CheckForIllegalCrossThreadCalls = false;
+        }
+
+        private void OnFormClosing(object sender, FormClosingEventArgs e)
+        {
+
+            // 關閉監視器
+            CloseHikvision();
+           
+            // 關閉IMU
+            CloseSerialPort();
+
+            isThreadStarted = false;
+        }
+
         // init Hikvision
-        private void InitCHCNet() {
+        private void InitCHCNet()
+        {
             m_bInitSDK = CHCNetSDK.NET_DVR_Init();
             if (m_bInitSDK == false)
             {
@@ -93,31 +112,31 @@ namespace TowerMonitor
         }
 
         // init IMU
-        private void InitIMU() {
+        private void InitIMU()
+        {
             m_connection.OnSendData += new Connection.SendDataEventHandler(SendSerialPort);
             KbootDecoder.OnPacketRecieved += new KbootPacketDecoder.KBootDecoderDataReceivedEventHandler(OnKbootDecoderDataReceived);
             serialPort.WriteTimeout = 1000;
         }
 
-        private void OnLoad(object sender, EventArgs e)
+        // 取得目前 一開始的 雲台的 T 值, 陀螺儀的 一開始的 x 值
+        private void initValue()
         {
-            System.Windows.Forms.TextBox.CheckForIllegalCrossThreadCalls = false;
+            NET_DVR_PTZPOS netDVRPTZPos = GetPTZParam();
+
+            // 左右角度
+            ushort wPanPos = Convert.ToUInt16(Convert.ToString(m_struPtzCfg.wPanPos, 16));
+            float WPanPos = wPanPos * 0.1f;
+
+            // 上下角度
+            ushort wTiltPos = Convert.ToUInt16(Convert.ToString(netDVRPTZPos.wTiltPos, 16));
+            tInitValue = wTiltPos * 0.1f;
+
+            hasGetXInitValue = false;
+
         }
 
-        private void OnFormClosing(object sender, FormClosingEventArgs e)
-        {
 
-            // 關閉監視器
-            CloseHikvision();
-           
-
-            // 關閉IMU
-            CloseSerialPort();
-
-            isThreadStarted = false;
-        }
-
-        
         // 因為陀螺儀丟出的訊息非常快，攝影機無法在短時間設定PTZ，
         // 所以寫個Thread 控制PTZ寫入速度
         private void StartSettingPTZ() {
@@ -170,9 +189,9 @@ namespace TowerMonitor
         private void OnLoginClick(object sender, EventArgs e)
         {
             if (ipTextBox.Text == "" || portTextBox.Text == "" ||
-                usernameTextBox.Text == "" || passwordTextBox.Text == "")
+                usernameTextBox.Text == "" || passwordTextBox.Text == "" || channelTextBox.Text == "")
             {
-                MessageBox.Show("請輸入IP、Port、帳號、密碼");
+                MessageBox.Show("請輸入IP、Port、帳號、密碼、頻道");
                 return;
             }
 
@@ -223,6 +242,8 @@ namespace TowerMonitor
             struLogInfo.sPassword = new byte[64];
             byPassword.CopyTo(struLogInfo.sPassword, 0);
 
+            // channel
+            m_lChannel = Convert.ToInt16(channelTextBox.Text);
 
             if (loginCallBack == null)
             {
@@ -253,22 +274,6 @@ namespace TowerMonitor
                 StartSettingPTZ();
                 initValue();
             }
-
-        }
-
-        // 取得目前 一開始的 雲台的 T 值, 陀螺儀的 一開始的 x 值
-        private void initValue() {
-            NET_DVR_PTZPOS netDVRPTZPos = GetPTZParam();
-
-            // 左右角度
-            ushort wPanPos = Convert.ToUInt16(Convert.ToString(m_struPtzCfg.wPanPos, 16));
-            float WPanPos = wPanPos * 0.1f;
-
-            // 上下角度
-            ushort wTiltPos = Convert.ToUInt16(Convert.ToString(netDVRPTZPos.wTiltPos, 16));
-            tInitValue = wTiltPos * 0.1f;
-
-            hasGetXInitValue = false;
 
         }
 
@@ -320,12 +325,7 @@ namespace TowerMonitor
             //列表新增报警信息
             //statusLabel.Text = "登入狀態: " + strLogStatus;
         }
-
-        private void OnGetPTZButtonClick(object sender, EventArgs e)
-        {
-            ShowPTZParam();
-        }
-
+      
 
         private void StartPreview() {
             if (m_lRealHandle < 0)
@@ -992,154 +992,8 @@ namespace TowerMonitor
                     xInitValue = xNow;
                     hasGetXInitValue = true;
                 }
-
-                // 變化角度
-                //dx = Math.Abs(xNow - xBefore);
-
-                //if (dx >=10)
-                //{  //表示x軸有轉動 
-
-
-                //    NET_DVR_PTZPOS netDVRPTZPos = GetPTZParam();
-
-                //    // 左右角度
-                //    ushort wPanPos = Convert.ToUInt16(Convert.ToString(m_struPtzCfg.wPanPos, 16));
-                //    float WPanPos = wPanPos * 0.1f;
-                //    int panPost = Convert.ToInt16(WPanPos);
-                //    //int direction = 1;
-
-                //    // 上下角度
-                //    ushort wTiltPos = Convert.ToUInt16(Convert.ToString(netDVRPTZPos.wTiltPos, 16));
-                //    float WTiltPos = wTiltPos * 0.1f;
-                //    int tiltPos = Convert.ToInt16(WTiltPos);
-
-
-                //    //string pValue = "0";
-                //    string tValue = tiltPos.ToString();
-
-                //    // 陀螺儀往上轉動 (xNow等於0表示陀螺儀沒有在轉動)
-                //    if (xNow > 0)
-                //    {
-                //        if (xNow > xBefore)
-                //        {   // 上升
-                //            tValue = (tiltPos - dx).ToString();
-                //        }
-                //        else if (xNow < xBefore)
-                //        { // 下降
-                //            tValue = (tiltPos + dx).ToString();
-                //        }
-                //    }
-                //    else if (xNow < 0)
-                //    {   // 陀螺儀往下轉動
-
-                //    }
-
-                //    Console.WriteLine("xBefore= " + xBefore + ", xNow=" + xNow + ", dx=" + dx + ", TiltPos=" + WTiltPos + ", tValue=" + tValue);
-                //    //SetPTParam(pValue, tValue);
-                //    SetTParam(tValue);
-
-                //    xBefore = xNow;
-
-                //    ShowPTZParam();
-                //}// End if
-
-
-                //yTextBox.Text = yNow.ToString();
-                //xTextBox.Text = xNow.ToString();
-                //zTextBox.Text = zNow.ToString();
-
-
-
-                //string tValue = (90 - Math.Abs(xNow)).ToString();  // 角度不可為負數
-                //string pValue = "0";
-
-                //if (Math.Abs(xNow - xBefore) >= dx)
-                //{
-
-                //    if (xNow >= 0)
-                //    {
-                //        pValue = "0";
-                //    }
-                //    else
-                //    {
-                //        pValue = "180";
-
-                //    }
-                //    SetPTParam(pValue, tValue);
-
-                //    xBefore = xNow;
-                //}
-
-                /*
-                if (hasInitCamera == 1)
-                { // 已完成鏡頭位置初始化
-
-                    if (Math.Abs(xNow - xBefore) >= dx)
-                    {
-                        
-                        if (xNow >= 0)
-                        {
-                            pValue = "0";                            
-                        }
-                        else
-                        {
-                            pValue = "180";
-                           
-                        }
-                        SetPTParam(pValue, tValue);
-                        
-                        xBefore = xNow;                       
-                    }
-
-                }
-                else {  // 鏡頭初始化，登入時把鏡頭轉動到目前正確的位置
-
-                    if (xNow >= 0) {
-                        pValue = "0";
-                    }
-                    else {
-                        pValue = "180";
-                    }
-
-                    SetPTParam(pValue, tValue);
-                    hasInitCamera = 1;
-
-                }
-                */
-                //xNow = decimal.Round(Convert.ToDecimal(device_data.SingleNode.Eul[1]), 1) ;
-
-                //if (xNow >= 0 && xBefore!=xNow) {
-                //    string tValue = xNow.ToString();
-                //    SetTParam(tValue);
-                //    ShowPTZParam();
-                //    xBefore = xNow;
-                //}
-
-                //if (Math.Abs(xNow - xBefore) >= dx) {
-                //    //Console.WriteLine("xNow=" + xNow);
-                //    //Console.WriteLine("xBefore=" + xBefore);
-
-                //    if (xNow > xBefore)  // 往上升
-                //    {  
-                //        //Console.WriteLine("往上升");
-                //        AutoMoveBack();
-                //    }
-                //    else   // 往下降
-                //    {    
-                //        //Console.WriteLine("往下降");
-                //        AutoMoveFront();                       
-                //    }
-
-                //    xBefore = xNow;
-                //}
-
-                //yTextBox.Text = Convert.ToInt32(device_data.SingleNode.Eul[0]).ToString();
-                //xTextBox.Text = xNow.ToString();
-                //zTextBox.Text = Convert.ToInt32(device_data.SingleNode.Eul[2]).ToString();
-
+               
             }
-
-
         }
 
         // 斷線
