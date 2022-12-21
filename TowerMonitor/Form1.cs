@@ -44,7 +44,8 @@ namespace TowerMonitor
         private ushort SET_Z_PARAM = 4;
         private ushort SET_P_T_PARAM = 5;
 
-        private int AUTO_MOVE_TIME = 500;   // 自動移動時間(ms)
+        private float tInitValue = 0f;    // 雲台 T 初始角度
+
 
         CHCNetSDK.LOGINRESULTCALLBACK loginCallBack = null;
         CHCNetSDK.NET_DVR_USER_LOGIN_INFO struLogInfo;
@@ -58,6 +59,8 @@ namespace TowerMonitor
         private Connection m_connection = new Connection();
         private KbootPacketDecoder KbootDecoder = new KbootPacketDecoder();
 
+        private float xInitValue = 0f;          // 陀螺儀 x 初始角度
+        private bool hasGetXInitValue = false;  // 是否有得x初始化角度
         private float xBefore = 0f;    // 舊x旋轉角度
         private float xNow = 0f;       // 目前取得x旋轉角度
         private float dx = 0f;         // x旋轉變化角度
@@ -136,95 +139,21 @@ namespace TowerMonitor
 
                 if (serialPort.IsOpen)
                 {
-                    NET_DVR_PTZPOS netDVRPTZPos = GetPTZParam();
 
-                    // 左右角度
-                    ushort wPanPos = Convert.ToUInt16(Convert.ToString(m_struPtzCfg.wPanPos, 16));
-                    float WPanPos = wPanPos * 0.1f;
+                    string tValue = tInitValue.ToString("0.0");
 
-                    // 上下角度
-                    ushort wTiltPos = Convert.ToUInt16(Convert.ToString(netDVRPTZPos.wTiltPos, 16));
-                    float WTiltPos = wTiltPos * 0.1f;
+                    dx = Math.Abs(xNow) - Math.Abs(xInitValue);
 
-                    // 變化角度
-                    dx = Math.Abs(xNow) - Math.Abs(xBefore);
-                    dx = Convert.ToSingle(Math.Abs(dx).ToString("0.0"));
-                    //string pValue = "0";
-                    string tValue = WTiltPos.ToString();
+                    if (xNow > xInitValue)
+                    {   // 陀螺儀往上轉動 (xNow等於0表示陀螺儀沒有在轉動)                        
+                        tValue = (tInitValue - dx).ToString("0.0");
+                    } 
+                    else if (Math.Abs(xNow) > (xInitValue))
+                    {    // 陀螺儀往下轉動 
+                        tValue = (tInitValue + dx).ToString("0.0");
+                    }
 
-                    if (dx > 0)
-                    {  //表示x軸有轉動 
-
-                        // 陀螺儀往上轉動 (xNow等於0表示陀螺儀沒有在轉動)
-                        if (xNow > 0)
-                        {
-                            
-                            if (xNow > xBefore)
-                            {   // 上升
-                                tValue = (WTiltPos - dx).ToString("0.0");
-                            }
-                            else if (xNow < xBefore)
-                            { // 下降
-                                tValue = (WTiltPos + dx).ToString("0.0");
-                            }
-
-                            statusTextBox.Text = "xNow > 0 ###  xBefore= " + xBefore + ", xNow=" + xNow + ", dx=" + dx + ", TiltPos=" + WTiltPos + ", tValue=" + tValue;
-                            Console.WriteLine("xNow > 0 ###  xBefore= " + xBefore + ", xNow=" + xNow + ", dx=" + dx + ", TiltPos=" + WTiltPos + ", tValue=" + tValue);
-                        }
-                        else if (xNow < 0)
-                        {   // 陀螺儀往下轉動
-
-                            Console.WriteLine("xNow < 0 ###  WPanPos= " + WPanPos);
-
-                            if (WPanPos >= 0 && WPanPos < 180) {
-                                if (Math.Abs(xNow) > Math.Abs(xBefore))
-                                {   //下降
-                                    tValue = (WTiltPos + dx).ToString("0.0");
-
-                                }
-                                else if (Math.Abs(xNow) < Math.Abs(xBefore))
-                                {   //上升
-                                    tValue = (WTiltPos - dx).ToString("0.0");
-                                }
-
-                                Console.WriteLine("xNow < 0 ###  tValue= " + tValue);
-
-                                if (Convert.ToSingle(tValue) > 90) {
-                                    Console.WriteLine("xNow < 0 ##########  ");
-                                    SetPParam("180");
-                                    Thread.Sleep(1000);
-                                }
-
-                            } else if (WPanPos >= 180 & WPanPos <= 360) {
-
-                                if (Math.Abs(xNow) > Math.Abs(xBefore))
-                                {   //下降
-                                    tValue = (WTiltPos - dx).ToString("0.0");
-
-                                }
-                                else if (Math.Abs(xNow) < Math.Abs(xBefore))
-                                {   //上升
-                                    tValue = (WTiltPos + dx).ToString("0.0");
-                                }
-
-                                if (Convert.ToSingle(tValue) > 90)
-                                {
-                                    SetPParam("0");
-                                    Thread.Sleep(1000);
-                                }
-                            }
-
-                            statusTextBox.Text = "xNow < 0 ###  xBefore= " + xBefore + ", xNow=" + xNow + ", dx=" + dx + ", TiltPos=" + WTiltPos + ", tValue=" + tValue;
-                            Console.WriteLine("xNow < 0 ###  xBefore= " + xBefore + ", xNow=" + xNow + ", dx=" + dx + ", TiltPos=" + WTiltPos + ", tValue=" + tValue);
-                        }
-
-
-                        //SetPTParam(pValue, tValue);
-                        SetTParam(tValue);
-
-                        xBefore = xNow;
-
-                    }// End if
+                    SetTParam(tValue);
 
                     yTextBox.Text = yNow.ToString();
                     xTextBox.Text = xNow.ToString();
@@ -323,7 +252,23 @@ namespace TowerMonitor
                 ConnectIMU();
                 //hasInitCamera = 0;
                 StartSettingPTZ();
+                initValue();
             }
+
+        }
+
+        private void initValue() {
+            NET_DVR_PTZPOS netDVRPTZPos = GetPTZParam();
+
+            // 左右角度
+            ushort wPanPos = Convert.ToUInt16(Convert.ToString(m_struPtzCfg.wPanPos, 16));
+            float WPanPos = wPanPos * 0.1f;
+
+            // 上下角度
+            ushort wTiltPos = Convert.ToUInt16(Convert.ToString(netDVRPTZPos.wTiltPos, 16));
+            tInitValue = wTiltPos * 0.1f;
+
+            hasGetXInitValue = false;
 
         }
 
@@ -1035,13 +980,14 @@ namespace TowerMonitor
 
             if (serialPort.IsOpen)
             {
-                //yNow = (float)Math.Round(device_data.SingleNode.Eul[0], 1);
-                //xNow = (float)Math.Round(device_data.SingleNode.Eul[1], 1);
-                //zNow = (float)Math.Round(device_data.SingleNode.Eul[2], 1);
-
                 yNow = Convert.ToSingle(device_data.SingleNode.Eul[0].ToString("0.0"));
                 xNow = Convert.ToSingle(device_data.SingleNode.Eul[1].ToString("0.0"));
                 zNow = Convert.ToSingle(device_data.SingleNode.Eul[2].ToString("0.0"));
+
+                if (!hasGetXInitValue) {
+                    xInitValue = xNow;
+                    hasGetXInitValue = true;
+                }
 
                 // 變化角度
                 //dx = Math.Abs(xNow - xBefore);
