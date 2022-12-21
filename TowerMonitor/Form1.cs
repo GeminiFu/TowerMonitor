@@ -141,7 +141,6 @@ namespace TowerMonitor
                 {
 
                     string tValue = tInitValue.ToString("0.0");
-
                     dx = Math.Abs(xNow) - Math.Abs(xInitValue);
 
                     if (xNow > xInitValue)
@@ -159,7 +158,7 @@ namespace TowerMonitor
                     xTextBox.Text = xNow.ToString();
                     zTextBox.Text = zNow.ToString();
 
-                    ShowPTZParam();
+                    ShowPTZParam();               
 
                 }// End if
 
@@ -257,6 +256,7 @@ namespace TowerMonitor
 
         }
 
+        // 取得目前 一開始的 雲台的 T 值, 陀螺儀的 一開始的 x 值
         private void initValue() {
             NET_DVR_PTZPOS netDVRPTZPos = GetPTZParam();
 
@@ -416,10 +416,7 @@ namespace TowerMonitor
             m_lUserID = -1;
         }
         
-        /* #################
-         * ##### 左鍵 ######
-         * #################
-         */
+        // ##### 左 (Start) ######  
         private void OnLeftMouseDown(object sender, MouseEventArgs e)
         {
             if (m_lRealHandle >= 0)
@@ -430,6 +427,8 @@ namespace TowerMonitor
             {
                 CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.PAN_LEFT, PTZ_MOVING, PTZ_SPEED);
             }
+
+            StopSettingPTZ();
         }
 
         private void OnLeftMouseUp(object sender, MouseEventArgs e)
@@ -443,12 +442,12 @@ namespace TowerMonitor
                 CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.PAN_LEFT, PTZ_STOP, PTZ_SPEED);
             }
 
+            StartSettingPTZ();
         }
+        // ##### 左 (End) ######  
 
-        /* #################
-         * ##### 右鍵 ######
-         * #################
-         */
+
+        // ##### 右 (Start) ######  
         private void OnRightMouseDown(object sender, MouseEventArgs e)
         {
             if (m_lRealHandle >= 0) // 有取得預覽接口
@@ -460,6 +459,7 @@ namespace TowerMonitor
                 CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.PAN_RIGHT, PTZ_MOVING, PTZ_SPEED);
             }
 
+            StopSettingPTZ();
         }
 
         private void OnRightMouseUp(object sender, MouseEventArgs e)
@@ -473,12 +473,12 @@ namespace TowerMonitor
                 CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.PAN_RIGHT, PTZ_STOP, PTZ_SPEED);
             }
 
+            StartSettingPTZ();
         }
 
-        /* #################
-         * ##### 上鍵 ######
-         * #################
-         */
+        // ##### 右 (End) ######  
+
+        // ##### 上 (Start) ######  
         private void OnUpMouseDown(object sender, MouseEventArgs e)
         {
             if (m_lRealHandle >= 0) // 有取得預覽接口
@@ -504,13 +504,12 @@ namespace TowerMonitor
                 CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.TILT_UP, PTZ_STOP, PTZ_SPEED);
             }
 
+            initValue();
             StartSettingPTZ();
         }
+        // ##### 上 (End) ######  
 
-        /* #################
-         * ##### 下鍵 ######
-         * #################
-         */
+        // ##### 下 (Start) ######  
         private void OnDownMouseDown(object sender, MouseEventArgs e)
         {
             if (m_lRealHandle >= 0) // 有取得預覽接口
@@ -536,13 +535,12 @@ namespace TowerMonitor
                 CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.TILT_DOWN, PTZ_STOP, PTZ_SPEED);
             }
 
+            initValue();
             StartSettingPTZ();
         }
+        // ##### 下 (End) ######
 
-        /* #################
-         * ##### 放大 ######
-         * #################
-         */
+        // ##### 放大 (Start) ######        
         private void OnZoomInMouseDown(object sender, MouseEventArgs e)
         {
             if (m_lRealHandle >= 0) // 有取得預覽接口
@@ -567,11 +565,9 @@ namespace TowerMonitor
             }
 
         }
+        // ##### 放大 (End) ######        
 
-        /* #################
-         * ##### 縮小 ######
-         * #################
-         */
+        // ##### 縮小 (Start) ######              
         private void OnZoomOutMouseDown(object sender, MouseEventArgs e)
         {
             if (m_lRealHandle >= 0) // 有取得預覽接口
@@ -596,6 +592,7 @@ namespace TowerMonitor
             }
 
         }
+        // ##### 縮小 (End) ######              
 
         private NET_DVR_PTZPOS GetPTZParam() {
 
