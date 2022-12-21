@@ -551,6 +551,7 @@ namespace TowerMonitor
             {
                 CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.ZOOM_IN, PTZ_MOVING, PTZ_SPEED);
             }
+            StopSettingPTZ();
         }
 
         private void OnZoomInMouseUp(object sender, MouseEventArgs e)
@@ -563,6 +564,8 @@ namespace TowerMonitor
             {
                 CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.ZOOM_IN, PTZ_STOP, PTZ_SPEED);
             }
+
+            StartSettingPTZ();
 
         }
         // ##### 放大 (End) ######        
@@ -578,6 +581,8 @@ namespace TowerMonitor
             {
                 CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.ZOOM_OUT, PTZ_MOVING, PTZ_SPEED);
             }
+
+            StopSettingPTZ();
         }
 
         private void OnZoomOutMouseUp(object sender, MouseEventArgs e)
@@ -590,6 +595,8 @@ namespace TowerMonitor
             {
                 CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.ZOOM_OUT, PTZ_STOP, PTZ_SPEED);
             }
+
+            StartSettingPTZ();
 
         }
         // ##### 縮小 (End) ######              
