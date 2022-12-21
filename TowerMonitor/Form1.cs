@@ -122,7 +122,7 @@ namespace TowerMonitor
         // 所以寫個Thread 控制PTZ寫入速度
         private void StartSettingPTZ() {
             isThreadStarted = true;
-            Thread myThread = new Thread(new ThreadStart(Task));
+            Thread myThread = new Thread(new ThreadStart(SettingPTZTask));
             //oGetArgThread.IsBackground = true;
             myThread.Start();
         }
@@ -131,7 +131,7 @@ namespace TowerMonitor
             isThreadStarted = false;
         }
 
-        private void Task()
+        private void SettingPTZTask()
         {
             while (isThreadStarted)
             {
