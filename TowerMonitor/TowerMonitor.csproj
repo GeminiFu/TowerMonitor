@@ -82,6 +82,12 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IMU\KbootPacketDecoder.cs" />
+    <Compile Include="SetDeviceDataForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SetDeviceDataForm.Designer.cs">
+      <DependentUpon>SetDeviceDataForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="util\FileUtil.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
@@ -95,6 +101,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="SetDeviceDataForm.resx">
+      <DependentUpon>SetDeviceDataForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="libs\HCNetSDKCom\HCAlarm.lib">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

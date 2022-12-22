@@ -1,28 +1,15 @@
 ﻿using HikvisionDemo;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.IO.Ports;
-using System.Linq;
-using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Runtime.Remoting.Channels;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using TowerMonitor.entity;
 using TowerMonitor.IMU;
 using TowerMonitor.util;
 using static HikvisionDemo.CHCNetSDK;
-using static System.Net.Mime.MediaTypeNames;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace TowerMonitor
 {
@@ -130,8 +117,6 @@ namespace TowerMonitor
         // 載入設備預設資料
         private void InitDeviceData() {
             deviceDataPath = startupPath + "\\deviceData.json";
-
-            Console.WriteLine("deviceDataPath=" + deviceDataPath);
 
             DeviceDataEntity deviceDataEntity;
             string jsonData = "";
@@ -961,6 +946,27 @@ namespace TowerMonitor
             }
         }
 
+        private void OnSettingDataClick(object sender, EventArgs e)
+        {
+            deviceDataPath = startupPath + "\\deviceData.json";
 
+            if (!File.Exists(deviceDataPath))
+            {
+                MessageBox.Show("設定檔不存在，請重新開啟軟體。謝謝!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            else
+            {
+                SetDeviceDataForm setDeviceDataForm = new SetDeviceDataForm();
+                setDeviceDataForm.CustomFormClosed += CloseListener;
+                setDeviceDataForm.ShowDialog();
+            }
+
+        }
+
+        private void CloseListener(object sender, EventArgs e)
+        {
+            InitDeviceData();
+        }
     }
 }

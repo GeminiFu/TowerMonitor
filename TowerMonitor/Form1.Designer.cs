@@ -71,7 +71,7 @@
             this.label13 = new System.Windows.Forms.Label();
             this.armDegreeTextBox = new System.Windows.Forms.TextBox();
             this.showDataCheckBox = new System.Windows.Forms.CheckBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.settingButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -115,7 +115,7 @@
             // cameraPanel
             // 
             this.cameraPanel.AutoSize = true;
-            this.cameraPanel.Controls.Add(this.button1);
+            this.cameraPanel.Controls.Add(this.settingButton);
             this.cameraPanel.Controls.Add(this.ipLabel);
             this.cameraPanel.Controls.Add(this.ipTextBox);
             this.cameraPanel.Controls.Add(this.channelTextBox);
@@ -567,15 +567,16 @@
             this.showDataCheckBox.UseVisualStyleBackColor = true;
             this.showDataCheckBox.CheckedChanged += new System.EventHandler(this.OnCheckedClick);
             // 
-            // button1
+            // settingButton
             // 
-            this.button1.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.button1.Location = new System.Drawing.Point(273, 89);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(129, 27);
-            this.button1.TabIndex = 12;
-            this.button1.Text = "修改資料";
-            this.button1.UseVisualStyleBackColor = true;
+            this.settingButton.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.settingButton.Location = new System.Drawing.Point(273, 89);
+            this.settingButton.Name = "settingButton";
+            this.settingButton.Size = new System.Drawing.Size(129, 27);
+            this.settingButton.TabIndex = 12;
+            this.settingButton.Text = "修改資料";
+            this.settingButton.UseVisualStyleBackColor = true;
+            this.settingButton.Click += new System.EventHandler(this.OnSettingDataClick);
             // 
             // Form1
             // 
@@ -647,7 +648,7 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.TextBox armDegreeTextBox;
         private System.Windows.Forms.CheckBox showDataCheckBox;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button settingButton;
     }
 }
 
