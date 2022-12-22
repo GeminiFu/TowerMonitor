@@ -83,6 +83,7 @@ namespace TowerMonitor
         private void OnLoad(object sender, EventArgs e)
         {
             System.Windows.Forms.TextBox.CheckForIllegalCrossThreadCalls = false;
+            
         }
 
         private void OnFormClosing(object sender, FormClosingEventArgs e)
@@ -247,7 +248,10 @@ namespace TowerMonitor
                 StartPreview();
                 StartSettingPTZ();
                 initValue();
-                controlPanel.Visible = true;
+
+                ShowCameraPanel(false);
+                ShowControlPanel(true);
+                
             }
             else 
             {
@@ -269,9 +273,39 @@ namespace TowerMonitor
             DoDVRLogout();
             CloseSerialPort();
             MessageBox.Show("登出成功!");
-            loginButton.Text = "登入";
+            loginButton.Text = "登入";            
+            ShowCameraPanel(true);
+            ShowControlPanel(false);
+            
+        }
 
-            controlPanel.Visible = false;
+        private void ShowCameraPanel(bool isShow) {
+            int height = cameraPanel.Height;
+
+            if (isShow)
+            {
+                loginButton.Top = loginButton.Top + height;
+            }
+            else 
+            {
+                loginButton.Top = loginButton.Top - height;
+            }
+            cameraPanel.Visible = isShow;         
+
+        }
+
+        private void ShowControlPanel(bool isShow) {
+            int height = cameraPanel.Height;
+
+            if (isShow)
+            {
+                controlPanel.Top = controlPanel.Top - height;
+            }
+            else
+            {
+                controlPanel.Top = controlPanel.Top + height;
+            }
+            controlPanel.Visible = isShow;
         }
 
         public void cbLoginCallBack(int lUserID, int dwResult, IntPtr lpDeviceInfo, IntPtr pUser)
