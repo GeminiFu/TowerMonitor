@@ -31,6 +31,17 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.realtimePictureBox = new System.Windows.Forms.PictureBox();
+            this.cameraPanel = new System.Windows.Forms.Panel();
+            this.ipLabel = new System.Windows.Forms.Label();
+            this.ipTextBox = new System.Windows.Forms.TextBox();
+            this.channelTextBox = new System.Windows.Forms.TextBox();
+            this.portLabel = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.portTextBox = new System.Windows.Forms.TextBox();
+            this.accountLabel = new System.Windows.Forms.Label();
+            this.passwordTextBox = new System.Windows.Forms.TextBox();
+            this.usernameTextBox = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.controlPanel = new System.Windows.Forms.Panel();
             this.label11 = new System.Windows.Forms.Label();
             this.zTextBox = new System.Windows.Forms.TextBox();
@@ -53,25 +64,21 @@
             this.leftButton = new System.Windows.Forms.Button();
             this.upButton = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
-            this.channelTextBox = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.loginButton = new System.Windows.Forms.Button();
-            this.passwordTextBox = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.usernameTextBox = new System.Windows.Forms.TextBox();
-            this.accountLabel = new System.Windows.Forms.Label();
-            this.portTextBox = new System.Windows.Forms.TextBox();
-            this.portLabel = new System.Windows.Forms.Label();
-            this.ipTextBox = new System.Windows.Forms.TextBox();
-            this.ipLabel = new System.Windows.Forms.Label();
-            this.cameraPanel = new System.Windows.Forms.Panel();
+            this.dataPanel = new System.Windows.Forms.Panel();
+            this.label12 = new System.Windows.Forms.Label();
+            this.cameraDegreeTextBox = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.armDegreeTextBox = new System.Windows.Forms.TextBox();
+            this.showDataCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.realtimePictureBox)).BeginInit();
-            this.controlPanel.SuspendLayout();
             this.cameraPanel.SuspendLayout();
+            this.controlPanel.SuspendLayout();
+            this.dataPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -89,6 +96,7 @@
             this.splitContainer1.Panel2.Controls.Add(this.cameraPanel);
             this.splitContainer1.Panel2.Controls.Add(this.controlPanel);
             this.splitContainer1.Panel2.Controls.Add(this.label3);
+            this.splitContainer1.Panel2.Controls.Add(this.dataPanel);
             this.splitContainer1.Panel2.Controls.Add(this.loginButton);
             this.splitContainer1.Size = new System.Drawing.Size(1484, 761);
             this.splitContainer1.SplitterDistance = 1059;
@@ -103,32 +111,148 @@
             this.realtimePictureBox.TabIndex = 0;
             this.realtimePictureBox.TabStop = false;
             // 
+            // cameraPanel
+            // 
+            this.cameraPanel.AutoSize = true;
+            this.cameraPanel.Controls.Add(this.ipLabel);
+            this.cameraPanel.Controls.Add(this.ipTextBox);
+            this.cameraPanel.Controls.Add(this.channelTextBox);
+            this.cameraPanel.Controls.Add(this.portLabel);
+            this.cameraPanel.Controls.Add(this.label2);
+            this.cameraPanel.Controls.Add(this.portTextBox);
+            this.cameraPanel.Controls.Add(this.accountLabel);
+            this.cameraPanel.Controls.Add(this.passwordTextBox);
+            this.cameraPanel.Controls.Add(this.usernameTextBox);
+            this.cameraPanel.Controls.Add(this.label1);
+            this.cameraPanel.Location = new System.Drawing.Point(3, 45);
+            this.cameraPanel.Name = "cameraPanel";
+            this.cameraPanel.Size = new System.Drawing.Size(415, 128);
+            this.cameraPanel.TabIndex = 1;
+            // 
+            // ipLabel
+            // 
+            this.ipLabel.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.ipLabel.AutoSize = true;
+            this.ipLabel.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.ipLabel.Location = new System.Drawing.Point(43, 14);
+            this.ipLabel.Name = "ipLabel";
+            this.ipLabel.Size = new System.Drawing.Size(33, 21);
+            this.ipLabel.TabIndex = 0;
+            this.ipLabel.Text = "IP:";
+            // 
+            // ipTextBox
+            // 
+            this.ipTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.ipTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.ipTextBox.Location = new System.Drawing.Point(82, 14);
+            this.ipTextBox.Name = "ipTextBox";
+            this.ipTextBox.Size = new System.Drawing.Size(130, 27);
+            this.ipTextBox.TabIndex = 1;
+            this.ipTextBox.Text = "192.168.50.137";
+            // 
+            // channelTextBox
+            // 
+            this.channelTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.channelTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.channelTextBox.Location = new System.Drawing.Point(82, 89);
+            this.channelTextBox.Name = "channelTextBox";
+            this.channelTextBox.ReadOnly = true;
+            this.channelTextBox.Size = new System.Drawing.Size(130, 27);
+            this.channelTextBox.TabIndex = 11;
+            this.channelTextBox.Text = "1";
+            // 
+            // portLabel
+            // 
+            this.portLabel.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.portLabel.AutoSize = true;
+            this.portLabel.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.portLabel.Location = new System.Drawing.Point(221, 14);
+            this.portLabel.Name = "portLabel";
+            this.portLabel.Size = new System.Drawing.Size(48, 21);
+            this.portLabel.TabIndex = 2;
+            this.portLabel.Text = "Port:";
+            // 
+            // label2
+            // 
+            this.label2.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label2.Location = new System.Drawing.Point(19, 88);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(57, 21);
+            this.label2.TabIndex = 10;
+            this.label2.Text = "頻道:";
+            // 
+            // portTextBox
+            // 
+            this.portTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.portTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.portTextBox.Location = new System.Drawing.Point(272, 14);
+            this.portTextBox.Name = "portTextBox";
+            this.portTextBox.Size = new System.Drawing.Size(130, 27);
+            this.portTextBox.TabIndex = 3;
+            this.portTextBox.Text = "8000";
+            // 
+            // accountLabel
+            // 
+            this.accountLabel.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.accountLabel.AutoSize = true;
+            this.accountLabel.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.accountLabel.Location = new System.Drawing.Point(19, 50);
+            this.accountLabel.Name = "accountLabel";
+            this.accountLabel.Size = new System.Drawing.Size(57, 21);
+            this.accountLabel.TabIndex = 4;
+            this.accountLabel.Text = "帳號:";
+            // 
+            // passwordTextBox
+            // 
+            this.passwordTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.passwordTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.passwordTextBox.Location = new System.Drawing.Point(272, 52);
+            this.passwordTextBox.Name = "passwordTextBox";
+            this.passwordTextBox.PasswordChar = '*';
+            this.passwordTextBox.Size = new System.Drawing.Size(130, 27);
+            this.passwordTextBox.TabIndex = 7;
+            this.passwordTextBox.Text = "Seafoodlab7812";
+            // 
+            // usernameTextBox
+            // 
+            this.usernameTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.usernameTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.usernameTextBox.Location = new System.Drawing.Point(82, 51);
+            this.usernameTextBox.Name = "usernameTextBox";
+            this.usernameTextBox.Size = new System.Drawing.Size(130, 27);
+            this.usernameTextBox.TabIndex = 5;
+            this.usernameTextBox.Text = "admin";
+            // 
+            // label1
+            // 
+            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label1.Location = new System.Drawing.Point(212, 51);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(57, 21);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "密碼:";
+            // 
             // controlPanel
             // 
             this.controlPanel.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.controlPanel.Controls.Add(this.label11);
-            this.controlPanel.Controls.Add(this.zTextBox);
-            this.controlPanel.Controls.Add(this.zoomPosTextBox);
-            this.controlPanel.Controls.Add(this.label7);
+            this.controlPanel.Controls.Add(this.showDataCheckBox);
+            this.controlPanel.Controls.Add(this.armDegreeTextBox);
+            this.controlPanel.Controls.Add(this.label13);
+            this.controlPanel.Controls.Add(this.cameraDegreeTextBox);
+            this.controlPanel.Controls.Add(this.label12);
             this.controlPanel.Controls.Add(this.rightButton);
-            this.controlPanel.Controls.Add(this.yTextBox);
-            this.controlPanel.Controls.Add(this.label8);
-            this.controlPanel.Controls.Add(this.label6);
             this.controlPanel.Controls.Add(this.downButton);
-            this.controlPanel.Controls.Add(this.xTextBox);
-            this.controlPanel.Controls.Add(this.tiltPosTextBox);
-            this.controlPanel.Controls.Add(this.label5);
             this.controlPanel.Controls.Add(this.zoomOutButton);
-            this.controlPanel.Controls.Add(this.label4);
-            this.controlPanel.Controls.Add(this.label9);
-            this.controlPanel.Controls.Add(this.panPosTextBox);
             this.controlPanel.Controls.Add(this.zoomInButton);
-            this.controlPanel.Controls.Add(this.label10);
             this.controlPanel.Controls.Add(this.leftButton);
             this.controlPanel.Controls.Add(this.upButton);
             this.controlPanel.Location = new System.Drawing.Point(3, 214);
             this.controlPanel.Name = "controlPanel";
-            this.controlPanel.Size = new System.Drawing.Size(415, 417);
+            this.controlPanel.Size = new System.Drawing.Size(415, 285);
             this.controlPanel.TabIndex = 35;
             this.controlPanel.Visible = false;
             // 
@@ -136,7 +260,7 @@
             // 
             this.label11.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label11.Font = new System.Drawing.Font("新細明體", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label11.Location = new System.Drawing.Point(116, 231);
+            this.label11.Location = new System.Drawing.Point(114, 11);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(187, 25);
             this.label11.TabIndex = 34;
@@ -146,7 +270,7 @@
             // 
             this.zTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.zTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.zTextBox.Location = new System.Drawing.Point(331, 368);
+            this.zTextBox.Location = new System.Drawing.Point(329, 148);
             this.zTextBox.Name = "zTextBox";
             this.zTextBox.Size = new System.Drawing.Size(40, 27);
             this.zTextBox.TabIndex = 19;
@@ -155,7 +279,7 @@
             // 
             this.zoomPosTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.zoomPosTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.zoomPosTextBox.Location = new System.Drawing.Point(365, 276);
+            this.zoomPosTextBox.Location = new System.Drawing.Point(363, 56);
             this.zoomPosTextBox.Name = "zoomPosTextBox";
             this.zoomPosTextBox.Size = new System.Drawing.Size(45, 27);
             this.zoomPosTextBox.TabIndex = 32;
@@ -165,7 +289,7 @@
             this.label7.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label7.Location = new System.Drawing.Point(269, 374);
+            this.label7.Location = new System.Drawing.Point(267, 154);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(56, 16);
             this.label7.TabIndex = 18;
@@ -188,7 +312,7 @@
             // 
             this.yTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.yTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.yTextBox.Location = new System.Drawing.Point(223, 368);
+            this.yTextBox.Location = new System.Drawing.Point(221, 148);
             this.yTextBox.Name = "yTextBox";
             this.yTextBox.Size = new System.Drawing.Size(40, 27);
             this.yTextBox.TabIndex = 17;
@@ -198,7 +322,7 @@
             this.label8.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label8.Location = new System.Drawing.Point(257, 279);
+            this.label8.Location = new System.Drawing.Point(255, 59);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(102, 16);
             this.label8.TabIndex = 31;
@@ -209,7 +333,7 @@
             this.label6.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label6.Location = new System.Drawing.Point(159, 374);
+            this.label6.Location = new System.Drawing.Point(157, 154);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(58, 16);
             this.label6.TabIndex = 16;
@@ -232,7 +356,7 @@
             // 
             this.xTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.xTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.xTextBox.Location = new System.Drawing.Point(113, 368);
+            this.xTextBox.Location = new System.Drawing.Point(111, 148);
             this.xTextBox.Name = "xTextBox";
             this.xTextBox.Size = new System.Drawing.Size(40, 27);
             this.xTextBox.TabIndex = 15;
@@ -241,7 +365,7 @@
             // 
             this.tiltPosTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.tiltPosTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tiltPosTextBox.Location = new System.Drawing.Point(206, 276);
+            this.tiltPosTextBox.Location = new System.Drawing.Point(204, 56);
             this.tiltPosTextBox.Name = "tiltPosTextBox";
             this.tiltPosTextBox.Size = new System.Drawing.Size(45, 27);
             this.tiltPosTextBox.TabIndex = 30;
@@ -251,7 +375,7 @@
             this.label5.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label5.Location = new System.Drawing.Point(49, 374);
+            this.label5.Location = new System.Drawing.Point(47, 154);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(58, 16);
             this.label5.TabIndex = 14;
@@ -274,7 +398,7 @@
             // 
             this.label4.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label4.Font = new System.Drawing.Font("新細明體", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label4.Location = new System.Drawing.Point(133, 327);
+            this.label4.Location = new System.Drawing.Point(131, 107);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(139, 25);
             this.label4.TabIndex = 13;
@@ -285,7 +409,7 @@
             this.label9.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label9.Location = new System.Drawing.Point(130, 279);
+            this.label9.Location = new System.Drawing.Point(128, 59);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(70, 16);
             this.label9.TabIndex = 29;
@@ -295,7 +419,7 @@
             // 
             this.panPosTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.panPosTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.panPosTextBox.Location = new System.Drawing.Point(79, 276);
+            this.panPosTextBox.Location = new System.Drawing.Point(77, 56);
             this.panPosTextBox.Name = "panPosTextBox";
             this.panPosTextBox.Size = new System.Drawing.Size(45, 27);
             this.panPosTextBox.TabIndex = 28;
@@ -318,7 +442,7 @@
             this.label10.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label10.Location = new System.Drawing.Point(8, 279);
+            this.label10.Location = new System.Drawing.Point(6, 59);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(69, 16);
             this.label10.TabIndex = 27;
@@ -360,28 +484,6 @@
             this.label3.TabIndex = 12;
             this.label3.Text = "攝影機";
             // 
-            // channelTextBox
-            // 
-            this.channelTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.channelTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.channelTextBox.Location = new System.Drawing.Point(82, 89);
-            this.channelTextBox.Name = "channelTextBox";
-            this.channelTextBox.ReadOnly = true;
-            this.channelTextBox.Size = new System.Drawing.Size(130, 27);
-            this.channelTextBox.TabIndex = 11;
-            this.channelTextBox.Text = "1";
-            // 
-            // label2
-            // 
-            this.label2.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label2.Location = new System.Drawing.Point(19, 88);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(57, 21);
-            this.label2.TabIndex = 10;
-            this.label2.Text = "頻道:";
-            // 
             // loginButton
             // 
             this.loginButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
@@ -394,108 +496,79 @@
             this.loginButton.UseVisualStyleBackColor = true;
             this.loginButton.Click += new System.EventHandler(this.OnLoginClick);
             // 
-            // passwordTextBox
+            // dataPanel
             // 
-            this.passwordTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.passwordTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.passwordTextBox.Location = new System.Drawing.Point(272, 52);
-            this.passwordTextBox.Name = "passwordTextBox";
-            this.passwordTextBox.PasswordChar = '*';
-            this.passwordTextBox.Size = new System.Drawing.Size(130, 27);
-            this.passwordTextBox.TabIndex = 7;
-            this.passwordTextBox.Text = "Seafoodlab7812";
+            this.dataPanel.Controls.Add(this.label11);
+            this.dataPanel.Controls.Add(this.zTextBox);
+            this.dataPanel.Controls.Add(this.label10);
+            this.dataPanel.Controls.Add(this.zoomPosTextBox);
+            this.dataPanel.Controls.Add(this.panPosTextBox);
+            this.dataPanel.Controls.Add(this.label7);
+            this.dataPanel.Controls.Add(this.label9);
+            this.dataPanel.Controls.Add(this.label4);
+            this.dataPanel.Controls.Add(this.yTextBox);
+            this.dataPanel.Controls.Add(this.label5);
+            this.dataPanel.Controls.Add(this.label8);
+            this.dataPanel.Controls.Add(this.tiltPosTextBox);
+            this.dataPanel.Controls.Add(this.label6);
+            this.dataPanel.Controls.Add(this.xTextBox);
+            this.dataPanel.Location = new System.Drawing.Point(6, 505);
+            this.dataPanel.Name = "dataPanel";
+            this.dataPanel.Size = new System.Drawing.Size(415, 192);
+            this.dataPanel.TabIndex = 1;
+            this.dataPanel.Visible = false;
             // 
-            // label1
+            // label12
             // 
-            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label1.Location = new System.Drawing.Point(212, 51);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(57, 21);
-            this.label1.TabIndex = 6;
-            this.label1.Text = "密碼:";
+            this.label12.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label12.Location = new System.Drawing.Point(15, 207);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(183, 21);
+            this.label12.TabIndex = 27;
+            this.label12.Text = "目前鏡頭上下角度:";
             // 
-            // usernameTextBox
+            // cameraDegreeTextBox
             // 
-            this.usernameTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.usernameTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.usernameTextBox.Location = new System.Drawing.Point(82, 51);
-            this.usernameTextBox.Name = "usernameTextBox";
-            this.usernameTextBox.Size = new System.Drawing.Size(130, 27);
-            this.usernameTextBox.TabIndex = 5;
-            this.usernameTextBox.Text = "admin";
+            this.cameraDegreeTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.cameraDegreeTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.cameraDegreeTextBox.Location = new System.Drawing.Point(204, 201);
+            this.cameraDegreeTextBox.Name = "cameraDegreeTextBox";
+            this.cameraDegreeTextBox.Size = new System.Drawing.Size(45, 27);
+            this.cameraDegreeTextBox.TabIndex = 31;
             // 
-            // accountLabel
+            // label13
             // 
-            this.accountLabel.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.accountLabel.AutoSize = true;
-            this.accountLabel.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.accountLabel.Location = new System.Drawing.Point(19, 50);
-            this.accountLabel.Name = "accountLabel";
-            this.accountLabel.Size = new System.Drawing.Size(57, 21);
-            this.accountLabel.TabIndex = 4;
-            this.accountLabel.Text = "帳號:";
+            this.label13.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label13.Location = new System.Drawing.Point(15, 246);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(183, 21);
+            this.label13.TabIndex = 32;
+            this.label13.Text = "目前吊臂上下角度:";
             // 
-            // portTextBox
+            // armDegreeTextBox
             // 
-            this.portTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.portTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.portTextBox.Location = new System.Drawing.Point(272, 14);
-            this.portTextBox.Name = "portTextBox";
-            this.portTextBox.Size = new System.Drawing.Size(130, 27);
-            this.portTextBox.TabIndex = 3;
-            this.portTextBox.Text = "8000";
+            this.armDegreeTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.armDegreeTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.armDegreeTextBox.Location = new System.Drawing.Point(204, 246);
+            this.armDegreeTextBox.Name = "armDegreeTextBox";
+            this.armDegreeTextBox.Size = new System.Drawing.Size(45, 27);
+            this.armDegreeTextBox.TabIndex = 33;
             // 
-            // portLabel
+            // showDataCheckBox
             // 
-            this.portLabel.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.portLabel.AutoSize = true;
-            this.portLabel.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.portLabel.Location = new System.Drawing.Point(221, 14);
-            this.portLabel.Name = "portLabel";
-            this.portLabel.Size = new System.Drawing.Size(48, 21);
-            this.portLabel.TabIndex = 2;
-            this.portLabel.Text = "Port:";
-            // 
-            // ipTextBox
-            // 
-            this.ipTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.ipTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.ipTextBox.Location = new System.Drawing.Point(82, 14);
-            this.ipTextBox.Name = "ipTextBox";
-            this.ipTextBox.Size = new System.Drawing.Size(130, 27);
-            this.ipTextBox.TabIndex = 1;
-            this.ipTextBox.Text = "192.168.50.137";
-            // 
-            // ipLabel
-            // 
-            this.ipLabel.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.ipLabel.AutoSize = true;
-            this.ipLabel.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.ipLabel.Location = new System.Drawing.Point(43, 14);
-            this.ipLabel.Name = "ipLabel";
-            this.ipLabel.Size = new System.Drawing.Size(33, 21);
-            this.ipLabel.TabIndex = 0;
-            this.ipLabel.Text = "IP:";
-            // 
-            // cameraPanel
-            // 
-            this.cameraPanel.AutoSize = true;
-            this.cameraPanel.Controls.Add(this.ipLabel);
-            this.cameraPanel.Controls.Add(this.ipTextBox);
-            this.cameraPanel.Controls.Add(this.channelTextBox);
-            this.cameraPanel.Controls.Add(this.portLabel);
-            this.cameraPanel.Controls.Add(this.label2);
-            this.cameraPanel.Controls.Add(this.portTextBox);
-            this.cameraPanel.Controls.Add(this.accountLabel);
-            this.cameraPanel.Controls.Add(this.passwordTextBox);
-            this.cameraPanel.Controls.Add(this.usernameTextBox);
-            this.cameraPanel.Controls.Add(this.label1);
-            this.cameraPanel.Location = new System.Drawing.Point(3, 45);
-            this.cameraPanel.Name = "cameraPanel";
-            this.cameraPanel.Size = new System.Drawing.Size(415, 128);
-            this.cameraPanel.TabIndex = 1;
+            this.showDataCheckBox.AutoSize = true;
+            this.showDataCheckBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.showDataCheckBox.Location = new System.Drawing.Point(272, 207);
+            this.showDataCheckBox.Name = "showDataCheckBox";
+            this.showDataCheckBox.Size = new System.Drawing.Size(122, 20);
+            this.showDataCheckBox.TabIndex = 34;
+            this.showDataCheckBox.Text = "顯示完整資訊";
+            this.showDataCheckBox.UseVisualStyleBackColor = true;
+            this.showDataCheckBox.CheckedChanged += new System.EventHandler(this.OnCheckedClick);
             // 
             // Form1
             // 
@@ -513,10 +586,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.realtimePictureBox)).EndInit();
-            this.controlPanel.ResumeLayout(false);
-            this.controlPanel.PerformLayout();
             this.cameraPanel.ResumeLayout(false);
             this.cameraPanel.PerformLayout();
+            this.controlPanel.ResumeLayout(false);
+            this.controlPanel.PerformLayout();
+            this.dataPanel.ResumeLayout(false);
+            this.dataPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -559,6 +634,12 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Panel controlPanel;
         private System.Windows.Forms.Panel cameraPanel;
+        private System.Windows.Forms.Panel dataPanel;
+        private System.Windows.Forms.TextBox cameraDegreeTextBox;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TextBox armDegreeTextBox;
+        private System.Windows.Forms.CheckBox showDataCheckBox;
     }
 }
 

@@ -184,6 +184,7 @@ namespace TowerMonitor
                     yTextBox.Text = yNow.ToString();
                     xTextBox.Text = xNow.ToString();
                     zTextBox.Text = zNow.ToString();
+                    armDegreeTextBox.Text = xTextBox.Text;
 
                     ShowPTZParam();
                               
@@ -479,6 +480,8 @@ namespace TowerMonitor
             panPosTextBox.Text = "";
             tiltPosTextBox.Text = "";
             zoomPosTextBox.Text = "";
+
+            cameraDegreeTextBox.Text = "";
         }
         
         // ##### 左 (Start) ######  
@@ -707,6 +710,7 @@ namespace TowerMonitor
                 ushort wTiltPos = Convert.ToUInt16(Convert.ToString(m_struPtzCfg.wTiltPos, 16));
                 float WTiltPos = wTiltPos * 0.1f;
                 tiltPosTextBox.Text = WTiltPos.ToString();
+                cameraDegreeTextBox.Text = WTiltPos.ToString();
 
                 // 焦距倍數
                 ushort wZoomPos = Convert.ToUInt16(Convert.ToString(m_struPtzCfg.wZoomPos, 16));
@@ -885,6 +889,8 @@ namespace TowerMonitor
                 xTextBox.Text = "";
                 yTextBox.Text = "";
                 zTextBox.Text = "";
+
+                armDegreeTextBox.Text = "";
                 //Debug.WriteLine("== SerialPort Close ==");
 
             }
@@ -896,10 +902,24 @@ namespace TowerMonitor
 
         }
 
+
         /* ##########################
          * ##### 陀螺儀 (End) #####
          * ##########################
          */
+
+        private void OnCheckedClick(object sender, EventArgs e)
+        {
+            bool isChecked = showDataCheckBox.Checked;
+            if (isChecked)
+            {
+                dataPanel.Visible = true;
+            }
+            else 
+            {
+                dataPanel.Visible = false;
+            }
+        }
 
 
     }
