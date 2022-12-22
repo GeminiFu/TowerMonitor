@@ -1,4 +1,5 @@
 ﻿using HikvisionDemo;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,6 +16,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TowerMonitor.entity;
 using TowerMonitor.IMU;
 using TowerMonitor.util;
 using static HikvisionDemo.CHCNetSDK;
@@ -26,6 +28,9 @@ namespace TowerMonitor
 {
     public partial class Form1 : Form
     {
+        private String startupPath = System.Windows.Forms.Application.StartupPath;
+        private String deviceDataPath;
+
         //private int hasInitCamera = 0;      // 是否完成初始化鏡頭 1: 完成 0:未完成
         private bool isSettingPTZRunning = false;        
 
@@ -76,9 +81,9 @@ namespace TowerMonitor
             InitializeComponent();
             InitCHCNet();
             InitIMU();
+            InitDeviceData();
+            
         }
-
-
 
         private void OnLoad(object sender, EventArgs e)
         {
@@ -120,6 +125,41 @@ namespace TowerMonitor
             m_connection.OnSendData += new Connection.SendDataEventHandler(SendSerialPort);
             KbootDecoder.OnPacketRecieved += new KbootPacketDecoder.KBootDecoderDataReceivedEventHandler(OnKbootDecoderDataReceived);
             serialPort.WriteTimeout = 1000;
+        }
+
+        // 載入設備預設資料
+        private void InitDeviceData() {
+            deviceDataPath = startupPath + "\\deviceData.json";
+
+            Console.WriteLine("deviceDataPath=" + deviceDataPath);
+
+            DeviceDataEntity deviceDataEntity;
+            string jsonData = "";
+
+            // 如果沒有deviceData.json 產生預設資料
+            if (!File.Exists(deviceDataPath))
+            {
+                deviceDataEntity = new DeviceDataEntity();
+                deviceDataEntity.IP = "";
+                deviceDataEntity.Port = "";
+                deviceDataEntity.Channel = "1";
+                deviceDataEntity.Username = "";
+                deviceDataEntity.Password = "";
+                deviceDataEntity.Account = "admin";
+                deviceDataEntity.AccountPassword = "admin";
+
+                jsonData = JsonConvert.SerializeObject(deviceDataEntity);
+                bool isSuccess = FileUtil.WriteFile(deviceDataPath, jsonData);
+            }
+            
+            jsonData = FileUtil.ReadFile(deviceDataPath);
+            deviceDataEntity = JsonConvert.DeserializeObject<DeviceDataEntity>(jsonData);
+
+            ipTextBox.Text = deviceDataEntity.IP;
+            portTextBox.Text = deviceDataEntity.Port;
+            usernameTextBox.Text = deviceDataEntity.Username;
+            passwordTextBox.Text = deviceDataEntity.Password;
+            channelTextBox.Text = deviceDataEntity.Channel;
         }
 
         // 取得目前 一開始的 雲台的 T 值, 陀螺儀的 一開始的 x 值

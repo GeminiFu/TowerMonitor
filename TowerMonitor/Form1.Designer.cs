@@ -71,6 +71,7 @@
             this.label13 = new System.Windows.Forms.Label();
             this.armDegreeTextBox = new System.Windows.Forms.TextBox();
             this.showDataCheckBox = new System.Windows.Forms.CheckBox();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -114,6 +115,7 @@
             // cameraPanel
             // 
             this.cameraPanel.AutoSize = true;
+            this.cameraPanel.Controls.Add(this.button1);
             this.cameraPanel.Controls.Add(this.ipLabel);
             this.cameraPanel.Controls.Add(this.ipTextBox);
             this.cameraPanel.Controls.Add(this.channelTextBox);
@@ -148,7 +150,6 @@
             this.ipTextBox.Name = "ipTextBox";
             this.ipTextBox.Size = new System.Drawing.Size(130, 27);
             this.ipTextBox.TabIndex = 1;
-            this.ipTextBox.Text = "192.168.50.137";
             // 
             // channelTextBox
             // 
@@ -159,7 +160,6 @@
             this.channelTextBox.ReadOnly = true;
             this.channelTextBox.Size = new System.Drawing.Size(130, 27);
             this.channelTextBox.TabIndex = 11;
-            this.channelTextBox.Text = "1";
             // 
             // portLabel
             // 
@@ -191,7 +191,6 @@
             this.portTextBox.Name = "portTextBox";
             this.portTextBox.Size = new System.Drawing.Size(130, 27);
             this.portTextBox.TabIndex = 3;
-            this.portTextBox.Text = "8000";
             // 
             // accountLabel
             // 
@@ -213,7 +212,6 @@
             this.passwordTextBox.PasswordChar = '*';
             this.passwordTextBox.Size = new System.Drawing.Size(130, 27);
             this.passwordTextBox.TabIndex = 7;
-            this.passwordTextBox.Text = "Seafoodlab7812";
             // 
             // usernameTextBox
             // 
@@ -223,7 +221,6 @@
             this.usernameTextBox.Name = "usernameTextBox";
             this.usernameTextBox.Size = new System.Drawing.Size(130, 27);
             this.usernameTextBox.TabIndex = 5;
-            this.usernameTextBox.Text = "admin";
             // 
             // label1
             // 
@@ -570,6 +567,16 @@
             this.showDataCheckBox.UseVisualStyleBackColor = true;
             this.showDataCheckBox.CheckedChanged += new System.EventHandler(this.OnCheckedClick);
             // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.button1.Location = new System.Drawing.Point(273, 89);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(129, 27);
+            this.button1.TabIndex = 12;
+            this.button1.Text = "修改資料";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -640,6 +647,7 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.TextBox armDegreeTextBox;
         private System.Windows.Forms.CheckBox showDataCheckBox;
+        private System.Windows.Forms.Button button1;
     }
 }
 
