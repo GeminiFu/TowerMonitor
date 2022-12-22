@@ -32,6 +32,7 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.realtimePictureBox = new System.Windows.Forms.PictureBox();
             this.cameraPanel = new System.Windows.Forms.Panel();
+            this.settingButton = new System.Windows.Forms.Button();
             this.ipLabel = new System.Windows.Forms.Label();
             this.ipTextBox = new System.Windows.Forms.TextBox();
             this.channelTextBox = new System.Windows.Forms.TextBox();
@@ -43,35 +44,34 @@
             this.usernameTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.controlPanel = new System.Windows.Forms.Panel();
-            this.label11 = new System.Windows.Forms.Label();
-            this.zTextBox = new System.Windows.Forms.TextBox();
-            this.zoomPosTextBox = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
+            this.showDataCheckBox = new System.Windows.Forms.CheckBox();
+            this.armDegreeTextBox = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.cameraDegreeTextBox = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
             this.rightButton = new System.Windows.Forms.Button();
-            this.yTextBox = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
             this.downButton = new System.Windows.Forms.Button();
-            this.xTextBox = new System.Windows.Forms.TextBox();
-            this.tiltPosTextBox = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.zoomOutButton = new System.Windows.Forms.Button();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.panPosTextBox = new System.Windows.Forms.TextBox();
             this.zoomInButton = new System.Windows.Forms.Button();
-            this.label10 = new System.Windows.Forms.Label();
             this.leftButton = new System.Windows.Forms.Button();
             this.upButton = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
-            this.loginButton = new System.Windows.Forms.Button();
             this.dataPanel = new System.Windows.Forms.Panel();
-            this.label12 = new System.Windows.Forms.Label();
-            this.cameraDegreeTextBox = new System.Windows.Forms.TextBox();
-            this.label13 = new System.Windows.Forms.Label();
-            this.armDegreeTextBox = new System.Windows.Forms.TextBox();
-            this.showDataCheckBox = new System.Windows.Forms.CheckBox();
-            this.settingButton = new System.Windows.Forms.Button();
+            this.label11 = new System.Windows.Forms.Label();
+            this.zTextBox = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.zoomPosTextBox = new System.Windows.Forms.TextBox();
+            this.panPosTextBox = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.yTextBox = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.tiltPosTextBox = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.xTextBox = new System.Windows.Forms.TextBox();
+            this.loginButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -131,6 +131,17 @@
             this.cameraPanel.Size = new System.Drawing.Size(415, 128);
             this.cameraPanel.TabIndex = 1;
             // 
+            // settingButton
+            // 
+            this.settingButton.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.settingButton.Location = new System.Drawing.Point(273, 89);
+            this.settingButton.Name = "settingButton";
+            this.settingButton.Size = new System.Drawing.Size(129, 27);
+            this.settingButton.TabIndex = 12;
+            this.settingButton.Text = "修改資料";
+            this.settingButton.UseVisualStyleBackColor = true;
+            this.settingButton.Click += new System.EventHandler(this.OnOpenLoginFormClick);
+            // 
             // ipLabel
             // 
             this.ipLabel.Anchor = System.Windows.Forms.AnchorStyles.Top;
@@ -148,6 +159,7 @@
             this.ipTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.ipTextBox.Location = new System.Drawing.Point(82, 14);
             this.ipTextBox.Name = "ipTextBox";
+            this.ipTextBox.ReadOnly = true;
             this.ipTextBox.Size = new System.Drawing.Size(130, 27);
             this.ipTextBox.TabIndex = 1;
             // 
@@ -189,6 +201,7 @@
             this.portTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.portTextBox.Location = new System.Drawing.Point(272, 14);
             this.portTextBox.Name = "portTextBox";
+            this.portTextBox.ReadOnly = true;
             this.portTextBox.Size = new System.Drawing.Size(130, 27);
             this.portTextBox.TabIndex = 3;
             // 
@@ -210,6 +223,7 @@
             this.passwordTextBox.Location = new System.Drawing.Point(272, 52);
             this.passwordTextBox.Name = "passwordTextBox";
             this.passwordTextBox.PasswordChar = '*';
+            this.passwordTextBox.ReadOnly = true;
             this.passwordTextBox.Size = new System.Drawing.Size(130, 27);
             this.passwordTextBox.TabIndex = 7;
             // 
@@ -219,6 +233,7 @@
             this.usernameTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.usernameTextBox.Location = new System.Drawing.Point(82, 51);
             this.usernameTextBox.Name = "usernameTextBox";
+            this.usernameTextBox.ReadOnly = true;
             this.usernameTextBox.Size = new System.Drawing.Size(130, 27);
             this.usernameTextBox.TabIndex = 5;
             // 
@@ -253,44 +268,57 @@
             this.controlPanel.TabIndex = 35;
             this.controlPanel.Visible = false;
             // 
-            // label11
+            // showDataCheckBox
             // 
-            this.label11.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.label11.Font = new System.Drawing.Font("新細明體", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label11.Location = new System.Drawing.Point(114, 11);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(187, 25);
-            this.label11.TabIndex = 34;
-            this.label11.Text = "攝影機雲台位置";
+            this.showDataCheckBox.AutoSize = true;
+            this.showDataCheckBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.showDataCheckBox.Location = new System.Drawing.Point(272, 207);
+            this.showDataCheckBox.Name = "showDataCheckBox";
+            this.showDataCheckBox.Size = new System.Drawing.Size(122, 20);
+            this.showDataCheckBox.TabIndex = 34;
+            this.showDataCheckBox.Text = "顯示完整資訊";
+            this.showDataCheckBox.UseVisualStyleBackColor = true;
+            this.showDataCheckBox.CheckedChanged += new System.EventHandler(this.OnCheckedClick);
             // 
-            // zTextBox
+            // armDegreeTextBox
             // 
-            this.zTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.zTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.zTextBox.Location = new System.Drawing.Point(329, 148);
-            this.zTextBox.Name = "zTextBox";
-            this.zTextBox.Size = new System.Drawing.Size(40, 27);
-            this.zTextBox.TabIndex = 19;
+            this.armDegreeTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.armDegreeTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.armDegreeTextBox.Location = new System.Drawing.Point(204, 246);
+            this.armDegreeTextBox.Name = "armDegreeTextBox";
+            this.armDegreeTextBox.Size = new System.Drawing.Size(45, 27);
+            this.armDegreeTextBox.TabIndex = 33;
             // 
-            // zoomPosTextBox
+            // label13
             // 
-            this.zoomPosTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.zoomPosTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.zoomPosTextBox.Location = new System.Drawing.Point(363, 56);
-            this.zoomPosTextBox.Name = "zoomPosTextBox";
-            this.zoomPosTextBox.Size = new System.Drawing.Size(45, 27);
-            this.zoomPosTextBox.TabIndex = 32;
+            this.label13.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label13.Location = new System.Drawing.Point(15, 246);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(183, 21);
+            this.label13.TabIndex = 32;
+            this.label13.Text = "目前吊臂上下角度:";
             // 
-            // label7
+            // cameraDegreeTextBox
             // 
-            this.label7.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label7.Location = new System.Drawing.Point(267, 154);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(56, 16);
-            this.label7.TabIndex = 18;
-            this.label7.Text = "Z 旋轉:";
+            this.cameraDegreeTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.cameraDegreeTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.cameraDegreeTextBox.Location = new System.Drawing.Point(204, 201);
+            this.cameraDegreeTextBox.Name = "cameraDegreeTextBox";
+            this.cameraDegreeTextBox.Size = new System.Drawing.Size(45, 27);
+            this.cameraDegreeTextBox.TabIndex = 31;
+            // 
+            // label12
+            // 
+            this.label12.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label12.Location = new System.Drawing.Point(15, 207);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(183, 21);
+            this.label12.TabIndex = 27;
+            this.label12.Text = "目前鏡頭上下角度:";
             // 
             // rightButton
             // 
@@ -305,37 +333,6 @@
             this.rightButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.OnRightMouseDown);
             this.rightButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.OnRightMouseUp);
             // 
-            // yTextBox
-            // 
-            this.yTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.yTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.yTextBox.Location = new System.Drawing.Point(221, 148);
-            this.yTextBox.Name = "yTextBox";
-            this.yTextBox.Size = new System.Drawing.Size(40, 27);
-            this.yTextBox.TabIndex = 17;
-            // 
-            // label8
-            // 
-            this.label8.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label8.Location = new System.Drawing.Point(255, 59);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(102, 16);
-            this.label8.TabIndex = 31;
-            this.label8.Text = "放大倍數 (Z) :";
-            // 
-            // label6
-            // 
-            this.label6.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label6.Location = new System.Drawing.Point(157, 154);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(58, 16);
-            this.label6.TabIndex = 16;
-            this.label6.Text = "Y 旋轉:";
-            // 
             // downButton
             // 
             this.downButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
@@ -348,35 +345,6 @@
             this.downButton.UseVisualStyleBackColor = true;
             this.downButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.OnDownMouseDown);
             this.downButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.OnDownMouseUp);
-            // 
-            // xTextBox
-            // 
-            this.xTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.xTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.xTextBox.Location = new System.Drawing.Point(111, 148);
-            this.xTextBox.Name = "xTextBox";
-            this.xTextBox.Size = new System.Drawing.Size(40, 27);
-            this.xTextBox.TabIndex = 15;
-            // 
-            // tiltPosTextBox
-            // 
-            this.tiltPosTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.tiltPosTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tiltPosTextBox.Location = new System.Drawing.Point(204, 56);
-            this.tiltPosTextBox.Name = "tiltPosTextBox";
-            this.tiltPosTextBox.Size = new System.Drawing.Size(45, 27);
-            this.tiltPosTextBox.TabIndex = 30;
-            // 
-            // label5
-            // 
-            this.label5.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label5.Location = new System.Drawing.Point(47, 154);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(58, 16);
-            this.label5.TabIndex = 14;
-            this.label5.Text = "X 旋轉:";
             // 
             // zoomOutButton
             // 
@@ -391,36 +359,6 @@
             this.zoomOutButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.OnZoomOutMouseDown);
             this.zoomOutButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.OnZoomOutMouseUp);
             // 
-            // label4
-            // 
-            this.label4.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.label4.Font = new System.Drawing.Font("新細明體", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label4.Location = new System.Drawing.Point(131, 107);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(139, 25);
-            this.label4.TabIndex = 13;
-            this.label4.Text = "陀螺儀資訊";
-            // 
-            // label9
-            // 
-            this.label9.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label9.Location = new System.Drawing.Point(128, 59);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(70, 16);
-            this.label9.TabIndex = 29;
-            this.label9.Text = "上下 (T) :";
-            // 
-            // panPosTextBox
-            // 
-            this.panPosTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.panPosTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.panPosTextBox.Location = new System.Drawing.Point(77, 56);
-            this.panPosTextBox.Name = "panPosTextBox";
-            this.panPosTextBox.Size = new System.Drawing.Size(45, 27);
-            this.panPosTextBox.TabIndex = 28;
-            // 
             // zoomInButton
             // 
             this.zoomInButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
@@ -433,17 +371,6 @@
             this.zoomInButton.UseVisualStyleBackColor = true;
             this.zoomInButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.OnZoomInMouseDown);
             this.zoomInButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.OnZoomInMouseUp);
-            // 
-            // label10
-            // 
-            this.label10.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label10.Location = new System.Drawing.Point(6, 59);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(69, 16);
-            this.label10.TabIndex = 27;
-            this.label10.Text = "左右 (P) :";
             // 
             // leftButton
             // 
@@ -481,18 +408,6 @@
             this.label3.TabIndex = 12;
             this.label3.Text = "攝影機";
             // 
-            // loginButton
-            // 
-            this.loginButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.loginButton.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.loginButton.Location = new System.Drawing.Point(26, 179);
-            this.loginButton.Name = "loginButton";
-            this.loginButton.Size = new System.Drawing.Size(379, 28);
-            this.loginButton.TabIndex = 8;
-            this.loginButton.Text = "登入";
-            this.loginButton.UseVisualStyleBackColor = true;
-            this.loginButton.Click += new System.EventHandler(this.OnLoginClick);
-            // 
             // dataPanel
             // 
             this.dataPanel.Controls.Add(this.label11);
@@ -515,68 +430,157 @@
             this.dataPanel.TabIndex = 1;
             this.dataPanel.Visible = false;
             // 
-            // label12
+            // label11
             // 
-            this.label12.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label12.Location = new System.Drawing.Point(15, 207);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(183, 21);
-            this.label12.TabIndex = 27;
-            this.label12.Text = "目前鏡頭上下角度:";
+            this.label11.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label11.Font = new System.Drawing.Font("新細明體", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label11.Location = new System.Drawing.Point(114, 11);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(187, 25);
+            this.label11.TabIndex = 34;
+            this.label11.Text = "攝影機雲台位置";
             // 
-            // cameraDegreeTextBox
+            // zTextBox
             // 
-            this.cameraDegreeTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.cameraDegreeTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.cameraDegreeTextBox.Location = new System.Drawing.Point(204, 201);
-            this.cameraDegreeTextBox.Name = "cameraDegreeTextBox";
-            this.cameraDegreeTextBox.Size = new System.Drawing.Size(45, 27);
-            this.cameraDegreeTextBox.TabIndex = 31;
+            this.zTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.zTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.zTextBox.Location = new System.Drawing.Point(329, 148);
+            this.zTextBox.Name = "zTextBox";
+            this.zTextBox.Size = new System.Drawing.Size(40, 27);
+            this.zTextBox.TabIndex = 19;
             // 
-            // label13
+            // label10
             // 
-            this.label13.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.label13.AutoSize = true;
-            this.label13.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label13.Location = new System.Drawing.Point(15, 246);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(183, 21);
-            this.label13.TabIndex = 32;
-            this.label13.Text = "目前吊臂上下角度:";
+            this.label10.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label10.Location = new System.Drawing.Point(6, 59);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(69, 16);
+            this.label10.TabIndex = 27;
+            this.label10.Text = "左右 (P) :";
             // 
-            // armDegreeTextBox
+            // zoomPosTextBox
             // 
-            this.armDegreeTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.armDegreeTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.armDegreeTextBox.Location = new System.Drawing.Point(204, 246);
-            this.armDegreeTextBox.Name = "armDegreeTextBox";
-            this.armDegreeTextBox.Size = new System.Drawing.Size(45, 27);
-            this.armDegreeTextBox.TabIndex = 33;
+            this.zoomPosTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.zoomPosTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.zoomPosTextBox.Location = new System.Drawing.Point(363, 56);
+            this.zoomPosTextBox.Name = "zoomPosTextBox";
+            this.zoomPosTextBox.Size = new System.Drawing.Size(45, 27);
+            this.zoomPosTextBox.TabIndex = 32;
             // 
-            // showDataCheckBox
+            // panPosTextBox
             // 
-            this.showDataCheckBox.AutoSize = true;
-            this.showDataCheckBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.showDataCheckBox.Location = new System.Drawing.Point(272, 207);
-            this.showDataCheckBox.Name = "showDataCheckBox";
-            this.showDataCheckBox.Size = new System.Drawing.Size(122, 20);
-            this.showDataCheckBox.TabIndex = 34;
-            this.showDataCheckBox.Text = "顯示完整資訊";
-            this.showDataCheckBox.UseVisualStyleBackColor = true;
-            this.showDataCheckBox.CheckedChanged += new System.EventHandler(this.OnCheckedClick);
+            this.panPosTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.panPosTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.panPosTextBox.Location = new System.Drawing.Point(77, 56);
+            this.panPosTextBox.Name = "panPosTextBox";
+            this.panPosTextBox.Size = new System.Drawing.Size(45, 27);
+            this.panPosTextBox.TabIndex = 28;
             // 
-            // settingButton
+            // label7
             // 
-            this.settingButton.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.settingButton.Location = new System.Drawing.Point(273, 89);
-            this.settingButton.Name = "settingButton";
-            this.settingButton.Size = new System.Drawing.Size(129, 27);
-            this.settingButton.TabIndex = 12;
-            this.settingButton.Text = "修改資料";
-            this.settingButton.UseVisualStyleBackColor = true;
-            this.settingButton.Click += new System.EventHandler(this.OnSettingDataClick);
+            this.label7.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label7.Location = new System.Drawing.Point(267, 154);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(56, 16);
+            this.label7.TabIndex = 18;
+            this.label7.Text = "Z 旋轉:";
+            // 
+            // label9
+            // 
+            this.label9.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label9.Location = new System.Drawing.Point(128, 59);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(70, 16);
+            this.label9.TabIndex = 29;
+            this.label9.Text = "上下 (T) :";
+            // 
+            // label4
+            // 
+            this.label4.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label4.Font = new System.Drawing.Font("新細明體", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label4.Location = new System.Drawing.Point(131, 107);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(139, 25);
+            this.label4.TabIndex = 13;
+            this.label4.Text = "陀螺儀資訊";
+            // 
+            // yTextBox
+            // 
+            this.yTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.yTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.yTextBox.Location = new System.Drawing.Point(221, 148);
+            this.yTextBox.Name = "yTextBox";
+            this.yTextBox.Size = new System.Drawing.Size(40, 27);
+            this.yTextBox.TabIndex = 17;
+            // 
+            // label5
+            // 
+            this.label5.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label5.Location = new System.Drawing.Point(47, 154);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(58, 16);
+            this.label5.TabIndex = 14;
+            this.label5.Text = "X 旋轉:";
+            // 
+            // label8
+            // 
+            this.label8.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label8.Location = new System.Drawing.Point(255, 59);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(102, 16);
+            this.label8.TabIndex = 31;
+            this.label8.Text = "放大倍數 (Z) :";
+            // 
+            // tiltPosTextBox
+            // 
+            this.tiltPosTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.tiltPosTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tiltPosTextBox.Location = new System.Drawing.Point(204, 56);
+            this.tiltPosTextBox.Name = "tiltPosTextBox";
+            this.tiltPosTextBox.Size = new System.Drawing.Size(45, 27);
+            this.tiltPosTextBox.TabIndex = 30;
+            // 
+            // label6
+            // 
+            this.label6.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label6.Location = new System.Drawing.Point(157, 154);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(58, 16);
+            this.label6.TabIndex = 16;
+            this.label6.Text = "Y 旋轉:";
+            // 
+            // xTextBox
+            // 
+            this.xTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.xTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.xTextBox.Location = new System.Drawing.Point(111, 148);
+            this.xTextBox.Name = "xTextBox";
+            this.xTextBox.Size = new System.Drawing.Size(40, 27);
+            this.xTextBox.TabIndex = 15;
+            // 
+            // loginButton
+            // 
+            this.loginButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.loginButton.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.loginButton.Location = new System.Drawing.Point(26, 179);
+            this.loginButton.Name = "loginButton";
+            this.loginButton.Size = new System.Drawing.Size(379, 28);
+            this.loginButton.TabIndex = 8;
+            this.loginButton.Text = "登入";
+            this.loginButton.UseVisualStyleBackColor = true;
+            this.loginButton.Click += new System.EventHandler(this.OnLoginClick);
             // 
             // Form1
             // 
@@ -585,6 +589,7 @@
             this.ClientSize = new System.Drawing.Size(1484, 761);
             this.Controls.Add(this.splitContainer1);
             this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "塔吊輔助控制系統";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OnFormClosing);
             this.Load += new System.EventHandler(this.OnLoad);

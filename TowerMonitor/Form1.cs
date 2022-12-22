@@ -946,7 +946,22 @@ namespace TowerMonitor
             }
         }
 
-        private void OnSettingDataClick(object sender, EventArgs e)
+        private void OnOpenLoginFormClick(object sender, EventArgs e)
+        {
+            LoginForm loginForm = new LoginForm();
+
+            loginForm.LoginFormClosed += LoginFormClosed;
+            loginForm.ShowDialog();
+
+        }
+
+        private void LoginFormClosed(object semder, FormClosedEventArgs e, bool isLoginSuccess) {
+            if (isLoginSuccess) {                
+                OpenSettingDataForm();
+            }
+        }
+
+        private void OpenSettingDataForm()
         {
             deviceDataPath = startupPath + "\\deviceData.json";
 
@@ -958,7 +973,7 @@ namespace TowerMonitor
             else
             {
                 SetDeviceDataForm setDeviceDataForm = new SetDeviceDataForm();
-                setDeviceDataForm.CustomFormClosed += CloseListener;
+                setDeviceDataForm.SetDeviceDataFormClosed += CloseListener;
                 setDeviceDataForm.ShowDialog();
             }
 

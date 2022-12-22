@@ -174,9 +174,9 @@
             this.label4.Font = new System.Drawing.Font("新細明體", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label4.Location = new System.Drawing.Point(144, 173);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(146, 25);
+            this.label4.Size = new System.Drawing.Size(162, 25);
             this.label4.TabIndex = 40;
-            this.label4.Text = "管理者設定";
+            this.label4.Text = "管理者密碼設定";
             // 
             // label5
             // 
@@ -220,6 +220,7 @@
             this.Controls.Add(this.portTextBox);
             this.Controls.Add(this.accountLabel);
             this.Name = "SetDeviceDataForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "設定";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.OnFormClosed);
             this.ResumeLayout(false);

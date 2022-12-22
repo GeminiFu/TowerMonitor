@@ -16,11 +16,11 @@ namespace TowerMonitor
 {
     public partial class SetDeviceDataForm : Form
     {
-        private String startupPath = System.Windows.Forms.Application.StartupPath;
+        private String startupPath = Application.StartupPath;
         private String deviceDataPath;
 
-        public delegate void CustomFormClosedHandler(object semder, FormClosedEventArgs e);
-        public event CustomFormClosedHandler CustomFormClosed;
+        public delegate void SetDeviceDataFormClosedHandler(object semder, FormClosedEventArgs e);
+        public event SetDeviceDataFormClosedHandler SetDeviceDataFormClosed;
 
         public SetDeviceDataForm()
         {
@@ -32,13 +32,11 @@ namespace TowerMonitor
 
         private void OnFormClosed(object sender, FormClosedEventArgs e)
         {
-            CustomFormClosed(sender, e);
+            SetDeviceDataFormClosed(sender, e);
         }
 
         private void InitDeviceData()
         {
-           
-
 
             DeviceDataEntity deviceDataEntity;
             string jsonData = "";
