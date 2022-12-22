@@ -10,6 +10,7 @@ using System.IO.Ports;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,6 +20,7 @@ using TowerMonitor.util;
 using static HikvisionDemo.CHCNetSDK;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace TowerMonitor
 {
@@ -226,60 +228,32 @@ namespace TowerMonitor
                 CHCNetSDK.NET_DVR_Cleanup();
             }
         }
-
         private void DoLogin() {
-            struLogInfo = new CHCNetSDK.NET_DVR_USER_LOGIN_INFO();
 
-            //Device IP or web url
-            byte[] byIP = System.Text.Encoding.Default.GetBytes(ipTextBox.Text);
-            struLogInfo.sDeviceAddress = new byte[129];
-            byIP.CopyTo(struLogInfo.sDeviceAddress, 0);
+            string ip = ipTextBox.Text;
+            string port = portTextBox.Text;
+            string username = usernameTextBox.Text;
+            string passwrod = passwordTextBox.Text;
+            string channel = channelTextBox.Text;
 
-            // Device Service Port
-            struLogInfo.wPort = ushort.Parse(portTextBox.Text);
+            bool isConnectIMUScuess = ConnectIMU();
+            bool isConnectCameraSuccess = ConnectCamera(ip, port, username, passwrod, channel);
 
-            //Username
-            byte[] byUserName = System.Text.Encoding.Default.GetBytes(usernameTextBox.Text);
-            struLogInfo.sUserName = new byte[64];
-            byUserName.CopyTo(struLogInfo.sUserName, 0);
-
-            //Password
-            byte[] byPassword = System.Text.Encoding.Default.GetBytes(passwordTextBox.Text);
-            struLogInfo.sPassword = new byte[64];
-            byPassword.CopyTo(struLogInfo.sPassword, 0);
-
-            // channel
-            m_lChannel = Convert.ToInt16(channelTextBox.Text);
-
-            if (loginCallBack == null)
-            {
-                loginCallBack = new CHCNetSDK.LOGINRESULTCALLBACK(cbLoginCallBack);     //注册回调函数                    
-            }
-            struLogInfo.cbLoginResult = loginCallBack;
-            struLogInfo.bUseAsynLogin = false; //是否异步登录：0- 否，1- 是 
-
-            DeviceInfo = new CHCNetSDK.NET_DVR_DEVICEINFO_V40();
-
-            // Login the device
-            m_lUserID = CHCNetSDK.NET_DVR_Login_V40(ref struLogInfo, ref DeviceInfo);
-            if (m_lUserID < 0)
-            {
-                iLastErr = CHCNetSDK.NET_DVR_GetLastError();
-                str = "NET_DVR_Login_V40 failed, error code= " + iLastErr; //登录失败，输出错误号
-                MessageBox.Show(str);
-                return;
-            }
-            else
+            if (isConnectIMUScuess && isConnectCameraSuccess)
             {
                 //登录成功
                 MessageBox.Show("登入成功!");
                 loginButton.Text = "登出";
                 StartPreview();
-                ConnectIMU();                
                 StartSettingPTZ();
                 initValue();
                 controlPanel.Visible = true;
             }
+            else 
+            {
+                DoDVRLogout();
+                CloseSerialPort();
+            }           
 
         }
 
@@ -331,7 +305,54 @@ namespace TowerMonitor
             //列表新增报警信息
             //statusLabel.Text = "登入狀態: " + strLogStatus;
         }
-      
+
+        private bool ConnectCamera(string ip, string port, string username, string passwrod, string channel)
+        {
+            struLogInfo = new CHCNetSDK.NET_DVR_USER_LOGIN_INFO();
+
+            //Device IP or web url
+            byte[] byIP = System.Text.Encoding.Default.GetBytes(ip);
+            struLogInfo.sDeviceAddress = new byte[129];
+            byIP.CopyTo(struLogInfo.sDeviceAddress, 0);
+
+            // Device Service Port
+            struLogInfo.wPort = ushort.Parse(port);
+
+            //Username
+            byte[] byUserName = System.Text.Encoding.Default.GetBytes(username);
+            struLogInfo.sUserName = new byte[64];
+            byUserName.CopyTo(struLogInfo.sUserName, 0);
+
+            //Password
+            byte[] byPassword = System.Text.Encoding.Default.GetBytes(passwrod);
+            struLogInfo.sPassword = new byte[64];
+            byPassword.CopyTo(struLogInfo.sPassword, 0);
+
+            // channel
+            m_lChannel = Convert.ToInt16(channel);
+
+            if (loginCallBack == null)
+            {
+                loginCallBack = new CHCNetSDK.LOGINRESULTCALLBACK(cbLoginCallBack);     //注册回调函数                    
+            }
+            struLogInfo.cbLoginResult = loginCallBack;
+            struLogInfo.bUseAsynLogin = false; //是否异步登录：0- 否，1- 是 
+
+            DeviceInfo = new CHCNetSDK.NET_DVR_DEVICEINFO_V40();
+
+            // Login the device
+            m_lUserID = CHCNetSDK.NET_DVR_Login_V40(ref struLogInfo, ref DeviceInfo);
+            if (m_lUserID < 0)
+            {
+                iLastErr = CHCNetSDK.NET_DVR_GetLastError();
+                str = "NET_DVR_Login_V40 failed, error code= " + iLastErr; //登录失败，输出错误号
+                MessageBox.Show(str);
+                return false;
+            }
+
+            return true;
+        }
+
 
         private void StartPreview() {
             if (m_lRealHandle < 0)
@@ -715,10 +736,10 @@ namespace TowerMonitor
          * ##########################
          */
 
-        private void ConnectIMU() {
+        private bool ConnectIMU() {
             string port = "COM3";
-            int baudRate = 115200;
-            OpenSerialPort(port, baudRate);
+            int baudRate = 115200;            
+            return OpenSerialPort(port, baudRate);
         }
 
         private bool OpenSerialPort(string port, int baudRate)
@@ -731,11 +752,11 @@ namespace TowerMonitor
                 serialPort.DataReceived += new SerialDataReceivedEventHandler(IMUDataReceived);
                 serialPort.Open();
 
-                string projectName = Assembly.GetExecutingAssembly().GetName().Name;
-                string projectVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-                string showString = projectName + " (" + port.Replace("\0", "") + ", " + baudRate.ToString() + ")" + " V" + projectVersion;
+                //string projectName = Assembly.GetExecutingAssembly().GetName().Name;
+                //string projectVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+                //string showString = projectName + " (" + port.Replace("\0", "") + ", " + baudRate.ToString() + ")" + " V" + projectVersion;
 
-                Debug.WriteLine("Info: " + showString);
+                //Debug.WriteLine("Info: " + showString);
 
                 //MessageBox.Show(showString, "Error");
                 //this.Text = Assembly.GetExecutingAssembly().GetName().Name + " (" + Name.Replace("\0", "") + ", " + Baudrate.ToString() + ")" + " V" + Assembly.GetExecutingAssembly().GetName().Version;
@@ -744,7 +765,7 @@ namespace TowerMonitor
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                MessageBox.Show("陀螺儀設備: " + e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                 return false;
             }
         }
