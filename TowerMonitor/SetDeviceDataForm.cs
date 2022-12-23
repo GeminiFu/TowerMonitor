@@ -18,6 +18,7 @@ namespace TowerMonitor
     {
         private String startupPath = Application.StartupPath;
         private String deviceDataPath;
+        private DeviceDataEntity deviceDataEntity;
 
         public delegate void SetDeviceDataFormClosedHandler(object semder, FormClosedEventArgs e);
         public event SetDeviceDataFormClosedHandler SetDeviceDataFormClosed;
@@ -38,7 +39,7 @@ namespace TowerMonitor
         private void InitDeviceData()
         {
 
-            DeviceDataEntity deviceDataEntity;
+           
             string jsonData = "";
 
             if (!File.Exists(deviceDataPath))
@@ -51,28 +52,89 @@ namespace TowerMonitor
             jsonData = FileUtil.ReadFile(deviceDataPath);
             deviceDataEntity = JsonConvert.DeserializeObject<DeviceDataEntity>(jsonData);
 
+            // 攝影機
             ipTextBox.Text = deviceDataEntity.IP;
             portTextBox.Text = deviceDataEntity.Port;
             usernameTextBox.Text = deviceDataEntity.Username;
             passwordTextBox.Text = deviceDataEntity.Password;
             channelTextBox.Text = deviceDataEntity.Channel;
+
+            // 陀螺儀
+            imuPortTextBox.Text = deviceDataEntity.IMUPort;
+            baudRateTextBox.Text = deviceDataEntity.BaudRate.ToString();
         }
 
         private void OnSaveClick(object sender, EventArgs e)
         {
-            DeviceDataEntity deviceDataEntity = new DeviceDataEntity();
-            deviceDataEntity.IP = ipTextBox.Text;
-            deviceDataEntity.Port = portTextBox.Text;
-            deviceDataEntity.Channel = "1";
-            deviceDataEntity.Username = usernameTextBox.Text;
-            deviceDataEntity.Password = passwordTextBox.Text;
-            deviceDataEntity.Account = "admin";
-            deviceDataEntity.AccountPassword = "admin";
+            string ip = ipTextBox.Text;
+            string port = portTextBox.Text;
+            string channel = channelTextBox.Text;
+            string username = usernameTextBox.Text;
+            string password = passwordTextBox.Text;
+            string imuPort = imuPortTextBox.Text;
+            string bautRate = baudRateTextBox.Text;
+
+            if (StringUtil.isEmpty(ip))
+            {
+                MessageBox.Show("請輸入 IP", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (StringUtil.isEmpty(port))
+            {
+                MessageBox.Show("請輸入 Port", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (StringUtil.isEmpty(channel))
+            {
+                MessageBox.Show("請輸入頻道", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (StringUtil.isEmpty(username))
+            {
+                MessageBox.Show("請輸入帳號", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (StringUtil.isEmpty(password))
+            {
+                MessageBox.Show("請輸入密碼", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (StringUtil.isEmpty(imuPort))
+            {
+                MessageBox.Show("請輸入陀螺儀 Port", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (StringUtil.isEmpty(bautRate))
+            {
+                MessageBox.Show("請輸入陀螺儀 Baud Rate", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            else {
+                if (!StringUtil.isInteger(bautRate)) {
+                    MessageBox.Show("陀螺儀 Baud Rate 請輸入整數", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
+
+            deviceDataEntity.IP = ip;
+            deviceDataEntity.Port = port;
+            deviceDataEntity.Channel = channel;
+            deviceDataEntity.Username = username;
+            deviceDataEntity.Password = password;
+            deviceDataEntity.IMUPort = imuPort;
+            deviceDataEntity.BaudRate = Convert.ToInt32(bautRate);
+            //deviceDataEntity.Account = "admin";
+            //deviceDataEntity.AccountPassword = "admin";
 
             if (accountPasswordTextBox.Text!="") {
                 deviceDataEntity.AccountPassword = accountPasswordTextBox.Text;
             }
-
 
             String jsonData = JsonConvert.SerializeObject(deviceDataEntity);
             bool isSuccess = FileUtil.WriteFile(deviceDataPath, jsonData);

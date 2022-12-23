@@ -43,15 +43,20 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.accountPasswordTextBox = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.imuPortTextBox = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.baudRateTextBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // saveButton
             // 
             this.saveButton.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.saveButton.Location = new System.Drawing.Point(148, 259);
+            this.saveButton.Location = new System.Drawing.Point(148, 348);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(129, 27);
-            this.saveButton.TabIndex = 12;
+            this.saveButton.TabIndex = 9;
             this.saveButton.Text = "儲存";
             this.saveButton.UseVisualStyleBackColor = true;
             this.saveButton.Click += new System.EventHandler(this.OnSaveClick);
@@ -82,9 +87,8 @@
             this.channelTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.channelTextBox.Location = new System.Drawing.Point(78, 127);
             this.channelTextBox.Name = "channelTextBox";
-            this.channelTextBox.ReadOnly = true;
             this.channelTextBox.Size = new System.Drawing.Size(130, 27);
-            this.channelTextBox.TabIndex = 11;
+            this.channelTextBox.TabIndex = 5;
             // 
             // portLabel
             // 
@@ -115,7 +119,7 @@
             this.portTextBox.Location = new System.Drawing.Point(268, 52);
             this.portTextBox.Name = "portTextBox";
             this.portTextBox.Size = new System.Drawing.Size(130, 27);
-            this.portTextBox.TabIndex = 3;
+            this.portTextBox.TabIndex = 2;
             // 
             // accountLabel
             // 
@@ -136,7 +140,7 @@
             this.passwordTextBox.Name = "passwordTextBox";
             this.passwordTextBox.PasswordChar = '*';
             this.passwordTextBox.Size = new System.Drawing.Size(130, 27);
-            this.passwordTextBox.TabIndex = 7;
+            this.passwordTextBox.TabIndex = 4;
             // 
             // usernameTextBox
             // 
@@ -145,7 +149,7 @@
             this.usernameTextBox.Location = new System.Drawing.Point(78, 89);
             this.usernameTextBox.Name = "usernameTextBox";
             this.usernameTextBox.Size = new System.Drawing.Size(130, 27);
-            this.usernameTextBox.TabIndex = 5;
+            this.usernameTextBox.TabIndex = 3;
             // 
             // label1
             // 
@@ -172,9 +176,9 @@
             // 
             this.label4.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label4.Font = new System.Drawing.Font("新細明體", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label4.Location = new System.Drawing.Point(144, 173);
+            this.label4.Location = new System.Drawing.Point(144, 262);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(162, 25);
+            this.label4.Size = new System.Drawing.Size(191, 25);
             this.label4.TabIndex = 40;
             this.label4.Text = "管理者密碼設定";
             // 
@@ -183,7 +187,7 @@
             this.label5.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label5.Location = new System.Drawing.Point(15, 218);
+            this.label5.Location = new System.Drawing.Point(15, 307);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(57, 21);
             this.label5.TabIndex = 41;
@@ -193,17 +197,72 @@
             // 
             this.accountPasswordTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.accountPasswordTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.accountPasswordTextBox.Location = new System.Drawing.Point(78, 213);
+            this.accountPasswordTextBox.Location = new System.Drawing.Point(78, 302);
             this.accountPasswordTextBox.Name = "accountPasswordTextBox";
             this.accountPasswordTextBox.PasswordChar = '*';
             this.accountPasswordTextBox.Size = new System.Drawing.Size(130, 27);
-            this.accountPasswordTextBox.TabIndex = 42;
+            this.accountPasswordTextBox.TabIndex = 8;
+            // 
+            // label6
+            // 
+            this.label6.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label6.Font = new System.Drawing.Font("新細明體", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label6.Location = new System.Drawing.Point(154, 166);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(143, 25);
+            this.label6.TabIndex = 43;
+            this.label6.Text = "陀螺儀設定";
+            // 
+            // label7
+            // 
+            this.label7.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label7.Location = new System.Drawing.Point(24, 206);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(48, 21);
+            this.label7.TabIndex = 44;
+            this.label7.Text = "Port:";
+            // 
+            // imuPortTextBox
+            // 
+            this.imuPortTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.imuPortTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.imuPortTextBox.Location = new System.Drawing.Point(78, 206);
+            this.imuPortTextBox.Name = "imuPortTextBox";
+            this.imuPortTextBox.Size = new System.Drawing.Size(130, 27);
+            this.imuPortTextBox.TabIndex = 6;
+            // 
+            // label8
+            // 
+            this.label8.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label8.Location = new System.Drawing.Point(212, 207);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(98, 21);
+            this.label8.TabIndex = 46;
+            this.label8.Text = "Baud Rate:";
+            // 
+            // baudRateTextBox
+            // 
+            this.baudRateTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.baudRateTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.baudRateTextBox.Location = new System.Drawing.Point(312, 206);
+            this.baudRateTextBox.Name = "baudRateTextBox";
+            this.baudRateTextBox.Size = new System.Drawing.Size(86, 27);
+            this.baudRateTextBox.TabIndex = 7;
             // 
             // SetDeviceDataForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(425, 298);
+            this.ClientSize = new System.Drawing.Size(425, 389);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.imuPortTextBox);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.baudRateTextBox);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.accountPasswordTextBox);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
@@ -244,5 +303,10 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox accountPasswordTextBox;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox imuPortTextBox;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox baudRateTextBox;
     }
 }

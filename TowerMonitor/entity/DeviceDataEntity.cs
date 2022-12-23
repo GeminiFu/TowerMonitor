@@ -19,6 +19,9 @@ namespace TowerMonitor.entity
         // 攝影機 頻道
         public string Channel { get; set; }
 
+        public string IMUPort { get; set; }
+        public int BaudRate { get; set; }
+
         // 管理者帳號
         public string Account { get; set; }
         // 管理者密碼

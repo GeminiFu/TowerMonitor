@@ -95,6 +95,7 @@
       <DependentUpon>SetDeviceDataForm.cs</DependentUpon>
     </Compile>
     <Compile Include="util\FileUtil.cs" />
+    <Compile Include="util\StringUtil.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

@@ -50,12 +50,12 @@ namespace TowerMonitor
             if (account == deviceDataEntity.Account && password == deviceDataEntity.AccountPassword)
             {
                 isLoginSuccess = true;
-                MessageBox.Show("管理者登入成功");
+                MessageBox.Show("登入成功");
                 this.Close();
 
             }
             else {
-                MessageBox.Show("管理者帳號或是密碼錯誤", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("帳號或是密碼錯誤", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 isLoginSuccess = false;
             }
 

@@ -48,6 +48,8 @@ namespace TowerMonitor
         public delegate void UpdateTextStatusCallback(string strLogStatus, IntPtr lpDeviceInfo);
 
         // 陀螺儀
+        string imuPort = "";
+        int baudRate = 0;
         private IMUData device_data;
         private SerialPort serialPort = new SerialPort();
         private Connection m_connection = new Connection();
@@ -130,6 +132,8 @@ namespace TowerMonitor
                 deviceDataEntity.Channel = "1";
                 deviceDataEntity.Username = "";
                 deviceDataEntity.Password = "";
+                deviceDataEntity.IMUPort = "COM3";
+                deviceDataEntity.BaudRate = 115200;
                 deviceDataEntity.Account = "admin";
                 deviceDataEntity.AccountPassword = "admin";
 
@@ -145,6 +149,8 @@ namespace TowerMonitor
             usernameTextBox.Text = deviceDataEntity.Username;
             passwordTextBox.Text = deviceDataEntity.Password;
             channelTextBox.Text = deviceDataEntity.Channel;
+            imuPort = deviceDataEntity.IMUPort;
+            baudRate = deviceDataEntity.BaudRate;
         }
 
         // 取得目前 一開始的 雲台的 T 值, 陀螺儀的 一開始的 x 值
@@ -269,8 +275,8 @@ namespace TowerMonitor
             if (isConnectIMUScuess && isConnectCameraSuccess)
             {
                 //登录成功
-                MessageBox.Show("登入成功!");
-                loginButton.Text = "登出";
+                MessageBox.Show("連線成功!");
+                loginButton.Text = "離線";
                 StartPreview();
                 StartSettingPTZ();
                 initValue();
@@ -298,8 +304,8 @@ namespace TowerMonitor
             StopPreview();
             DoDVRLogout();
             CloseSerialPort();
-            MessageBox.Show("登出成功!");
-            loginButton.Text = "登入";            
+            MessageBox.Show("離線成功!");
+            loginButton.Text = "連線";            
             ShowCameraPanel(true);
             ShowControlPanel(false);
             
@@ -800,9 +806,9 @@ namespace TowerMonitor
          */
 
         private bool ConnectIMU() {
-            string port = "COM3";
-            int baudRate = 115200;            
-            return OpenSerialPort(port, baudRate);
+            //imuPort = "COM3";
+            //baudRate = 115200;            
+            return OpenSerialPort(imuPort, baudRate);
         }
 
         private bool OpenSerialPort(string port, int baudRate)

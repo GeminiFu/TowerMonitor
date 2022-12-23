@@ -138,7 +138,7 @@
             this.settingButton.Name = "settingButton";
             this.settingButton.Size = new System.Drawing.Size(129, 27);
             this.settingButton.TabIndex = 12;
-            this.settingButton.Text = "修改資料";
+            this.settingButton.Text = "維護設備資料";
             this.settingButton.UseVisualStyleBackColor = true;
             this.settingButton.Click += new System.EventHandler(this.OnOpenLoginFormClick);
             // 
@@ -578,7 +578,7 @@
             this.loginButton.Name = "loginButton";
             this.loginButton.Size = new System.Drawing.Size(379, 28);
             this.loginButton.TabIndex = 8;
-            this.loginButton.Text = "登入";
+            this.loginButton.Text = "連線";
             this.loginButton.UseVisualStyleBackColor = true;
             this.loginButton.Click += new System.EventHandler(this.OnLoginClick);
             // 
