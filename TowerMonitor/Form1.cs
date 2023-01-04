@@ -39,6 +39,14 @@ namespace TowerMonitor
         private ushort SET_P_T_PARAM = 5;
 
         private float tInitValue = 0f;    // 雲台 T 初始角度
+        private float WPanPosMax = 359f;    // 雲台 左右最大角度
+        private float WPanPosMin = 0f;      // 雲台 左右最小角度
+
+        private float WTiltPosMax = 90f;    // 雲台 上下最大角度
+        private float WTiltPosMin = 0f;     // 雲台 上下最小角度
+
+        private float WZoomPosMax = 23f;     // 鏡頭 焦距最大倍數
+        private float WZoomPosMin = 1f;     // 鏡頭 焦距最小倍數
 
 
         CHCNetSDK.LOGINRESULTCALLBACK loginCallBack = null;
@@ -205,9 +213,9 @@ namespace TowerMonitor
                         tValue = (tInitValue + dx).ToString("0.0");
                     }
 
-                    if (Convert.ToSingle(tValue) <0)
+                    if (Convert.ToSingle(tValue) < WTiltPosMin)
                     {
-                        tValue = "0";
+                        tValue = WTiltPosMin.ToString();
                     }
 
                     SetTParam(tValue);
