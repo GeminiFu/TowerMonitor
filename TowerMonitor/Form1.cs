@@ -1,5 +1,6 @@
 ﻿using HikvisionDemo;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
 using System.IO.Ports;
@@ -55,6 +56,9 @@ namespace TowerMonitor
         CHCNetSDK.REALDATACALLBACK RealData = null;
         public delegate void UpdateTextStatusCallback(string strLogStatus, IntPtr lpDeviceInfo);
 
+        private delegate void UpdateCameraPanelUICallBack(bool isShow, Control ctl);
+        private delegate void UpdateControlPanelUICallBack(bool isShow, Control ctl);
+
         // 陀螺儀
         string imuPort = "";
         int baudRate = 0;
@@ -85,7 +89,7 @@ namespace TowerMonitor
         private void OnLoad(object sender, EventArgs e)
         {
             System.Windows.Forms.TextBox.CheckForIllegalCrossThreadCalls = false;
-            
+           AutoLogin();
         }
 
         private void OnFormClosing(object sender, FormClosingEventArgs e)
@@ -178,6 +182,14 @@ namespace TowerMonitor
 
         }
 
+        private void AutoLogin() {
+            Thread myThread = new Thread(new ThreadStart(DoLoginTask));
+            myThread.Start();
+        }
+
+        private void DoLoginTask() {
+            DoLogin();           
+        }
 
         // 因為陀螺儀丟出的訊息非常快，攝影機無法在短時間設定PTZ，
         // 所以寫個Thread 控制PTZ寫入速度
@@ -289,9 +301,8 @@ namespace TowerMonitor
                 StartSettingPTZ();
                 initValue();
 
-                ShowCameraPanel(false);
-                ShowControlPanel(true);
-                
+                ShowCameraPanel(false, cameraPanel);
+                ShowControlPanel(true, controlPanel);
             }
             else 
             {
@@ -313,39 +324,72 @@ namespace TowerMonitor
             DoDVRLogout();
             CloseSerialPort();
             MessageBox.Show("離線成功!");
-            loginButton.Text = "連線";            
-            ShowCameraPanel(true);
-            ShowControlPanel(false);
-            
-        }
+            loginButton.Text = "連線";
 
-        private void ShowCameraPanel(bool isShow) {
-            int height = cameraPanel.Height;
-
-            if (isShow)
-            {
-                loginButton.Top = loginButton.Top + height;
-            }
-            else 
-            {
-                loginButton.Top = loginButton.Top - height;
-            }
-            cameraPanel.Visible = isShow;         
+            ShowCameraPanel(true, cameraPanel);
+            ShowControlPanel(false, controlPanel);
 
         }
 
-        private void ShowControlPanel(bool isShow) {
-            int height = cameraPanel.Height;
+        private void ShowCameraPanel(bool isShow, Control control)
+        {
+            try
+            {
+                if (this.InvokeRequired)
+                {
+                    UpdateCameraPanelUICallBack callBack = new UpdateCameraPanelUICallBack(ShowCameraPanel);
+                    this.Invoke(callBack, isShow, control);
+                }
+                else
+                {
+                    int height = cameraPanel.Height;
+                    if (isShow)
+                    {
+                        loginButton.Top = loginButton.Top + height;
+                    }
+                    else
+                    {
+                        loginButton.Top = loginButton.Top - height;
+                    }
+                    control.Visible = isShow;
+                }
 
-            if (isShow)
-            {
-                controlPanel.Top = controlPanel.Top - height;
             }
-            else
+            catch
             {
-                controlPanel.Top = controlPanel.Top + height;
+                //MessageBox.Show("執行緒被關閉");
             }
-            controlPanel.Visible = isShow;
+        }
+
+        private void ShowControlPanel(bool isShow, Control control)
+        {
+            try
+            {
+                if (this.InvokeRequired)
+                {
+                    UpdateControlPanelUICallBack callBack = new UpdateControlPanelUICallBack(ShowControlPanel);
+                    this.Invoke(callBack, isShow, control);
+                }
+                else
+                {
+                    int height = cameraPanel.Height;
+                    if (isShow)
+                    {
+                        controlPanel.Top = controlPanel.Top - height;
+                    }
+                    else
+                    {
+                        controlPanel.Top = controlPanel.Top + height;
+                    }
+
+                    control.Visible = isShow;
+
+                }
+            }
+            catch
+            {
+                //MessageBox.Show("執行緒被關閉");
+            }
         }
 
         public void cbLoginCallBack(int lUserID, int dwResult, IntPtr lpDeviceInfo, IntPtr pUser)
