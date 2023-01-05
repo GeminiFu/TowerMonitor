@@ -72,6 +72,9 @@
             this.label6 = new System.Windows.Forms.Label();
             this.xTextBox = new System.Windows.Forms.TextBox();
             this.loginButton = new System.Windows.Forms.Button();
+            this.statusTextBox = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.loginPanel = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -80,6 +83,7 @@
             this.cameraPanel.SuspendLayout();
             this.controlPanel.SuspendLayout();
             this.dataPanel.SuspendLayout();
+            this.loginPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -94,11 +98,11 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.loginPanel);
             this.splitContainer1.Panel2.Controls.Add(this.cameraPanel);
             this.splitContainer1.Panel2.Controls.Add(this.controlPanel);
             this.splitContainer1.Panel2.Controls.Add(this.label3);
             this.splitContainer1.Panel2.Controls.Add(this.dataPanel);
-            this.splitContainer1.Panel2.Controls.Add(this.loginButton);
             this.splitContainer1.Size = new System.Drawing.Size(1484, 761);
             this.splitContainer1.SplitterDistance = 1059;
             this.splitContainer1.TabIndex = 0;
@@ -262,7 +266,7 @@
             this.controlPanel.Controls.Add(this.zoomInButton);
             this.controlPanel.Controls.Add(this.leftButton);
             this.controlPanel.Controls.Add(this.upButton);
-            this.controlPanel.Location = new System.Drawing.Point(3, 214);
+            this.controlPanel.Location = new System.Drawing.Point(6, 259);
             this.controlPanel.Name = "controlPanel";
             this.controlPanel.Size = new System.Drawing.Size(415, 285);
             this.controlPanel.TabIndex = 35;
@@ -424,7 +428,7 @@
             this.dataPanel.Controls.Add(this.tiltPosTextBox);
             this.dataPanel.Controls.Add(this.label6);
             this.dataPanel.Controls.Add(this.xTextBox);
-            this.dataPanel.Location = new System.Drawing.Point(6, 505);
+            this.dataPanel.Location = new System.Drawing.Point(9, 550);
             this.dataPanel.Name = "dataPanel";
             this.dataPanel.Size = new System.Drawing.Size(415, 192);
             this.dataPanel.TabIndex = 1;
@@ -574,13 +578,43 @@
             // 
             this.loginButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.loginButton.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.loginButton.Location = new System.Drawing.Point(26, 179);
+            this.loginButton.Location = new System.Drawing.Point(20, 39);
             this.loginButton.Name = "loginButton";
             this.loginButton.Size = new System.Drawing.Size(379, 28);
             this.loginButton.TabIndex = 8;
             this.loginButton.Text = "連線";
             this.loginButton.UseVisualStyleBackColor = true;
             this.loginButton.Click += new System.EventHandler(this.OnLoginClick);
+            // 
+            // statusTextBox
+            // 
+            this.statusTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.statusTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.statusTextBox.Location = new System.Drawing.Point(81, 6);
+            this.statusTextBox.Name = "statusTextBox";
+            this.statusTextBox.Size = new System.Drawing.Size(130, 27);
+            this.statusTextBox.TabIndex = 14;
+            // 
+            // label14
+            // 
+            this.label14.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label14.Location = new System.Drawing.Point(18, 10);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(57, 21);
+            this.label14.TabIndex = 13;
+            this.label14.Text = "狀態:";
+            // 
+            // loginPanel
+            // 
+            this.loginPanel.Controls.Add(this.label14);
+            this.loginPanel.Controls.Add(this.statusTextBox);
+            this.loginPanel.Controls.Add(this.loginButton);
+            this.loginPanel.Location = new System.Drawing.Point(6, 179);
+            this.loginPanel.Name = "loginPanel";
+            this.loginPanel.Size = new System.Drawing.Size(412, 74);
+            this.loginPanel.TabIndex = 36;
             // 
             // Form1
             // 
@@ -605,6 +639,8 @@
             this.controlPanel.PerformLayout();
             this.dataPanel.ResumeLayout(false);
             this.dataPanel.PerformLayout();
+            this.loginPanel.ResumeLayout(false);
+            this.loginPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -654,6 +690,9 @@
         private System.Windows.Forms.TextBox armDegreeTextBox;
         private System.Windows.Forms.CheckBox showDataCheckBox;
         private System.Windows.Forms.Button settingButton;
+        private System.Windows.Forms.TextBox statusTextBox;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Panel loginPanel;
     }
 }
 

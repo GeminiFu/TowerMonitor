@@ -295,7 +295,8 @@ namespace TowerMonitor
             if (isConnectIMUScuess && isConnectCameraSuccess)
             {
                 //登录成功
-                MessageBox.Show("連線成功!");
+                //MessageBox.Show("連線成功!");
+                statusTextBox.Text = "連線中...";
                 loginButton.Text = "離線";
                 StartPreview();
                 StartSettingPTZ();
@@ -323,7 +324,8 @@ namespace TowerMonitor
             StopPreview();
             DoDVRLogout();
             CloseSerialPort();
-            MessageBox.Show("離線成功!");
+            //MessageBox.Show("離線成功!");
+            statusTextBox.Text = "離線";
             loginButton.Text = "連線";
 
             ShowCameraPanel(true, cameraPanel);
@@ -345,11 +347,11 @@ namespace TowerMonitor
                     int height = cameraPanel.Height;
                     if (isShow)
                     {
-                        loginButton.Top = loginButton.Top + height;
+                        loginPanel.Top = loginPanel.Top + height;
                     }
                     else
                     {
-                        loginButton.Top = loginButton.Top - height;
+                        loginPanel.Top = loginPanel.Top - height;
                     }
                     control.Visible = isShow;
                 }
