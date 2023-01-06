@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Ports;
 using System.Runtime.InteropServices;
@@ -18,8 +19,9 @@ namespace TowerMonitor
     {
         private String startupPath = System.Windows.Forms.Application.StartupPath;
         private String deviceDataPath;
+        private string nowPhotoPath = "";
+        private string oldPhotoPath = "";
 
-        //private int hasInitCamera = 0;      // 是否完成初始化鏡頭 1: 完成 0:未完成
         private bool isSettingPTZRunning = false;        
 
         // 海康威視
@@ -166,7 +168,7 @@ namespace TowerMonitor
         }
 
         // 取得目前 一開始的 雲台的 T 值, 陀螺儀的 一開始的 x 值
-        private void initValue()
+        private void InitValue()
         {
             NET_DVR_PTZPOS netDVRPTZPos = GetPTZParam();
 
@@ -180,6 +182,13 @@ namespace TowerMonitor
 
             hasGetXInitValue = false;
 
+        }
+
+        private void InitCapturePhoto() {
+            nowPhotoPath = startupPath + "\\nowPhoto.jpg";
+            CapturePhoto(nowPhotoPath);
+            oldPhotoPath = startupPath + "\\oldPhoto.jpg";
+            FileUtil.CopyFile(nowPhotoPath, oldPhotoPath);
         }
 
         private void AutoLogin() {
@@ -238,14 +247,33 @@ namespace TowerMonitor
                     armDegreeTextBox.Text = xTextBox.Text;
 
                     ShowPTZParam();
-                              
-
+                    
                 }// End if
 
                 Thread.Sleep(500);
             }
         }
 
+        private void CapturePhoto(string filePath) {
+            
+            CHCNetSDK.NET_DVR_JPEGPARA lpJpegPara = new CHCNetSDK.NET_DVR_JPEGPARA();
+            lpJpegPara.wPicQuality = 0; //图像质量 Image quality
+            lpJpegPara.wPicSize = 0xff; //抓图分辨率 Picture size: 2- 4CIF，0xff- Auto(使用当前码流分辨率)，抓图分辨率需要设备支持，更多取值请参考SDK文档
+
+            //JPEG抓图 Capture a JPEG picture
+            if (!CHCNetSDK.NET_DVR_CaptureJPEGPicture(m_lUserID, m_lChannel, ref lpJpegPara, filePath))
+            {
+                iLastErr = CHCNetSDK.NET_DVR_GetLastError();
+                str = "NET_DVR_CaptureJPEGPicture failed, error code= " + iLastErr;
+                MessageBox.Show(str);
+                return;
+            }
+            else
+            {
+                str = "Successful to capture the JPEG file and the saved file is " + nowPhotoPath;
+                //MessageBox.Show(str);
+            }
+        }
 
         private void OnLoginClick(object sender, EventArgs e)
         {
@@ -300,7 +328,8 @@ namespace TowerMonitor
                 loginButton.Text = "離線";
                 StartPreview();
                 StartSettingPTZ();
-                initValue();
+                InitValue();
+                InitCapturePhoto();
 
                 ShowCameraPanel(false, cameraPanel);
                 ShowControlPanel(true, controlPanel);
@@ -595,6 +624,7 @@ namespace TowerMonitor
                 CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.PAN_LEFT, PTZ_STOP, PTZ_SPEED);
             }
 
+            InitCapturePhoto();
             StartSettingPTZ();
         }
         // ##### 左 (End) ######  
@@ -626,6 +656,7 @@ namespace TowerMonitor
                 CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.PAN_RIGHT, PTZ_STOP, PTZ_SPEED);
             }
 
+            InitCapturePhoto();
             StartSettingPTZ();
         }
 
@@ -657,7 +688,8 @@ namespace TowerMonitor
                 CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.TILT_UP, PTZ_STOP, PTZ_SPEED);
             }
 
-            initValue();
+            InitValue();
+            InitCapturePhoto();
             StartSettingPTZ();
         }
         // ##### 上 (End) ######  
@@ -688,7 +720,8 @@ namespace TowerMonitor
                 CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.TILT_DOWN, PTZ_STOP, PTZ_SPEED);
             }
 
-            initValue();
+            InitValue();
+            InitCapturePhoto();
             StartSettingPTZ();
         }
         // ##### 下 (End) ######
@@ -718,6 +751,7 @@ namespace TowerMonitor
                 CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.ZOOM_IN, PTZ_STOP, PTZ_SPEED);
             }
 
+            InitCapturePhoto();
             StartSettingPTZ();
 
         }
@@ -749,6 +783,7 @@ namespace TowerMonitor
                 CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.ZOOM_OUT, PTZ_STOP, PTZ_SPEED);
             }
 
+            InitCapturePhoto();
             StartSettingPTZ();
 
         }

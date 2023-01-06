@@ -39,5 +39,21 @@ namespace TowerMonitor.util
 
             return content;
         }
+
+        public static bool CopyFile(string sourceFile, string destinationFile) { 
+            bool isSuccess = true;
+
+            try
+            {
+                File.Copy(sourceFile, destinationFile, true);
+            }
+            catch (IOException iox)
+            {
+                isSuccess = false;
+                Console.WriteLine(iox.Message);
+            }
+
+            return isSuccess;
+        }
     }
 }
