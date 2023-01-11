@@ -623,10 +623,10 @@
             this.autoTrackCheckBox.AutoSize = true;
             this.autoTrackCheckBox.Checked = true;
             this.autoTrackCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.autoTrackCheckBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.autoTrackCheckBox.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.autoTrackCheckBox.Location = new System.Drawing.Point(238, 10);
             this.autoTrackCheckBox.Name = "autoTrackCheckBox";
-            this.autoTrackCheckBox.Size = new System.Drawing.Size(90, 20);
+            this.autoTrackCheckBox.Size = new System.Drawing.Size(113, 25);
             this.autoTrackCheckBox.TabIndex = 35;
             this.autoTrackCheckBox.Text = "自動追蹤";
             this.autoTrackCheckBox.UseVisualStyleBackColor = true;
