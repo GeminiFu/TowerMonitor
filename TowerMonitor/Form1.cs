@@ -91,7 +91,18 @@ namespace TowerMonitor
         private void OnLoad(object sender, EventArgs e)
         {
             System.Windows.Forms.TextBox.CheckForIllegalCrossThreadCalls = false;
-           AutoLogin();
+
+            
+           
+            if (!StringUtil.isEmpty(ipTextBox.Text) && 
+                !StringUtil.isEmpty(portTextBox.Text) &&
+                !StringUtil.isEmpty(usernameTextBox.Text) &&
+                !StringUtil.isEmpty(passwordTextBox.Text) &&
+                !StringUtil.isEmpty(channelTextBox.Text) &&
+                !StringUtil.isEmpty(imuPort) &&
+                !StringUtil.isEmpty(baudRate.ToString())) {
+                AutoLogin();
+            }
         }
 
         private void OnFormClosing(object sender, FormClosingEventArgs e)
@@ -185,10 +196,10 @@ namespace TowerMonitor
         }
 
         private void InitCapturePhoto() {
-            nowPhotoPath = startupPath + "\\nowPhoto.jpg";
-            CapturePhoto(nowPhotoPath);
-            oldPhotoPath = startupPath + "\\oldPhoto.jpg";
-            FileUtil.CopyFile(nowPhotoPath, oldPhotoPath);
+            //nowPhotoPath = startupPath + "\\nowPhoto.jpg";
+            //CapturePhoto(nowPhotoPath);
+            //oldPhotoPath = startupPath + "\\oldPhoto.jpg";
+            //FileUtil.CopyFile(nowPhotoPath, oldPhotoPath);
         }
 
         private void AutoLogin() {
