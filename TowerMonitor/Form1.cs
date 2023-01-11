@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.IO.Ports;
 using System.Runtime.InteropServices;
@@ -22,7 +23,8 @@ namespace TowerMonitor
         private string nowPhotoPath = "";
         private string oldPhotoPath = "";
 
-        private bool isSettingPTZRunning = false;        
+        private bool isSettingPTZRunning = false;
+        private Size primarySize;
 
         // 海康威視
         public uint PTZ_MOVING = 0;         // 雲台移動
@@ -85,7 +87,11 @@ namespace TowerMonitor
             InitCHCNet();
             InitIMU();
             InitDeviceData();
-            
+
+            // Set KeyPreview object to true to allow the form to process 
+            // the key before the control with focus processes it.
+            this.KeyPreview = true;
+
         }
 
         private void OnLoad(object sender, EventArgs e)
@@ -350,7 +356,7 @@ namespace TowerMonitor
                 //MessageBox.Show("連線成功!");
                 statusTextBox.Text = "連線中...";
                 loginButton.Text = "離線";
-                StartPreview();               
+                StartPreview(realtimePictureBox);               
                 StartAutoTrack();
                 ShowCameraPanel(false, cameraPanel);
                 ShowControlPanel(true, controlPanel);
@@ -524,11 +530,11 @@ namespace TowerMonitor
         }
 
 
-        private void StartPreview() {
+        private void StartPreview(PictureBox pictureBox) {
             if (m_lRealHandle < 0)
             {
                 CHCNetSDK.NET_DVR_PREVIEWINFO lpPreviewInfo = new CHCNetSDK.NET_DVR_PREVIEWINFO();
-                lpPreviewInfo.hPlayWnd = realtimePictureBox.Handle;         // 预览窗口
+                lpPreviewInfo.hPlayWnd = pictureBox.Handle;                 // 预览窗口
                 lpPreviewInfo.lChannel = Int16.Parse(channelTextBox.Text);  // 预览的设备通道
                 lpPreviewInfo.dwStreamType = 0;                             // 码流类型：0-主码流，1-子码流，2-码流3，3-码流4，以此类推
                 lpPreviewInfo.dwLinkMode = 0;                               // 连接方式：0- TCP方式，1- UDP方式，2- 多播方式，3- RTP方式，4-RTP/RTSP，5-RSTP/HTTP 
@@ -1106,6 +1112,67 @@ namespace TowerMonitor
                 cameraDegreeTextBox.Text = "";
                 armDegreeTextBox.Text = "";
             }
+        }
+
+        
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+
+            switch (e.KeyData) {
+                case Keys.Enter:
+                    
+                    break;
+
+                case Keys.Escape:
+                    ShowFullScreen(false);
+                    break;
+            }
+
+        }
+
+        private void ShowFullScreen(bool isShow) {
+            if (m_lRealHandle < 0 ) {
+                return;
+            }
+            
+            if (isShow)
+            {
+                this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+                this.WindowState = FormWindowState.Maximized;
+                Rectangle ret = Screen.GetWorkingArea(this);
+
+                fullPictureBox.ClientSize = new Size(ret.Width, ret.Height);
+                fullPictureBox.Dock = DockStyle.Fill;
+                fullPictureBox.BringToFront();
+                primarySize = fullPictureBox.ClientSize;
+                fullPictureBox.Visible = true;
+                StopPreview();
+                StartPreview(fullPictureBox);
+            }
+            else {
+
+                this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
+                this.WindowState = FormWindowState.Normal;
+
+                //primarySize 記錄原來尺寸
+                fullPictureBox.ClientSize = primarySize;
+
+                fullPictureBox.Dock = DockStyle.None;
+                fullPictureBox.Visible = false;
+
+                StopPreview();
+                StartPreview(realtimePictureBox);
+            }
+        }
+
+        private void realtimePictureBox_MouseDoubleClick(object sender, MouseEventArgs e)
+        {            
+            ShowFullScreen(true);            
+        }
+
+        private void fullPictureBox_MouseDoubleClick(object sender, MouseEventArgs e)
+        {           
+            ShowFullScreen(false);
         }
     }
 }

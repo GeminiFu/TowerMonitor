@@ -32,6 +32,7 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.realtimePictureBox = new System.Windows.Forms.PictureBox();
             this.loginPanel = new System.Windows.Forms.Panel();
+            this.autoTrackCheckBox = new System.Windows.Forms.CheckBox();
             this.label14 = new System.Windows.Forms.Label();
             this.statusTextBox = new System.Windows.Forms.TextBox();
             this.loginButton = new System.Windows.Forms.Button();
@@ -75,7 +76,7 @@
             this.tiltPosTextBox = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.xTextBox = new System.Windows.Forms.TextBox();
-            this.autoTrackCheckBox = new System.Windows.Forms.CheckBox();
+            this.fullPictureBox = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -85,6 +86,7 @@
             this.cameraPanel.SuspendLayout();
             this.controlPanel.SuspendLayout();
             this.dataPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.fullPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -116,6 +118,7 @@
             this.realtimePictureBox.Size = new System.Drawing.Size(1059, 761);
             this.realtimePictureBox.TabIndex = 0;
             this.realtimePictureBox.TabStop = false;
+            this.realtimePictureBox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.realtimePictureBox_MouseDoubleClick);
             // 
             // loginPanel
             // 
@@ -127,6 +130,20 @@
             this.loginPanel.Name = "loginPanel";
             this.loginPanel.Size = new System.Drawing.Size(412, 74);
             this.loginPanel.TabIndex = 36;
+            // 
+            // autoTrackCheckBox
+            // 
+            this.autoTrackCheckBox.AutoSize = true;
+            this.autoTrackCheckBox.Checked = true;
+            this.autoTrackCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.autoTrackCheckBox.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.autoTrackCheckBox.Location = new System.Drawing.Point(238, 10);
+            this.autoTrackCheckBox.Name = "autoTrackCheckBox";
+            this.autoTrackCheckBox.Size = new System.Drawing.Size(113, 25);
+            this.autoTrackCheckBox.TabIndex = 35;
+            this.autoTrackCheckBox.Text = "自動追蹤";
+            this.autoTrackCheckBox.UseVisualStyleBackColor = true;
+            this.autoTrackCheckBox.CheckedChanged += new System.EventHandler(this.OnAutoTrackCheckedClick);
             // 
             // label14
             // 
@@ -618,31 +635,31 @@
             this.xTextBox.Size = new System.Drawing.Size(40, 27);
             this.xTextBox.TabIndex = 15;
             // 
-            // autoTrackCheckBox
+            // fullPictureBox
             // 
-            this.autoTrackCheckBox.AutoSize = true;
-            this.autoTrackCheckBox.Checked = true;
-            this.autoTrackCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.autoTrackCheckBox.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.autoTrackCheckBox.Location = new System.Drawing.Point(238, 10);
-            this.autoTrackCheckBox.Name = "autoTrackCheckBox";
-            this.autoTrackCheckBox.Size = new System.Drawing.Size(113, 25);
-            this.autoTrackCheckBox.TabIndex = 35;
-            this.autoTrackCheckBox.Text = "自動追蹤";
-            this.autoTrackCheckBox.UseVisualStyleBackColor = true;
-            this.autoTrackCheckBox.CheckedChanged += new System.EventHandler(this.OnAutoTrackCheckedClick);
+            this.fullPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.fullPictureBox.Location = new System.Drawing.Point(0, 0);
+            this.fullPictureBox.Name = "fullPictureBox";
+            this.fullPictureBox.Size = new System.Drawing.Size(1484, 761);
+            this.fullPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.fullPictureBox.TabIndex = 1;
+            this.fullPictureBox.TabStop = false;
+            this.fullPictureBox.Visible = false;
+            this.fullPictureBox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.fullPictureBox_MouseDoubleClick);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1484, 761);
+            this.Controls.Add(this.fullPictureBox);
             this.Controls.Add(this.splitContainer1);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "塔吊輔助控制系統";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OnFormClosing);
             this.Load += new System.EventHandler(this.OnLoad);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.Panel2.PerformLayout();
@@ -657,7 +674,9 @@
             this.controlPanel.PerformLayout();
             this.dataPanel.ResumeLayout(false);
             this.dataPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.fullPictureBox)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -710,6 +729,7 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Panel loginPanel;
         private System.Windows.Forms.CheckBox autoTrackCheckBox;
+        private System.Windows.Forms.PictureBox fullPictureBox;
     }
 }
 
