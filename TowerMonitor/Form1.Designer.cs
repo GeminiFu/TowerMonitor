@@ -31,6 +31,10 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.realtimePictureBox = new System.Windows.Forms.PictureBox();
+            this.loginPanel = new System.Windows.Forms.Panel();
+            this.label14 = new System.Windows.Forms.Label();
+            this.statusTextBox = new System.Windows.Forms.TextBox();
+            this.loginButton = new System.Windows.Forms.Button();
             this.cameraPanel = new System.Windows.Forms.Panel();
             this.settingButton = new System.Windows.Forms.Button();
             this.ipLabel = new System.Windows.Forms.Label();
@@ -71,19 +75,16 @@
             this.tiltPosTextBox = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.xTextBox = new System.Windows.Forms.TextBox();
-            this.loginButton = new System.Windows.Forms.Button();
-            this.statusTextBox = new System.Windows.Forms.TextBox();
-            this.label14 = new System.Windows.Forms.Label();
-            this.loginPanel = new System.Windows.Forms.Panel();
+            this.autoTrackCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.realtimePictureBox)).BeginInit();
+            this.loginPanel.SuspendLayout();
             this.cameraPanel.SuspendLayout();
             this.controlPanel.SuspendLayout();
             this.dataPanel.SuspendLayout();
-            this.loginPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -115,6 +116,49 @@
             this.realtimePictureBox.Size = new System.Drawing.Size(1059, 761);
             this.realtimePictureBox.TabIndex = 0;
             this.realtimePictureBox.TabStop = false;
+            // 
+            // loginPanel
+            // 
+            this.loginPanel.Controls.Add(this.autoTrackCheckBox);
+            this.loginPanel.Controls.Add(this.label14);
+            this.loginPanel.Controls.Add(this.statusTextBox);
+            this.loginPanel.Controls.Add(this.loginButton);
+            this.loginPanel.Location = new System.Drawing.Point(6, 179);
+            this.loginPanel.Name = "loginPanel";
+            this.loginPanel.Size = new System.Drawing.Size(412, 74);
+            this.loginPanel.TabIndex = 36;
+            // 
+            // label14
+            // 
+            this.label14.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label14.Location = new System.Drawing.Point(18, 10);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(57, 21);
+            this.label14.TabIndex = 13;
+            this.label14.Text = "狀態:";
+            // 
+            // statusTextBox
+            // 
+            this.statusTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.statusTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.statusTextBox.Location = new System.Drawing.Point(81, 6);
+            this.statusTextBox.Name = "statusTextBox";
+            this.statusTextBox.Size = new System.Drawing.Size(130, 27);
+            this.statusTextBox.TabIndex = 14;
+            // 
+            // loginButton
+            // 
+            this.loginButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.loginButton.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.loginButton.Location = new System.Drawing.Point(20, 39);
+            this.loginButton.Name = "loginButton";
+            this.loginButton.Size = new System.Drawing.Size(379, 28);
+            this.loginButton.TabIndex = 8;
+            this.loginButton.Text = "連線";
+            this.loginButton.UseVisualStyleBackColor = true;
+            this.loginButton.Click += new System.EventHandler(this.OnLoginClick);
             // 
             // cameraPanel
             // 
@@ -574,47 +618,19 @@
             this.xTextBox.Size = new System.Drawing.Size(40, 27);
             this.xTextBox.TabIndex = 15;
             // 
-            // loginButton
+            // autoTrackCheckBox
             // 
-            this.loginButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.loginButton.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.loginButton.Location = new System.Drawing.Point(20, 39);
-            this.loginButton.Name = "loginButton";
-            this.loginButton.Size = new System.Drawing.Size(379, 28);
-            this.loginButton.TabIndex = 8;
-            this.loginButton.Text = "連線";
-            this.loginButton.UseVisualStyleBackColor = true;
-            this.loginButton.Click += new System.EventHandler(this.OnLoginClick);
-            // 
-            // statusTextBox
-            // 
-            this.statusTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.statusTextBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.statusTextBox.Location = new System.Drawing.Point(81, 6);
-            this.statusTextBox.Name = "statusTextBox";
-            this.statusTextBox.Size = new System.Drawing.Size(130, 27);
-            this.statusTextBox.TabIndex = 14;
-            // 
-            // label14
-            // 
-            this.label14.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.label14.AutoSize = true;
-            this.label14.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label14.Location = new System.Drawing.Point(18, 10);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(57, 21);
-            this.label14.TabIndex = 13;
-            this.label14.Text = "狀態:";
-            // 
-            // loginPanel
-            // 
-            this.loginPanel.Controls.Add(this.label14);
-            this.loginPanel.Controls.Add(this.statusTextBox);
-            this.loginPanel.Controls.Add(this.loginButton);
-            this.loginPanel.Location = new System.Drawing.Point(6, 179);
-            this.loginPanel.Name = "loginPanel";
-            this.loginPanel.Size = new System.Drawing.Size(412, 74);
-            this.loginPanel.TabIndex = 36;
+            this.autoTrackCheckBox.AutoSize = true;
+            this.autoTrackCheckBox.Checked = true;
+            this.autoTrackCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.autoTrackCheckBox.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.autoTrackCheckBox.Location = new System.Drawing.Point(238, 10);
+            this.autoTrackCheckBox.Name = "autoTrackCheckBox";
+            this.autoTrackCheckBox.Size = new System.Drawing.Size(90, 20);
+            this.autoTrackCheckBox.TabIndex = 35;
+            this.autoTrackCheckBox.Text = "自動追蹤";
+            this.autoTrackCheckBox.UseVisualStyleBackColor = true;
+            this.autoTrackCheckBox.CheckedChanged += new System.EventHandler(this.OnAutoTrackCheckedClick);
             // 
             // Form1
             // 
@@ -633,14 +649,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.realtimePictureBox)).EndInit();
+            this.loginPanel.ResumeLayout(false);
+            this.loginPanel.PerformLayout();
             this.cameraPanel.ResumeLayout(false);
             this.cameraPanel.PerformLayout();
             this.controlPanel.ResumeLayout(false);
             this.controlPanel.PerformLayout();
             this.dataPanel.ResumeLayout(false);
             this.dataPanel.PerformLayout();
-            this.loginPanel.ResumeLayout(false);
-            this.loginPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -693,6 +709,7 @@
         private System.Windows.Forms.TextBox statusTextBox;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Panel loginPanel;
+        private System.Windows.Forms.CheckBox autoTrackCheckBox;
     }
 }
 

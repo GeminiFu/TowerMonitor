@@ -211,6 +211,19 @@ namespace TowerMonitor
             DoLogin();           
         }
 
+        private void StartAutoTrack() {
+            bool isChecked = autoTrackCheckBox.Checked;
+            if (isChecked) {
+                InitValue();
+                InitCapturePhoto();
+                StartSettingPTZ();
+            }
+        }
+
+        private void StopAutoTrack() {
+            StopSettingPTZ();
+        }
+
         // 因為陀螺儀丟出的訊息非常快，攝影機無法在短時間設定PTZ，
         // 所以寫個Thread 控制PTZ寫入速度
         private void StartSettingPTZ() {
@@ -337,11 +350,8 @@ namespace TowerMonitor
                 //MessageBox.Show("連線成功!");
                 statusTextBox.Text = "連線中...";
                 loginButton.Text = "離線";
-                StartPreview();
-                StartSettingPTZ();
-                InitValue();
-                InitCapturePhoto();
-
+                StartPreview();               
+                StartAutoTrack();
                 ShowCameraPanel(false, cameraPanel);
                 ShowControlPanel(true, controlPanel);
             }
@@ -360,7 +370,7 @@ namespace TowerMonitor
             //    MessageBox.Show("請先停止畫面預覽");
             //    return;
             //}
-            StopSettingPTZ();
+            StopAutoTrack();
             StopPreview();
             DoDVRLogout();
             CloseSerialPort();
@@ -621,7 +631,7 @@ namespace TowerMonitor
                 CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.PAN_LEFT, PTZ_MOVING, PTZ_SPEED);
             }
 
-            StopSettingPTZ();
+            StopAutoTrack();           
         }
 
         private void OnLeftMouseUp(object sender, MouseEventArgs e)
@@ -635,8 +645,7 @@ namespace TowerMonitor
                 CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.PAN_LEFT, PTZ_STOP, PTZ_SPEED);
             }
 
-            InitCapturePhoto();
-            StartSettingPTZ();
+            StartAutoTrack();
         }
         // ##### 左 (End) ######  
 
@@ -653,7 +662,7 @@ namespace TowerMonitor
                 CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.PAN_RIGHT, PTZ_MOVING, PTZ_SPEED);
             }
 
-            StopSettingPTZ();
+            StopAutoTrack();
         }
 
         private void OnRightMouseUp(object sender, MouseEventArgs e)
@@ -667,8 +676,7 @@ namespace TowerMonitor
                 CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.PAN_RIGHT, PTZ_STOP, PTZ_SPEED);
             }
 
-            InitCapturePhoto();
-            StartSettingPTZ();
+            StartAutoTrack();
         }
 
         // ##### 右 (End) ######  
@@ -685,7 +693,7 @@ namespace TowerMonitor
                 CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.TILT_UP, PTZ_MOVING, PTZ_SPEED);
             }
 
-            StopSettingPTZ();
+            StopAutoTrack();
         }
 
         private void OnUpMouseUp(object sender, MouseEventArgs e)
@@ -698,10 +706,8 @@ namespace TowerMonitor
             {
                 CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.TILT_UP, PTZ_STOP, PTZ_SPEED);
             }
-
-            InitValue();
-            InitCapturePhoto();
-            StartSettingPTZ();
+            
+            StartAutoTrack();
         }
         // ##### 上 (End) ######  
 
@@ -717,7 +723,7 @@ namespace TowerMonitor
                 CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.TILT_DOWN, PTZ_MOVING, PTZ_SPEED);
             }
 
-            StopSettingPTZ();
+            StopAutoTrack();
         }
 
         private void OnDownMouseUp(object sender, MouseEventArgs e)
@@ -731,9 +737,7 @@ namespace TowerMonitor
                 CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.TILT_DOWN, PTZ_STOP, PTZ_SPEED);
             }
 
-            InitValue();
-            InitCapturePhoto();
-            StartSettingPTZ();
+            StartAutoTrack();
         }
         // ##### 下 (End) ######
 
@@ -748,7 +752,8 @@ namespace TowerMonitor
             {
                 CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.ZOOM_IN, PTZ_MOVING, PTZ_SPEED);
             }
-            StopSettingPTZ();
+
+            StopAutoTrack();
         }
 
         private void OnZoomInMouseUp(object sender, MouseEventArgs e)
@@ -762,8 +767,7 @@ namespace TowerMonitor
                 CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.ZOOM_IN, PTZ_STOP, PTZ_SPEED);
             }
 
-            InitCapturePhoto();
-            StartSettingPTZ();
+            StartAutoTrack();
 
         }
         // ##### 放大 (End) ######        
@@ -780,7 +784,7 @@ namespace TowerMonitor
                 CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.ZOOM_OUT, PTZ_MOVING, PTZ_SPEED);
             }
 
-            StopSettingPTZ();
+            StopAutoTrack();
         }
 
         private void OnZoomOutMouseUp(object sender, MouseEventArgs e)
@@ -794,8 +798,7 @@ namespace TowerMonitor
                 CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.ZOOM_OUT, PTZ_STOP, PTZ_SPEED);
             }
 
-            InitCapturePhoto();
-            StartSettingPTZ();
+            StartAutoTrack();
 
         }
         // ##### 縮小 (End) ######              
@@ -1088,6 +1091,21 @@ namespace TowerMonitor
         private void CloseListener(object sender, EventArgs e)
         {
             InitDeviceData();
+        }
+
+        private void OnAutoTrackCheckedClick(object sender, EventArgs e)
+        {
+            bool isChecked = autoTrackCheckBox.Checked;
+            if (isChecked)
+            {
+               StartAutoTrack();
+            }
+            else
+            {
+                StopAutoTrack();
+                cameraDegreeTextBox.Text = "";
+                armDegreeTextBox.Text = "";
+            }
         }
     }
 }
