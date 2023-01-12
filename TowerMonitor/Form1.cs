@@ -1146,6 +1146,7 @@ namespace TowerMonitor
                 fullPictureBox.BringToFront();
                 primarySize = fullPictureBox.ClientSize;
                 fullPictureBox.Visible = true;
+                splitContainer1.Visible = false;
                 StopPreview();
                 StartPreview(fullPictureBox);
             }
@@ -1159,6 +1160,7 @@ namespace TowerMonitor
 
                 fullPictureBox.Dock = DockStyle.None;
                 fullPictureBox.Visible = false;
+                splitContainer1.Visible = true;
 
                 StopPreview();
                 StartPreview(realtimePictureBox);

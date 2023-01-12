@@ -652,8 +652,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1484, 761);
-            this.Controls.Add(this.fullPictureBox);
             this.Controls.Add(this.splitContainer1);
+            this.Controls.Add(this.fullPictureBox);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "塔吊輔助控制系統";
