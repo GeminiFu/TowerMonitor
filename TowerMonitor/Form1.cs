@@ -347,7 +347,8 @@ namespace TowerMonitor
             string passwrod = passwordTextBox.Text;
             string channel = channelTextBox.Text;
 
-            bool isConnectIMUScuess = ConnectIMU();
+            //bool isConnectIMUScuess = ConnectIMU();
+            bool isConnectIMUScuess = true;
             bool isConnectCameraSuccess = ConnectCamera(ip, port, username, passwrod, channel);
 
             if (isConnectIMUScuess && isConnectCameraSuccess)
