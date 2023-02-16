@@ -251,18 +251,26 @@ namespace TowerMonitor
 
                 if (m_lRealHandle >= 0 && serialPort.IsOpen)
                 {
+                    NET_DVR_PTZPOS netDVRPTZPos = GetPTZParam();
+
+                    // 上下角度
+                    ushort wTiltPos = Convert.ToUInt16(Convert.ToString(netDVRPTZPos.wTiltPos, 16));
+                    tInitValue = wTiltPos * 0.1f;
+
 
                     string tValue = tInitValue.ToString("0.0");
                     dx = Math.Abs(xNow) - Math.Abs(xInitValue);
 
                     if (xNow > xInitValue)
                     {   // 陀螺儀往上轉動 (xNow等於0表示陀螺儀沒有在轉動)                        
-                        tValue = (tInitValue - dx).ToString("0.0");
+                        tValue = (tInitValue + dx).ToString("0.0");
                     } 
                     else if (xNow < xInitValue)
                     {    // 陀螺儀往下轉動 
                         tValue = (tInitValue + dx).ToString("0.0");
                     }
+
+                    xInitValue = xNow;
 
                     if (Convert.ToSingle(tValue) < WTiltPosMin)
                     {
@@ -270,6 +278,7 @@ namespace TowerMonitor
                     }
 
                     SetTParam(tValue);
+                    //SetTParam(Math.Abs(xNow).ToString());
 
                     yTextBox.Text = yNow.ToString();
                     xTextBox.Text = xNow.ToString();
@@ -280,7 +289,7 @@ namespace TowerMonitor
                     
                 }// End if
 
-                Thread.Sleep(500);
+                Thread.Sleep(4000);
             }
         }
 
