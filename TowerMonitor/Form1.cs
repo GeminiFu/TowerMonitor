@@ -1185,5 +1185,32 @@ namespace TowerMonitor
         {           
             ShowFullScreen(false);
         }
+
+        private void resetButton_Click(object sender, EventArgs e)
+        {
+            if (m_lRealHandle >= 0 && serialPort.IsOpen)
+            {
+                tInitValue = Math.Abs(xNow);
+
+                string tValue = tInitValue.ToString("0.0");
+
+                if (Convert.ToSingle(tValue) < WTiltPosMin)
+                {
+                    tValue = WTiltPosMin.ToString();
+                }
+
+                SetTParam(tValue);
+                //SetTParam(Math.Abs(xNow).ToString());
+
+                yTextBox.Text = yNow.ToString();
+                xTextBox.Text = xNow.ToString();
+                zTextBox.Text = zNow.ToString();
+                armDegreeTextBox.Text = xTextBox.Text;
+
+                ShowPTZParam();
+
+            }// End if
+
+        }
     }
 }
