@@ -98,15 +98,16 @@ namespace TowerMonitor
         {
             System.Windows.Forms.TextBox.CheckForIllegalCrossThreadCalls = false;
 
-            
-           
-            if (!StringUtil.isEmpty(ipTextBox.Text) && 
+
+
+            if (!StringUtil.isEmpty(ipTextBox.Text) &&
                 !StringUtil.isEmpty(portTextBox.Text) &&
                 !StringUtil.isEmpty(usernameTextBox.Text) &&
                 !StringUtil.isEmpty(passwordTextBox.Text) &&
                 !StringUtil.isEmpty(channelTextBox.Text) &&
                 !StringUtil.isEmpty(imuPort) &&
-                !StringUtil.isEmpty(baudRate.ToString())) {
+                !StringUtil.isEmpty(baudRate.ToString()))
+            {
                 AutoLogin();
             }
         }
@@ -116,7 +117,7 @@ namespace TowerMonitor
 
             // 關閉監視器
             CloseHikvision();
-           
+
             // 關閉IMU
             CloseSerialPort();
 
@@ -148,7 +149,8 @@ namespace TowerMonitor
         }
 
         // 載入設備預設資料
-        private void InitDeviceData() {
+        private void InitDeviceData()
+        {
             deviceDataPath = startupPath + "\\deviceData.json";
 
             DeviceDataEntity deviceDataEntity;
@@ -171,7 +173,7 @@ namespace TowerMonitor
                 jsonData = JsonConvert.SerializeObject(deviceDataEntity);
                 bool isSuccess = FileUtil.WriteFile(deviceDataPath, jsonData);
             }
-            
+
             jsonData = FileUtil.ReadFile(deviceDataPath);
             deviceDataEntity = JsonConvert.DeserializeObject<DeviceDataEntity>(jsonData);
 
@@ -201,52 +203,78 @@ namespace TowerMonitor
 
         }
 
-        private void InitCapturePhoto() {
+        private void InitCapturePhoto()
+        {
             //nowPhotoPath = startupPath + "\\nowPhoto.jpg";
             //CapturePhoto(nowPhotoPath);
             //oldPhotoPath = startupPath + "\\oldPhoto.jpg";
             //FileUtil.CopyFile(nowPhotoPath, oldPhotoPath);
         }
 
-        private void AutoLogin() {
+        private void AutoLogin()
+        {
             Thread myThread = new Thread(new ThreadStart(DoLoginTask));
             myThread.Start();
         }
 
-        private void DoLoginTask() {
-            DoLogin();           
+        private void DoLoginTask()
+        {
+            while (!DoLogin())
+            {
+                Thread.Sleep(1000);
+            }
+
         }
 
-        private void StartAutoTrack() {
+        private void StartAutoTrack()
+        {
             bool isChecked = autoTrackCheckBox.Checked;
-            if (isChecked) {
+            if (isChecked)
+            {
                 InitValue();
-                InitCapturePhoto();
+                //InitCapturePhoto();
                 StartSettingPTZ();
             }
         }
 
-        private void StopAutoTrack() {
+        private void StopAutoTrack()
+        {
             StopSettingPTZ();
         }
 
+        Thread myThread;
         // 因為陀螺儀丟出的訊息非常快，攝影機無法在短時間設定PTZ，
         // 所以寫個Thread 控制PTZ寫入速度
-        private void StartSettingPTZ() {
+        private void StartSettingPTZ()
+        {
             isSettingPTZRunning = true;
-            Thread myThread = new Thread(new ThreadStart(SettingPTZTask));
+            myThread = new Thread(new ThreadStart(SettingPTZTask));
+            //Thread myThread = new Thread(new ThreadStart(SettingPTZTask));
             //oGetArgThread.IsBackground = true;
             myThread.Start();
         }
 
-        private void StopSettingPTZ() { 
-            isSettingPTZRunning = false;          
+        private void StopSettingPTZ()
+        {
+            isSettingPTZRunning = false;
+            myThread.Abort();
         }
 
         private void SettingPTZTask()
         {
             while (isSettingPTZRunning)
             {
+                // 如果 PTZ 攝影機 或 陀螺儀連不上線
+                // AutoLogin
+                if (!isConnectCamera() || !isConnectSerial())
+                {
+                    while (!DoLogin())
+                    {
+                        Thread.Sleep(1000);
+                    }
+                    return;
+                }
+
                 // Console.WriteLine("xNow=" + xNow + " yNow="+ yNow + " zNow="+ zNow);
 
                 if (m_lRealHandle >= 0 && serialPort.IsOpen)
@@ -264,7 +292,7 @@ namespace TowerMonitor
                     if (xNow > xInitValue)
                     {   // 陀螺儀往上轉動 (xNow等於0表示陀螺儀沒有在轉動)                        
                         tValue = (tInitValue + dx).ToString("0.0");
-                    } 
+                    }
                     else if (xNow < xInitValue)
                     {    // 陀螺儀往下轉動 
                         tValue = (tInitValue + dx).ToString("0.0");
@@ -286,15 +314,41 @@ namespace TowerMonitor
                     armDegreeTextBox.Text = xTextBox.Text;
 
                     ShowPTZParam();
-                    
+
                 }// End if
 
                 Thread.Sleep(4000);
             }
         }
 
-        private void CapturePhoto(string filePath) {
-            
+        private bool isConnectCamera()
+        {
+            UInt32 dwReturn = 0;
+            Int32 nSize = Marshal.SizeOf(m_struPtzCfg);
+            IntPtr ptrPtzCfg = Marshal.AllocHGlobal(nSize);
+            Marshal.StructureToPtr(m_struPtzCfg, ptrPtzCfg, false);
+
+            if (!CHCNetSDK.NET_DVR_GetDVRConfig(m_lUserID, CHCNetSDK.NET_DVR_GET_PTZPOS, -1, ptrPtzCfg, (UInt32)nSize, ref dwReturn))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool isConnectSerial()
+        {
+            if (serialPort.IsOpen)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private void CapturePhoto(string filePath)
+        {
+
             CHCNetSDK.NET_DVR_JPEGPARA lpJpegPara = new CHCNetSDK.NET_DVR_JPEGPARA();
             lpJpegPara.wPicQuality = 0; //图像质量 Image quality
             lpJpegPara.wPicSize = 0xff; //抓图分辨率 Picture size: 2- 4CIF，0xff- Auto(使用当前码流分辨率)，抓图分辨率需要设备支持，更多取值请参考SDK文档
@@ -334,7 +388,8 @@ namespace TowerMonitor
             return;
         }
 
-        private void CloseHikvision() {
+        private void CloseHikvision()
+        {
             if (m_lRealHandle >= 0)
             {
                 CHCNetSDK.NET_DVR_StopRealPlay(m_lRealHandle);
@@ -348,7 +403,8 @@ namespace TowerMonitor
                 CHCNetSDK.NET_DVR_Cleanup();
             }
         }
-        private void DoLogin() {
+        private bool DoLogin()
+        {
 
             string ip = ipTextBox.Text;
             string port = portTextBox.Text;
@@ -356,7 +412,8 @@ namespace TowerMonitor
             string passwrod = passwordTextBox.Text;
             string channel = channelTextBox.Text;
 
-            bool isConnectIMUScuess = ConnectIMU();
+            //bool isConnectIMUScuess = ConnectIMU();
+            bool isConnectIMUScuess = true;
             bool isConnectCameraSuccess = ConnectCamera(ip, port, username, passwrod, channel);
 
             if (isConnectIMUScuess && isConnectCameraSuccess)
@@ -365,20 +422,23 @@ namespace TowerMonitor
                 //MessageBox.Show("連線成功!");
                 statusTextBox.Text = "連線中...";
                 loginButton.Text = "離線";
-                StartPreview(realtimePictureBox);               
+                StartPreview(realtimePictureBox);
                 StartAutoTrack();
                 ShowCameraPanel(false, cameraPanel);
                 ShowControlPanel(true, controlPanel);
+                return true;
             }
-            else 
+            else
             {
-                DoDVRLogout();
-                CloseSerialPort();
-            }           
+                //DoDVRLogout();
+                //CloseSerialPort();
+                return false;
+            }
 
         }
 
-        private void DoLogout() {
+        private void DoLogout()
+        {
             //注销登录 Logout the device
             //if (m_lRealHandle >= 0)
             //{
@@ -531,7 +591,7 @@ namespace TowerMonitor
             {
                 iLastErr = CHCNetSDK.NET_DVR_GetLastError();
                 str = "NET_DVR_Login_V40 failed, error code= " + iLastErr; //登录失败，输出错误号
-                MessageBox.Show(str);
+                //MessageBox.Show(str);
                 return false;
             }
 
@@ -539,7 +599,8 @@ namespace TowerMonitor
         }
 
 
-        private void StartPreview(PictureBox pictureBox) {
+        private void StartPreview(PictureBox pictureBox)
+        {
             if (m_lRealHandle < 0)
             {
                 CHCNetSDK.NET_DVR_PREVIEWINFO lpPreviewInfo = new CHCNetSDK.NET_DVR_PREVIEWINFO();
@@ -596,9 +657,11 @@ namespace TowerMonitor
             }
         }
 
-        private void StopPreview() {
+        private void StopPreview()
+        {
 
-            if (m_lRealHandle >= 0) {
+            if (m_lRealHandle >= 0)
+            {
                 // Stop live view 
                 if (!CHCNetSDK.NET_DVR_StopRealPlay(m_lRealHandle))
                 {
@@ -613,11 +676,13 @@ namespace TowerMonitor
 
         }
 
-        private void DoDVRLogout() {
-            if (m_lUserID==-1) {
+        private void DoDVRLogout()
+        {
+            if (m_lUserID == -1)
+            {
                 return;
             }
-            
+
             if (!CHCNetSDK.NET_DVR_Logout(m_lUserID))
             {
                 iLastErr = CHCNetSDK.NET_DVR_GetLastError();
@@ -633,7 +698,7 @@ namespace TowerMonitor
 
             cameraDegreeTextBox.Text = "";
         }
-        
+
         // ##### 左 (Start) ######  
         private void OnLeftMouseDown(object sender, MouseEventArgs e)
         {
@@ -646,7 +711,7 @@ namespace TowerMonitor
                 CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.PAN_LEFT, PTZ_MOVING, PTZ_SPEED);
             }
 
-            StopAutoTrack();           
+            StopAutoTrack();
         }
 
         private void OnLeftMouseUp(object sender, MouseEventArgs e)
@@ -721,7 +786,7 @@ namespace TowerMonitor
             {
                 CHCNetSDK.NET_DVR_PTZControlWithSpeed_Other(m_lUserID, m_lChannel, CHCNetSDK.TILT_UP, PTZ_STOP, PTZ_SPEED);
             }
-            
+
             StartAutoTrack();
         }
         // ##### 上 (End) ######  
@@ -818,21 +883,23 @@ namespace TowerMonitor
         }
         // ##### 縮小 (End) ######              
 
-        private NET_DVR_PTZPOS GetPTZParam() {
+        private NET_DVR_PTZPOS GetPTZParam()
+        {
 
             NET_DVR_PTZPOS netDVRPTZPOS = new NET_DVR_PTZPOS();
             UInt32 dwReturn = 0;
             Int32 nSize = Marshal.SizeOf(m_struPtzCfg);
             IntPtr ptrPtzCfg = Marshal.AllocHGlobal(nSize);
             Marshal.StructureToPtr(m_struPtzCfg, ptrPtzCfg, false);
-           
-            CHCNetSDK.NET_DVR_GetDVRConfig(m_lUserID, CHCNetSDK.NET_DVR_GET_PTZPOS, -1, ptrPtzCfg, (UInt32)nSize, ref dwReturn);            
+
+            CHCNetSDK.NET_DVR_GetDVRConfig(m_lUserID, CHCNetSDK.NET_DVR_GET_PTZPOS, -1, ptrPtzCfg, (UInt32)nSize, ref dwReturn);
             netDVRPTZPOS = (CHCNetSDK.NET_DVR_PTZPOS)Marshal.PtrToStructure(ptrPtzCfg, typeof(CHCNetSDK.NET_DVR_PTZPOS));   //成功获取显示ptz参数
             return netDVRPTZPOS;
         }
 
 
-        private void ShowPTZParam() {
+        private void ShowPTZParam()
+        {
             UInt32 dwReturn = 0;
             Int32 nSize = Marshal.SizeOf(m_struPtzCfg);
             IntPtr ptrPtzCfg = Marshal.AllocHGlobal(nSize);
@@ -870,7 +937,7 @@ namespace TowerMonitor
             }
         }
 
-      
+
         /* ##### 設定 T #####*/
         private void SetTParam(string tParam)
         {
@@ -885,7 +952,7 @@ namespace TowerMonitor
             else
             {
 
-               m_struPtzCfg.wAction = SET_T_PARAM;
+                m_struPtzCfg.wAction = SET_T_PARAM;
 
 
                 // 設定上下角度
@@ -916,14 +983,15 @@ namespace TowerMonitor
             }
         }
 
-      
+
 
         /* ##########################
          * ##### 陀螺儀 (Start) #####
          * ##########################
          */
 
-        private bool ConnectIMU() {
+        private bool ConnectIMU()
+        {
             //imuPort = "COM3";
             //baudRate = 115200;            
             return OpenSerialPort(imuPort, baudRate);
@@ -952,7 +1020,7 @@ namespace TowerMonitor
             }
             catch (Exception e)
             {
-                MessageBox.Show("陀螺儀設備: " + e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                //MessageBox.Show("陀螺儀設備: " + e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                 return false;
             }
         }
@@ -999,7 +1067,7 @@ namespace TowerMonitor
             }
             return ret;
         }
-        
+
         //  陀螺儀-回傳訊息
         private void OnKbootDecoderDataReceived(object sender, byte[] buf, int len)
         {
@@ -1020,11 +1088,12 @@ namespace TowerMonitor
                 xNow = Convert.ToSingle(device_data.SingleNode.Eul[1].ToString("0.0"));
                 zNow = Convert.ToSingle(device_data.SingleNode.Eul[2].ToString("0.0"));
 
-                if (!hasGetXInitValue) {
+                if (!hasGetXInitValue)
+                {
                     xInitValue = xNow;
                     hasGetXInitValue = true;
                 }
-               
+
             }
         }
 
@@ -1064,7 +1133,7 @@ namespace TowerMonitor
             {
                 dataPanel.Visible = true;
             }
-            else 
+            else
             {
                 dataPanel.Visible = false;
             }
@@ -1079,8 +1148,10 @@ namespace TowerMonitor
 
         }
 
-        private void LoginFormClosed(object semder, FormClosedEventArgs e, bool isLoginSuccess) {
-            if (isLoginSuccess) {                
+        private void LoginFormClosed(object semder, FormClosedEventArgs e, bool isLoginSuccess)
+        {
+            if (isLoginSuccess)
+            {
                 OpenSettingDataForm();
             }
         }
@@ -1113,7 +1184,7 @@ namespace TowerMonitor
             bool isChecked = autoTrackCheckBox.Checked;
             if (isChecked)
             {
-               StartAutoTrack();
+                StartAutoTrack();
             }
             else
             {
@@ -1123,13 +1194,14 @@ namespace TowerMonitor
             }
         }
 
-        
+
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
 
-            switch (e.KeyData) {
+            switch (e.KeyData)
+            {
                 case Keys.Enter:
-                    
+
                     break;
 
                 case Keys.Escape:
@@ -1139,11 +1211,13 @@ namespace TowerMonitor
 
         }
 
-        private void ShowFullScreen(bool isShow) {
-            if (m_lRealHandle < 0 ) {
+        private void ShowFullScreen(bool isShow)
+        {
+            if (m_lRealHandle < 0)
+            {
                 return;
             }
-            
+
             if (isShow)
             {
                 this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -1159,7 +1233,8 @@ namespace TowerMonitor
                 StopPreview();
                 StartPreview(fullPictureBox);
             }
-            else {
+            else
+            {
 
                 this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
                 this.WindowState = FormWindowState.Normal;
@@ -1177,12 +1252,12 @@ namespace TowerMonitor
         }
 
         private void realtimePictureBox_MouseDoubleClick(object sender, MouseEventArgs e)
-        {            
-            ShowFullScreen(true);            
+        {
+            ShowFullScreen(true);
         }
 
         private void fullPictureBox_MouseDoubleClick(object sender, MouseEventArgs e)
-        {           
+        {
             ShowFullScreen(false);
         }
 
@@ -1199,18 +1274,47 @@ namespace TowerMonitor
                     tValue = WTiltPosMin.ToString();
                 }
 
-                SetTParam(tValue);
-                //SetTParam(Math.Abs(xNow).ToString());
+                m_struPtzCfg.wAction = SET_P_T_PARAM;
 
-                yTextBox.Text = yNow.ToString();
-                xTextBox.Text = xNow.ToString();
-                zTextBox.Text = zNow.ToString();
-                armDegreeTextBox.Text = xTextBox.Text;
+                string str2;
+
+                // 設定上下角度
+                str2 = Convert.ToString(float.Parse(tValue) * 10);
+                m_struPtzCfg.wTiltPos = (ushort)(Convert.ToUInt16(str2, 16));
+                m_struPtzCfg.wPanPos = 0;
+
+
+                // 設定
+                Int32 nSize = Marshal.SizeOf(m_struPtzCfg);
+                IntPtr ptrPtzCfg = Marshal.AllocHGlobal(nSize);
+                Marshal.StructureToPtr(m_struPtzCfg, ptrPtzCfg, false);
+
+                if (!CHCNetSDK.NET_DVR_SetDVRConfig(m_lUserID, CHCNetSDK.NET_DVR_SET_PTZPOS, 1, ptrPtzCfg, (UInt32)nSize))
+                {
+                    iLastErr = CHCNetSDK.NET_DVR_GetLastError();
+                    str = "NET_DVR_SetDVRConfig failed, error code= " + iLastErr;
+                    //设置POS参数失败
+                    //MessageBox.Show(str);
+                    return;
+                }
+                else
+                {
+                    // MessageBox.Show("设置成功!");                   
+                }
+
+                Marshal.FreeHGlobal(ptrPtzCfg);
+
+
 
                 ShowPTZParam();
 
             }// End if
 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            isConnectCamera();
         }
     }
 }

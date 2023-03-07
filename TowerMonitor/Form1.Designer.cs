@@ -49,6 +49,7 @@
             this.usernameTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.controlPanel = new System.Windows.Forms.Panel();
+            this.resetButton = new System.Windows.Forms.Button();
             this.showDataCheckBox = new System.Windows.Forms.CheckBox();
             this.armDegreeTextBox = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
@@ -77,7 +78,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.xTextBox = new System.Windows.Forms.TextBox();
             this.fullPictureBox = new System.Windows.Forms.PictureBox();
-            this.resetButton = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -317,6 +318,7 @@
             // controlPanel
             // 
             this.controlPanel.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.controlPanel.Controls.Add(this.button1);
             this.controlPanel.Controls.Add(this.resetButton);
             this.controlPanel.Controls.Add(this.showDataCheckBox);
             this.controlPanel.Controls.Add(this.armDegreeTextBox);
@@ -334,6 +336,16 @@
             this.controlPanel.Size = new System.Drawing.Size(415, 285);
             this.controlPanel.TabIndex = 35;
             this.controlPanel.Visible = false;
+            // 
+            // resetButton
+            // 
+            this.resetButton.Location = new System.Drawing.Point(297, 248);
+            this.resetButton.Name = "resetButton";
+            this.resetButton.Size = new System.Drawing.Size(75, 23);
+            this.resetButton.TabIndex = 35;
+            this.resetButton.Text = "俯瞰視角";
+            this.resetButton.UseVisualStyleBackColor = true;
+            this.resetButton.Click += new System.EventHandler(this.resetButton_Click);
             // 
             // showDataCheckBox
             // 
@@ -649,15 +661,15 @@
             this.fullPictureBox.Visible = false;
             this.fullPictureBox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.fullPictureBox_MouseDoubleClick);
             // 
-            // resetButton
+            // button1
             // 
-            this.resetButton.Location = new System.Drawing.Point(297, 248);
-            this.resetButton.Name = "resetButton";
-            this.resetButton.Size = new System.Drawing.Size(75, 23);
-            this.resetButton.TabIndex = 35;
-            this.resetButton.Text = "俯瞰視角";
-            this.resetButton.UseVisualStyleBackColor = true;
-            this.resetButton.Click += new System.EventHandler(this.resetButton_Click);
+            this.button1.Location = new System.Drawing.Point(22, 44);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 36;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // Form1
             // 
@@ -743,6 +755,7 @@
         private System.Windows.Forms.CheckBox autoTrackCheckBox;
         private System.Windows.Forms.PictureBox fullPictureBox;
         private System.Windows.Forms.Button resetButton;
+        private System.Windows.Forms.Button button1;
     }
 }
 
