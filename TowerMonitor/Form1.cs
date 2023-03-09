@@ -257,7 +257,7 @@ namespace TowerMonitor
         private void StopSettingPTZ()
         {
             isSettingPTZRunning = false;
-            myThread.Abort();
+            //myThread.Abort();
         }
 
         private void SettingPTZTask()
@@ -266,12 +266,10 @@ namespace TowerMonitor
             {
                 // 如果 PTZ 攝影機 或 陀螺儀連不上線
                 // AutoLogin
-                if (!isConnectCamera() || !isConnectSerial())
+                if (!isConnectingCamera() || !isConnectingSerial())
                 {
-                    while (!DoLogin())
-                    {
-                        Thread.Sleep(1000);
-                    }
+                    DoLogout();
+                    AutoLogin();
                     return;
                 }
 
@@ -321,7 +319,7 @@ namespace TowerMonitor
             }
         }
 
-        private bool isConnectCamera()
+        private bool isConnectingCamera()
         {
             UInt32 dwReturn = 0;
             Int32 nSize = Marshal.SizeOf(m_struPtzCfg);
@@ -336,7 +334,7 @@ namespace TowerMonitor
             return true;
         }
 
-        private bool isConnectSerial()
+        private bool isConnectingSerial()
         {
             if (serialPort.IsOpen)
             {
@@ -377,7 +375,7 @@ namespace TowerMonitor
                 return;
             }
 
-            if (m_lUserID < 0)
+            if (!isConnectingCamera())
             {
                 DoLogin();
             }
@@ -412,8 +410,7 @@ namespace TowerMonitor
             string passwrod = passwordTextBox.Text;
             string channel = channelTextBox.Text;
 
-            //bool isConnectIMUScuess = ConnectIMU();
-            bool isConnectIMUScuess = true;
+            bool isConnectIMUScuess = ConnectIMU();
             bool isConnectCameraSuccess = ConnectCamera(ip, port, username, passwrod, channel);
 
             if (isConnectIMUScuess && isConnectCameraSuccess)
@@ -430,8 +427,10 @@ namespace TowerMonitor
             }
             else
             {
-                //DoDVRLogout();
-                //CloseSerialPort();
+                if (isConnectCameraSuccess)
+                    DoDVRLogout();
+                if (isConnectIMUScuess)
+                    CloseSerialPort();
                 return false;
             }
 
@@ -1031,20 +1030,27 @@ namespace TowerMonitor
             // Get bytes from serial port
             if (serialPort.IsOpen)
             {
-
-                int bytesToRead = serialPort.BytesToRead;
-                byte[] readBuffer = new byte[bytesToRead];
-                //Debug.WriteLine("bytesToRead=" + bytesToRead.ToString());
-                //Debug.WriteLine("#####################");
-                //Debug.WriteLine("readBuffer=" + readBuffer.ToString());
-
-                if (serialPort.IsOpen)
+                try
                 {
-                    serialPort.Read(readBuffer, 0, bytesToRead);
-                }
+                    int bytesToRead = serialPort.BytesToRead;
+                    byte[] readBuffer = new byte[bytesToRead];
+                    //Debug.WriteLine("bytesToRead=" + bytesToRead.ToString());
+                    //Debug.WriteLine("#####################");
+                    //Debug.WriteLine("readBuffer=" + readBuffer.ToString());
 
-                m_connection.Input(readBuffer);
-                KbootDecoder.Input(readBuffer);
+                    if (serialPort.IsOpen)
+                    {
+                        serialPort.Read(readBuffer, 0, bytesToRead);
+                    }
+
+                    m_connection.Input(readBuffer);
+                    KbootDecoder.Input(readBuffer);
+                }
+                catch (Exception)
+                {
+
+                    //throw;
+                }
 
 
             }
@@ -1314,7 +1320,7 @@ namespace TowerMonitor
 
         private void button1_Click(object sender, EventArgs e)
         {
-            isConnectCamera();
+            isConnectingCamera();
         }
     }
 }
