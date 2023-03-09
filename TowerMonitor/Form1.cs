@@ -63,6 +63,7 @@ namespace TowerMonitor
         private delegate void UpdateCameraPanelUICallBack(bool isShow, Control ctl);
         private delegate void UpdateControlPanelUICallBack(bool isShow, Control ctl);
 
+        int adjustWaitingTime = 4;
         // 陀螺儀
         string imuPort = "";
         int baudRate = 0;
@@ -242,13 +243,12 @@ namespace TowerMonitor
             StopSettingPTZ();
         }
 
-        Thread myThread;
         // 因為陀螺儀丟出的訊息非常快，攝影機無法在短時間設定PTZ，
         // 所以寫個Thread 控制PTZ寫入速度
         private void StartSettingPTZ()
         {
             isSettingPTZRunning = true;
-            myThread = new Thread(new ThreadStart(SettingPTZTask));
+            Thread myThread = new Thread(new ThreadStart(SettingPTZTask));
             //Thread myThread = new Thread(new ThreadStart(SettingPTZTask));
             //oGetArgThread.IsBackground = true;
             myThread.Start();
@@ -269,7 +269,7 @@ namespace TowerMonitor
                 if (!isConnectingCamera() || !isConnectingSerial())
                 {
                     DoLogout();
-                    AutoLogin();
+                    DoLoginTask();
                     return;
                 }
 
@@ -315,7 +315,7 @@ namespace TowerMonitor
 
                 }// End if
 
-                Thread.Sleep(4000);
+                Thread.Sleep(adjustWaitingTime * 1000);
             }
         }
 
@@ -1318,9 +1318,9 @@ namespace TowerMonitor
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void adjustWaitingNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            isConnectingCamera();
+            adjustWaitingTime = (int)adjustWaitingNumericUpDown.Value;
         }
     }
 }

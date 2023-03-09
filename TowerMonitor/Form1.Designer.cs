@@ -53,6 +53,7 @@
             this.showDataCheckBox = new System.Windows.Forms.CheckBox();
             this.armDegreeTextBox = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
             this.cameraDegreeTextBox = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.rightButton = new System.Windows.Forms.Button();
@@ -78,7 +79,8 @@
             this.label6 = new System.Windows.Forms.Label();
             this.xTextBox = new System.Windows.Forms.TextBox();
             this.fullPictureBox = new System.Windows.Forms.PictureBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.adjustWaitingNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.label16 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -89,6 +91,7 @@
             this.controlPanel.SuspendLayout();
             this.dataPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fullPictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.adjustWaitingNumericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -318,11 +321,13 @@
             // controlPanel
             // 
             this.controlPanel.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.controlPanel.Controls.Add(this.button1);
+            this.controlPanel.Controls.Add(this.adjustWaitingNumericUpDown);
             this.controlPanel.Controls.Add(this.resetButton);
             this.controlPanel.Controls.Add(this.showDataCheckBox);
             this.controlPanel.Controls.Add(this.armDegreeTextBox);
             this.controlPanel.Controls.Add(this.label13);
+            this.controlPanel.Controls.Add(this.label16);
+            this.controlPanel.Controls.Add(this.label15);
             this.controlPanel.Controls.Add(this.cameraDegreeTextBox);
             this.controlPanel.Controls.Add(this.label12);
             this.controlPanel.Controls.Add(this.rightButton);
@@ -378,6 +383,17 @@
             this.label13.Size = new System.Drawing.Size(183, 21);
             this.label13.TabIndex = 32;
             this.label13.Text = "目前吊臂上下角度:";
+            // 
+            // label15
+            // 
+            this.label15.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label15.Location = new System.Drawing.Point(9, 169);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(99, 21);
+            this.label15.TabIndex = 27;
+            this.label15.Text = "調整間隔:";
             // 
             // cameraDegreeTextBox
             // 
@@ -661,15 +677,30 @@
             this.fullPictureBox.Visible = false;
             this.fullPictureBox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.fullPictureBox_MouseDoubleClick);
             // 
-            // button1
+            // adjustWaitingNumericUpDown
             // 
-            this.button1.Location = new System.Drawing.Point(22, 44);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 36;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.adjustWaitingNumericUpDown.Font = new System.Drawing.Font("新細明體", 12F);
+            this.adjustWaitingNumericUpDown.Location = new System.Drawing.Point(103, 169);
+            this.adjustWaitingNumericUpDown.Name = "adjustWaitingNumericUpDown";
+            this.adjustWaitingNumericUpDown.Size = new System.Drawing.Size(39, 27);
+            this.adjustWaitingNumericUpDown.TabIndex = 36;
+            this.adjustWaitingNumericUpDown.Value = new decimal(new int[] {
+            4,
+            0,
+            0,
+            0});
+            this.adjustWaitingNumericUpDown.ValueChanged += new System.EventHandler(this.adjustWaitingNumericUpDown_ValueChanged);
+            // 
+            // label16
+            // 
+            this.label16.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label16.AutoSize = true;
+            this.label16.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label16.Location = new System.Drawing.Point(142, 172);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(31, 21);
+            this.label16.TabIndex = 27;
+            this.label16.Text = "秒";
             // 
             // Form1
             // 
@@ -699,6 +730,7 @@
             this.dataPanel.ResumeLayout(false);
             this.dataPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fullPictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.adjustWaitingNumericUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -755,7 +787,9 @@
         private System.Windows.Forms.CheckBox autoTrackCheckBox;
         private System.Windows.Forms.PictureBox fullPictureBox;
         private System.Windows.Forms.Button resetButton;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.NumericUpDown adjustWaitingNumericUpDown;
+        private System.Windows.Forms.Label label16;
     }
 }
 
